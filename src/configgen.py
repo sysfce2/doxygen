@@ -18,6 +18,7 @@ import re
 import textwrap
 from xml.dom import Node
 import io
+import glob
 
 messages = {}
 
@@ -735,31 +736,22 @@ def parseGenerator(node):
                         doc += n1.nodeValue.rstrip("\r\n").lstrip("\r\n")
                 messages[name] = doc
 
-LANGUAGES = ['zh_CN', 'zh_TW', 'de', 'fr', 'ja', 'ko', 'es', 'ru']
-
 def collectOptions(elem):
     """Collect all option IDs from config.xml."""
     options = set()
+    optionsWithElems = {}
     for group in elem.getElementsByTagName('group'):
         for option in group.getElementsByTagName('option'):
             optionId = option.getAttribute('id')
-            if optionId:
+            optionType = option.getAttribute('type')
+            if optionId and optionType!='obsolete':
                 options.add(optionId)
-    return options
-
-def collectOptionsWithElements(elem):
-    """Collect all option IDs and their elements from config.xml."""
-    options = {}
-    for group in elem.getElementsByTagName('group'):
-        for option in group.getElementsByTagName('option'):
-            optionId = option.getAttribute('id')
-            if optionId:
-                options[optionId] = option
-    return options
+                optionsWithElems[optionId] = option
+    return (options,optionsWithElems)
 
 def syncLocalizedConfig(elem, translationsDir, autoSync=False):
     """Sync localized config_xx.xml files with original config.xml.
-    
+
     Args:
         elem: The root element of config.xml
         translationsDir: Path to translations directory
@@ -767,25 +759,23 @@ def syncLocalizedConfig(elem, translationsDir, autoSync=False):
     """
     import os
     import shutil
-    
-    existingOptions = collectOptions(elem)
-    existingOptionsWithElements = collectOptionsWithElements(elem)
-    print("Found %d options in config.xml" % len(existingOptions))
-    
+
+    existingOptions, existingOptionsWithElements = collectOptions(elem)
+    print("Found %d active options in config.xml" % len(existingOptions))
+
     srcDir = os.path.dirname(translationsDir)
     if os.path.basename(srcDir) == 'addon':
         srcDir = os.path.dirname(srcDir)
     srcDir = os.path.join(srcDir, 'src')
-    
-    for lang in LANGUAGES:
-        configFile = os.path.join(srcDir, "config_%s.xml" % lang)
-        
+
+    for configFile in sorted(glob.glob("translations/config_*.xml")):
+
         if not os.path.exists(configFile):
-            print("Skipping %s: config file not found" % lang)
+            print("Skipping %s: config file not found" % configFile)
             continue
-        
-        print("Processing %s..." % lang)
-        
+
+        print("Processing %s..." % configFile)
+
         try:
             with io.open(configFile, 'r', encoding='utf8') as f:
                 content = f.read()
@@ -793,7 +783,7 @@ def syncLocalizedConfig(elem, translationsDir, autoSync=False):
         except Exception as e:
             print("  Error parsing %s: %s" % (configFile, e))
             continue
-        
+
         langOptions = set()
         langOptionsWithElements = {}
         for group in langDoc.getElementsByTagName('group'):
@@ -802,64 +792,64 @@ def syncLocalizedConfig(elem, translationsDir, autoSync=False):
                 if optionId:
                     langOptions.add(optionId)
                     langOptionsWithElements[optionId] = option
-        
+
         missingOptions = existingOptions - langOptions
         extraOptions = langOptions - existingOptions
-        
+
         if missingOptions:
             print("  Missing %d options: %s" % (len(missingOptions), ', '.join(sorted(list(missingOptions))[:5])))
             if len(missingOptions) > 5:
                 print("  ... and %d more" % (len(missingOptions) - 5))
-        
+
         if extraOptions:
             print("  Extra %d options (not in original): %s" % (len(extraOptions), ', '.join(sorted(list(extraOptions))[:5])))
             if len(extraOptions) > 5:
                 print("  ... and %d more" % (len(extraOptions) - 5))
-        
+
         if not missingOptions and not extraOptions:
             print("  OK - all options synchronized")
             continue
-        
+
         if autoSync and (missingOptions or extraOptions):
             print("  Auto-syncing...")
-            
+
             rootElement = langDoc.documentElement
-            
+
             for optionId in extraOptions:
                 optionElem = langOptionsWithElements[optionId]
                 parentGroup = optionElem.parentNode
                 parentGroup.removeChild(optionElem)
                 print("    Removed: %s" % optionId)
-            
+
             for optionId in missingOptions:
                 optionElem = existingOptionsWithElements[optionId]
                 importedElem = langDoc.importNode(optionElem, True)
-                
+
                 parentGroup = None
                 for group in rootElement.getElementsByTagName('group'):
                     parentGroup = group
                     break
-                
+
                 if parentGroup:
                     parentGroup.appendChild(importedElem)
                     print("    Added: %s" % optionId)
-            
+
             backupFile = configFile + ".bak"
             shutil.copy2(configFile, backupFile)
-            
+
             outputContent = langDoc.toprettyxml(indent='  ', encoding='utf-8')
             outputStr = outputContent.decode('utf-8') if isinstance(outputContent, bytes) else outputContent
-            
+
             lines = outputStr.split('\n')
             filteredLines = [line for line in lines if line.strip()]
             outputStr = '\n'.join(filteredLines)
-            
+
             with io.open(configFile, 'w', encoding='utf8') as f:
                 f.write(outputStr)
-            
+
             print("  Backup saved to: %s" % backupFile)
             print("  File updated: %s" % configFile)
-    
+
     print("\nSync %s!" % ("complete" if not autoSync else "and update complete"))
 
 def main():
@@ -1104,7 +1094,7 @@ def main():
                     parseGroupCDocs(n)
         print("}")
     elif (sys.argv[1] == "-sync"):
-        if len(sys.argv) < 4:
+        if len(sys.argv) < 3:
             sys.exit('Usage: %s -sync config.xml translations_dir [--auto]' % sys.argv[0])
         translationsDir = sys.argv[3]
         autoSync = '--auto' in sys.argv

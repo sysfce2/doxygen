@@ -69,7 +69,7 @@ add_custom_command(
 )
 set_source_files_properties(${GENERATED_SRC_WIZARD}/configdoc.cpp PROPERTIES GENERATED 1)
 
-# Localized config.xml files are manually placed in ${PROJECT_SOURCE_DIR}/src/
+# Localized config.xml files are manually placed in ${PROJECT_SOURCE_DIR}/src/translations
 # They are referenced directly in doxywizard.qrc
 
 set(LEX_FILES config_doxyw)
@@ -152,8 +152,10 @@ qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
 # Generate localized config.qrc
 set(CONFIG_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n<qresource prefix=\"/\">\n")
 string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"config.xml\">${PROJECT_SOURCE_DIR}/src/config.xml</file>\n")
-foreach(lang zh_CN zh_TW de fr ja ko es ru)
-  string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"config_${lang}.xml\">${LOCALIZED_CONFIG_DIR}/config_${lang}.xml</file>\n")
+file(GLOB LANG_CONFIG_FILES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/translations/config_*.xml")
+foreach(lang_file ${LANG_CONFIG_FILES})
+        get_filename_component(lang_name "${lang_file}" NAME)   # e.g. config_zh_CN.xml
+	string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"${lang_name}\">${lang_file}</file>\n")
 endforeach()
 string(APPEND CONFIG_QRC_CONTENT "</qresource>\n</RCC>\n")
 
