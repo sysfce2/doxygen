@@ -16,6 +16,9 @@
 #include <QMainWindow>
 #include <QSettings>
 #include <QStringList>
+#include <QMap>
+
+#include <functional>
 
 class Expert;
 class Wizard;
@@ -130,6 +133,7 @@ class MainWindow : public QMainWindow
  *
  *  All fields in this class are public and static, so they can be used directly.
  */
+
 class DoxygenWizard
 {
   public:
@@ -162,5 +166,6 @@ class DoxygenWizard
     static QString msgExternalTopic();
     static QString msgDotTopic();
     static QString translateExpertTopic(const QString &name);
+
 };
 #endif

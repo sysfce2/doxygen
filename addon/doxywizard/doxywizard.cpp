@@ -53,112 +53,56 @@
 // globally accessible variables
 bool DoxygenWizard::debugFlag = false;
 
-QString DoxygenWizard::msgFileNotFound(const QString &fileName)
-{
-  return QCoreApplication::translate("Messages", "Sorry, cannot find file(%1);").arg(fileName);
-}
+#define TR_WIZARD_MESSAGES                             \
+    TR_MSG_ENTRY(HtmlFormat,         "HTML")           \
+    TR_MSG_ENTRY(LatexFormat,        "LaTeX")          \
+    TR_MSG_ENTRY(XmlFormat,          "XML")            \
+    TR_MSG_ENTRY(DocbookFormat,      "Docbook")        \
+    TR_MSG_ENTRY(BuildTopic,         "Build")          \
+    TR_MSG_ENTRY(MessagesTopic,      "Messages")       \
+    TR_MSG_ENTRY(InputTopic,         "Input")          \
+    TR_MSG_ENTRY(SourceBrowserTopic, "Source Browser") \
+    TR_MSG_ENTRY(IndexTopic,         "Index")          \
+    TR_MSG_ENTRY(RtfFormat,          "RTF")            \
+    TR_MSG_ENTRY(ManFormat,          "Man")            \
+    TR_MSG_ENTRY(AutoGenFormat,      "AutoGen")        \
+    TR_MSG_ENTRY(Sqlite3Format,      "Sqlite3")        \
+    TR_MSG_ENTRY(PerlModFormat,      "PerlMod")        \
+    TR_MSG_ENTRY(PreprocessorTopic,  "Preprocessor")   \
+    TR_MSG_ENTRY(ExternalTopic,      "External")       \
+    TR_MSG_ENTRY(DotTopic,           "Dot")
 
-QString DoxygenWizard::msgNoPreviewAvailable(const QString &fileName)
-{
-  return QCoreApplication::translate("Messages", "Sorry, no preview available (%1);").arg(fileName);
-}
+#undef  TR_MSG_ENTRY
+#define TR_MSG_ENTRY(func,name) { QLatin1String(name), []() { return QCoreApplication::translate("Messages", name); } },
 
-QString DoxygenWizard::msgNoProjectLogoSelected()
-{
-  return QCoreApplication::translate("Messages", "No Project logo selected.");
-}
+static QMap<QString, std::function<QString()>> g_messageMap = {
+    TR_WIZARD_MESSAGES
+};
 
-QString DoxygenWizard::msgBrowseToFile()
-{
-  return QCoreApplication::translate("Messages", "Browse to a file");
-}
-
-QString DoxygenWizard::msgBrowseToFolder()
-{
-  return QCoreApplication::translate("Messages", "Browse to a folder");
-}
-
-QString DoxygenWizard::msgSelectButton()
-{
-  return QCoreApplication::translate("Messages", "Select...");
-}
-
-QString DoxygenWizard::msgPreviousButton()
-{
-  return QCoreApplication::translate("Messages", "Previous");
-}
-
-QString DoxygenWizard::msgNextButton()
-{
-  return QCoreApplication::translate("Messages", "Next");
-}
-
-QString DoxygenWizard::msgTopicsHeader()
-{
-  return QCoreApplication::translate("Messages", "Topics");
-}
-
-QString DoxygenWizard::msgProjectTopic()
-{
-  return QCoreApplication::translate("Messages", "Project");
-}
-
-#define TR_MSG_ENTRY(name) { QLatin1String(name), []() { return QCoreApplication::translate("Messages", name); } }
-
-static QMap<QString, std::function<QString()>> createMessageMap()
-{
-  static QMap<QString, std::function<QString()>> map = {
-    TR_MSG_ENTRY("HTML"),
-    TR_MSG_ENTRY("LaTeX"),
-    TR_MSG_ENTRY("XML"),
-    TR_MSG_ENTRY("Docbook"),
-    TR_MSG_ENTRY("Build"),
-    TR_MSG_ENTRY("Messages"),
-    TR_MSG_ENTRY("Input"),
-    TR_MSG_ENTRY("Source Browser"),
-    TR_MSG_ENTRY("Index"),
-    TR_MSG_ENTRY("RTF"),
-    TR_MSG_ENTRY("Man"),
-    TR_MSG_ENTRY("AutoGen"),
-    TR_MSG_ENTRY("Sqlite3"),
-    TR_MSG_ENTRY("PerlMod"),
-    TR_MSG_ENTRY("Preprocessor"),
-    TR_MSG_ENTRY("External"),
-    TR_MSG_ENTRY("Dot")
-  };
-  return map;
-}
-
-static QMap<QString, std::function<QString()>> &messageMap()
-{
-  static QMap<QString, std::function<QString()>> map = createMessageMap();
-  return map;
-}
-
-QString DoxygenWizard::msgHtmlFormat() { return messageMap()[QLatin1String("HTML")](); }
-QString DoxygenWizard::msgLatexFormat() { return messageMap()[QLatin1String("LaTeX")](); }
-QString DoxygenWizard::msgXmlFormat() { return messageMap()[QLatin1String("XML")](); }
-QString DoxygenWizard::msgDocbookFormat() { return messageMap()[QLatin1String("Docbook")](); }
-QString DoxygenWizard::msgBuildTopic() { return messageMap()[QLatin1String("Build")](); }
-QString DoxygenWizard::msgMessagesTopic() { return messageMap()[QLatin1String("Messages")](); }
-QString DoxygenWizard::msgInputTopic() { return messageMap()[QLatin1String("Input")](); }
-QString DoxygenWizard::msgSourceBrowserTopic() { return messageMap()[QLatin1String("Source Browser")](); }
-QString DoxygenWizard::msgIndexTopic() { return messageMap()[QLatin1String("Index")](); }
-QString DoxygenWizard::msgRtfFormat() { return messageMap()[QLatin1String("RTF")](); }
-QString DoxygenWizard::msgManFormat() { return messageMap()[QLatin1String("Man")](); }
-QString DoxygenWizard::msgAutoGenFormat() { return messageMap()[QLatin1String("AutoGen")](); }
-QString DoxygenWizard::msgSqlite3Format() { return messageMap()[QLatin1String("Sqlite3")](); }
-QString DoxygenWizard::msgPerlModFormat() { return messageMap()[QLatin1String("PerlMod")](); }
-QString DoxygenWizard::msgPreprocessorTopic() { return messageMap()[QLatin1String("Preprocessor")](); }
-QString DoxygenWizard::msgExternalTopic() { return messageMap()[QLatin1String("External")](); }
-QString DoxygenWizard::msgDotTopic() { return messageMap()[QLatin1String("Dot")](); }
+#undef  TR_MSG_ENTRY
+#define TR_MSG_ENTRY(func,name) QString DoxygenWizard::msg##func() { return g_messageMap[QLatin1String(name)](); }
+TR_WIZARD_MESSAGES
+#undef  TR_MSG_ENTRY
 
 QString DoxygenWizard::translateExpertTopic(const QString &name)
 {
   if (name == QLatin1String("Project")) return msgProjectTopic();
-  if (messageMap().contains(name)) return messageMap()[name]();
+  if (g_messageMap.contains(name)) return g_messageMap[name]();
   return name;
 }
+
+#define TR_MSG(msg) QCoreApplication::translate("Messages",msg)
+QString DoxygenWizard::msgFileNotFound(const QString &fileName)       { return TR_MSG("Sorry, cannot find file(%1);").arg(fileName);      }
+QString DoxygenWizard::msgNoPreviewAvailable(const QString &fileName) { return TR_MSG("Sorry, no preview available (%1);").arg(fileName); }
+QString DoxygenWizard::msgNoProjectLogoSelected()                     { return TR_MSG("No Project logo selected.");                       }
+QString DoxygenWizard::msgBrowseToFile()                              { return TR_MSG("Browse to a file");                                }
+QString DoxygenWizard::msgBrowseToFolder()                            { return TR_MSG("Browse to a folder");                              }
+QString DoxygenWizard::msgSelectButton()                              { return TR_MSG("Select...");                                       }
+QString DoxygenWizard::msgPreviousButton()                            { return TR_MSG("Previous");                                        }
+QString DoxygenWizard::msgNextButton()                                { return TR_MSG("Next");                                            }
+QString DoxygenWizard::msgTopicsHeader()                              { return TR_MSG("Topics");                                          }
+QString DoxygenWizard::msgProjectTopic()                              { return TR_MSG("Project");                                         }
+#undef TR_MSG
 
 const int messageTimeout = 5000; //!< status bar message timeout in milliseconds.
 
@@ -175,52 +119,8 @@ MainWindow::MainWindow()
 {
   m_translationManager = new TranslationManager;
 
-  QMenu *file = menuBar()->addMenu(tr("File"));
-  file->addAction(tr("Open..."),
-                  this, SLOT(openConfig()), QKeySequence{ Qt::CTRL | Qt::Key_O });
-  m_recentMenu = file->addMenu(tr("Open recent"));
-  file->addAction(tr("Save"),
-                  this, SLOT(saveConfig()), QKeySequence{ Qt::CTRL | Qt::Key_S });
-  file->addAction(tr("Save as..."),
-                  this, SLOT(saveConfigAs()), QKeySequence{ Qt::SHIFT | Qt::CTRL | Qt::Key_S });
-  file->addAction(tr("Quit"),
-                  this, SLOT(quit()), QKeySequence{ Qt::CTRL | Qt::Key_Q });
-
-  QMenu *settings = menuBar()->addMenu(tr("Settings"));
-  m_resetDefault = settings->addAction(tr("Reset to factory defaults"),
-                  this,SLOT(resetToDefaults()));
-  settings->addAction(tr("Use current settings at startup"),
-                  this,SLOT(makeDefaults()));
-  m_clearRecent = settings->addAction(tr("Clear recent list"),
-                  this,SLOT(clearRecent()));
-  settings->addSeparator();
-  m_runMenu = settings->addAction(tr("Run doxygen"),
-                                  this, SLOT(runDoxygenMenu()), QKeySequence{ Qt::CTRL | Qt::Key_R });
-  m_runMenu->setEnabled(false);
-
-  m_languageMenu = menuBar()->addMenu(tr("Language"));
   m_languageActionGroup = new QActionGroup(this);
   m_languageActionGroup->setExclusive(true);
-
-  QStringList languages = m_translationManager->availableLanguages();
-  QString currentLang = m_translationManager->currentLanguageCode();
-
-  foreach (const QString &langCode, languages)
-  {
-      TranslationManager::LanguageInfo info = m_translationManager->languageInfo(langCode);
-      QAction *action = m_languageMenu->addAction(info.nativeName);
-      action->setData(langCode);
-      action->setCheckable(true);
-      action->setChecked(langCode == currentLang);
-      m_languageActionGroup->addAction(action);
-  }
-  connect(m_languageMenu, SIGNAL(triggered(QAction*)), SLOT(switchLanguage(QAction*)));
-
-  QMenu *help = menuBar()->addMenu(tr("Help"));
-  help->addAction(tr("Online manual"),
-                  this, SLOT(manual()), Qt::Key_F1);
-  help->addAction(tr("About"),
-                  this, SLOT(about()) );
 
   m_expert = new Expert(m_translationManager);
   m_wizard = new Wizard(m_expert->modelData(),m_translationManager);
@@ -272,7 +172,7 @@ MainWindow::MainWindow()
 
   QHBoxLayout *runVH2Layout = new QHBoxLayout;
   runVLayout->addLayout(runVH2Layout);
-  m_launchHtml = new QPushButton(tr("Show HTML output"));
+  m_launchHtml = new QPushButton();
   runVH2Layout->addWidget(m_launchHtml);
   runVH2Layout->addStretch(1); // to have launch button not being stretched
 
@@ -291,7 +191,7 @@ MainWindow::MainWindow()
 
   // output produced by Doxygen
   runTabLayout->addLayout(runLayout);
-  m_outputLabel = new QLabel(tr("Output produced by doxygen"));
+  m_outputLabel = new QLabel();
   runTabLayout->addWidget(m_outputLabel);
   QGridLayout *grid = new QGridLayout;
   //m_outputLog = new QTextEdit;
@@ -306,14 +206,14 @@ MainWindow::MainWindow()
   runTabLayout->addLayout(grid);
 
   m_tabs = new QTabWidget;
-  m_tabs->addTab(m_wizard,tr("Wizard"));
-  m_tabs->addTab(m_expert,tr("Expert"));
-  m_tabs->addTab(m_runTab,tr("Run"));
+  m_tabs->addTab(m_wizard,QString::fromLatin1("1"));
+  m_tabs->addTab(m_expert,QString::fromLatin1("2"));
+  m_tabs->addTab(m_runTab,QString::fromLatin1("3"));
 
-  m_workingDirLabel = new QLabel(tr("Specify the working directory from which doxygen will run"));
+  m_workingDirLabel = new QLabel();
   rowLayout->addWidget(m_workingDirLabel);
   rowLayout->addLayout(dirLayout);
-  m_workingDirHintLabel = new QLabel(tr("Configure doxygen using the Wizard and/or Expert tab, then switch to the Run tab to generate the documentation"));
+  m_workingDirHintLabel = new QLabel();
   rowLayout->addWidget(m_workingDirHintLabel);
   mainLayout->addWidget(m_tabs);
 
@@ -323,6 +223,8 @@ MainWindow::MainWindow()
   m_runProcess = new QProcess;
   m_running = false;
   m_timer = new QTimer;
+
+  retranslateUi();
 
   // connect signals and slots
   connect(m_tabs,SIGNAL(currentChanged(int)),SLOT(selectTab(int)));
@@ -409,16 +311,18 @@ void MainWindow::retranslateUi()
   m_runMenu->setEnabled(!m_workingDir->text().isEmpty());
 
   m_languageMenu = menuBar()->addMenu(tr("Language"));
+
   QString currentLang = m_translationManager->currentLanguageCode();
   QStringList languages = m_translationManager->availableLanguages();
-  foreach (const QString &code, languages)
+
+  foreach (const QString &langCode, languages)
   {
-      TranslationManager::LanguageInfo info = m_translationManager->languageInfo(code);
-      QAction *langAction = m_languageMenu->addAction(info.nativeName);
-      langAction->setData(code);
-      langAction->setCheckable(true);
-      langAction->setChecked(code == currentLang);
-      m_languageActionGroup->addAction(langAction);
+      TranslationManager::LanguageInfo info = m_translationManager->languageInfo(langCode);
+      QAction *action = m_languageMenu->addAction(info.nativeName);
+      action->setData(langCode);
+      action->setCheckable(true);
+      action->setChecked(langCode == currentLang);
+      m_languageActionGroup->addAction(action);
   }
   connect(m_languageMenu, SIGNAL(triggered(QAction*)), SLOT(switchLanguage(QAction*)));
 
