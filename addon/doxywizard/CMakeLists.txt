@@ -150,7 +150,7 @@ optiontranslations.h
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
 
 # Generate localized config.qrc
-set(CONFIG_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n<qresource prefix=\"/\">\n")
+set(CONFIG_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n<qresource prefix=\"/config\">\n")
 string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"config.xml\">${PROJECT_SOURCE_DIR}/src/config.xml</file>\n")
 file(GLOB LANG_CONFIG_FILES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/translations/config_*.xml")
 foreach(lang_file ${LANG_CONFIG_FILES})
@@ -227,6 +227,7 @@ ${GENERATED_SRC_WIZARD}/config_doxyw.l.h
 ${GENERATED_SRC_WIZARD}/configdoc.cpp
 ${doxywizard_MOC}
 ${doxywizard_RESOURCES_RCC}
+${doxywizard_CONFIG_RESOURCES}
 ${doxywizard_TRANSLATION_RESOURCES}
 ${doxywizard_QM_FILES}
 ${PROJECT_SOURCE_DIR}/templates/icon/doxygen.rc

@@ -270,17 +270,19 @@ void Expert::loadConfigXml()
 
   if (langCode != QLatin1String("en"))
   {
-    configPath = SA(":/config_") + langCode + SA(".xml");
+    configPath = SA(":/config/config_") + langCode + SA(".xml");
     QFile langFile(configPath);
     if (!langFile.exists())
     {
-      configPath = SA(":/config.xml");
+      configPath = SA(":/config/config.xml");
     }
   }
   else
   {
-    configPath = SA(":/config.xml");
+    configPath = SA(":/config/config.xml");
   }
+
+  if (m_configLoaded==configPath) return; // already loaded
 
   QFile file(configPath);
   QString err;
@@ -301,6 +303,7 @@ void Expert::loadConfigXml()
     }
   }
   m_rootElement = configXml.documentElement();
+  m_configLoaded = configPath;
 }
 
 Expert::~Expert()
@@ -595,7 +598,7 @@ static QString getDocsForNode(const QDomElement &child)
     QString dependsOn = child.attribute(SA("depends"));
     if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs += SA("<br/>");
-    docs+=SA(" ")+Expert::tr("This tag requires that the tag %1 is set to <code>YES</code>.").arg(SA("\\ref cfg_")+dependsOn.toLower()+SA(" \"")+dependsOn.toUpper()+SA("\""));
+    docs += SA(" ")+Expert::tr("This tag requires that the tag %1 is set to <code>YES</code>.").arg(SA("\\ref cfg_")+dependsOn.toLower()+SA(" \"")+dependsOn.toUpper()+SA("\""));
   }
 
   // Convert Doxygen markup to HTML
@@ -1154,5 +1157,7 @@ void Expert::retranslateUi()
   createTopics(m_rootElement);
 
   m_treeWidget->setCurrentItem(m_treeWidget->invisibleRootItem()->child(0));
+
+  addConfigDocs(this);
 }
 

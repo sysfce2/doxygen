@@ -88,6 +88,7 @@ class Expert : public QSplitter, public DocIntf
     bool                     m_inShowHelp;
     QString                  m_header;
     TranslationManager      *m_translationManager;
+    QString                  m_configLoaded;
 };
 
 #endif
