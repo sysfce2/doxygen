@@ -5175,4 +5175,10 @@ void CommentScanner::close(Entry *e,const QCString &fileName,int lineNr,bool fou
   yyextra->docGroup.close(e,fileName,lineNr,foundInline,implicit);
 }
 
+bool CommentScanner::isCommand(const QCString &cmdName)
+{
+  return (docCmdMap.find(cmdName.str()) != docCmdMap.end());
+}
+
+
 #include "commentscan.l.h"
