@@ -15,7 +15,6 @@
 #include "expert.h"
 #include "wizard.h"
 #include "translationmanager.h"
-#include "optiontranslations.h"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -349,7 +348,6 @@ void MainWindow::retranslateUi()
   m_workingDirHintLabel->setText(tr("Configure doxygen using the Wizard and/or Expert tab, then switch to the Run tab to generate the documentation"));
   m_showSettingsBtn->setText(tr("Show configuration"));
 
-  OptionTranslations::instance().retranslate();
   m_wizard->retranslateUi();
   m_expert->retranslateUi();
 }

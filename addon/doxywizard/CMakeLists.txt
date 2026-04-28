@@ -144,7 +144,6 @@ inputstring.h
 inputstrlist.h
 wizard.h
 translationmanager.h
-optiontranslations.h
 )
 
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
@@ -219,7 +218,6 @@ inputbool.cpp
 inputstring.cpp
 inputint.cpp
 inputstrlist.cpp
-optiontranslations.cpp
 translationmanager.cpp
 ${GENERATED_SRC_WIZARD}/settings.h
 ${GENERATED_SRC_WIZARD}/config_doxyw.cpp

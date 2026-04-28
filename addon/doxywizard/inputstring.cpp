@@ -15,7 +15,6 @@
 #include "doxywizard.h"
 #include "config_msg.h"
 #include "config.h"
-#include "optiontranslations.h"
 
 #include <QComboBox>
 #include <QLineEdit>
@@ -42,7 +41,7 @@ InputString::InputString( QGridLayout *layout,int &row,
   : m_default(s), m_sm(m), m_index(0), m_docs(docs), m_id(id),
     m_absPath(absPath==QString::fromLatin1("1"))
 {
-  m_lab = new HelpLabel(OptionTranslations::instance().translate(id));
+  m_lab = new HelpLabel(id);
   m_brFile = nullptr;
   m_brDir = nullptr;
   if (m==StringFixed)
@@ -133,14 +132,13 @@ void InputString::setValue(const QString &s)
 void InputString::updateDefault()
 {
   {
-    QString translatedId = OptionTranslations::instance().translate(m_id);
     if (m_str==m_default || !m_lab->isEnabled())
     {
-      m_lab->setText(QString::fromLatin1("<qt>")+translatedId+QString::fromLatin1("</qt>"));
+      m_lab->setText(QString::fromLatin1("<qt>")+m_id+QString::fromLatin1("</qt>"));
     }
     else
     {
-      m_lab->setText(QString::fromLatin1("<qt><font color='red'>")+translatedId+QString::fromLatin1("</font></qt>"));
+      m_lab->setText(QString::fromLatin1("<qt><font color='red'>")+m_id+QString::fromLatin1("</font></qt>"));
     }
     if (m_im)
     {

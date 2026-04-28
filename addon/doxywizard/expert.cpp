@@ -22,7 +22,6 @@
 #include "version.h"
 #include "configdoc.h"
 #include "settings.h"
-#include "optiontranslations.h"
 #include "translationmanager.h"
 
 #include <QTreeWidget>
