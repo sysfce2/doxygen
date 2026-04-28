@@ -1242,8 +1242,6 @@ int Markdown::Private::processLink(const std::string_view data,size_t offset)
 {
   AUTO_TRACE("data='{}' offset={}",Trace::trunc(data),offset);
   const size_t size = data.size();
-  static const reg::Ex user("^[@#][a-z_A-Z][a-z_A-Z0-9-]*");
-  reg::Match match;
 
   QCString content;
   QCString link;
@@ -1668,22 +1666,21 @@ int Markdown::Private::processLink(const std::string_view data,size_t offset)
       }
 
       content = content.simplifyWhiteSpace();
-      if (reg::search(content.str(),match,user))
+      bool foundNameRef = false;
+      if (!content.isEmpty() && (content.at(0)=='#' || content.at(0)=='@'))
       {
-        if (content.at(0) == '#' ||
-            !(isDoxygenScanCmd(match[0].str().data()+1) ||
-              Mappers::cmdMapper->map(match[0].str().data()+1) != CommandType::UNKNOWN)
-           )
+        size_t endOfId=1;
+        while (endOfId<content.length() && isId(content.at(endOfId))) endOfId++;
+        QCString user = content.mid(1,endOfId-1);
+        if (!user.isEmpty() && (content.at(0)=='#' || (!CommentScanner::isCommand(user) && Mappers::cmdMapper->map(user)==CommandType::UNKNOWN)))
         {
+          // assume @name or #name instead of command
           out+='@';
           out+=content;
-        }
-        else
-        {
-          processInline(std::string_view(content.str()));
+          foundNameRef = true;
         }
       }
-      else
+      if (!foundNameRef)
       {
         processInline(std::string_view(content.str()));
       }

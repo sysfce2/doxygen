@@ -115,10 +115,10 @@ class CommentScanner
     void leaveCompound(const QCString &fileName,int line,const QCString &name);
     void open(Entry *e,const QCString &fileName,int line,bool implicit=false);
     void close(Entry *e,const QCString &fileName,int line,bool foundInline,bool implicit=false);
+    static bool isCommand(const QCString &cmdName);
   private:
     struct Private;
     std::unique_ptr<Private> p;
 };
 
-bool isDoxygenScanCmd(QCString cmdName);
 #endif

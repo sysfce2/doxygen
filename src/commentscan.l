@@ -413,11 +413,6 @@ static const std::unordered_map< std::string, DocCmdMap > docCmdMap =
   { "xrefitem",               { &handleXRefItem,                 CommandSpacing::XRef,      SectionHandling::Break   }}
 };
 
-bool isDoxygenScanCmd(QCString cmdName)
-{
-  return (docCmdMap.find(cmdName.str()) != docCmdMap.end());
-}
-
 #define YY_NO_INPUT 1
 #define YY_NO_UNISTD_H 1
 #define YY_NEVER_INTERACTIVE 1
@@ -5179,5 +5174,11 @@ void CommentScanner::close(Entry *e,const QCString &fileName,int lineNr,bool fou
   struct yyguts_t *yyg = (struct yyguts_t*)p->yyscanner;
   yyextra->docGroup.close(e,fileName,lineNr,foundInline,implicit);
 }
+
+bool CommentScanner::isCommand(const QCString &cmdName)
+{
+  return (docCmdMap.find(cmdName.str()) != docCmdMap.end());
+}
+
 
 #include "commentscan.l.h"
