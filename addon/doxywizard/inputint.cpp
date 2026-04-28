@@ -75,6 +75,7 @@ void InputInt::setValue(int val)
     m_sp->setValue(newVal);
     m_value = m_val;
     updateDefault();
+    emit changed();
   }
 }
 
@@ -89,7 +90,6 @@ void InputInt::updateDefault()
     {
       m_lab->setText(QString::fromLatin1("<qt><font color='red'>")+m_id+QString::fromLatin1("</font></qt>"));
     }
-    emit changed();
   }
 }
 
@@ -132,4 +132,9 @@ void InputInt::writeValue(QTextStream &t,TextCodecAdapter *,bool)
 bool InputInt::isDefault()
 {
   return m_val == m_default;
+}
+
+void InputInt::retranslate()
+{
+  updateDefault();
 }

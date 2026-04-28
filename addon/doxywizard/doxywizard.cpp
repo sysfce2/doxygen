@@ -14,6 +14,7 @@
 #include "version.h"
 #include "expert.h"
 #include "wizard.h"
+#include "translationmanager.h"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -37,7 +38,10 @@
 #include <QRegularExpression>
 #include <QDebug>
 #include <QDate>
+#include <QTranslator>
 #include <QScrollBar>
+#include <QActionGroup>
+#include <functional>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -47,6 +51,57 @@
 
 // globally accessible variables
 bool DoxygenWizard::debugFlag = false;
+
+#define TR_WIZARD_MESSAGES                             \
+    TR_MSG_ENTRY(HtmlFormat,         "HTML")           \
+    TR_MSG_ENTRY(LatexFormat,        "LaTeX")          \
+    TR_MSG_ENTRY(XmlFormat,          "XML")            \
+    TR_MSG_ENTRY(DocbookFormat,      "Docbook")        \
+    TR_MSG_ENTRY(BuildTopic,         "Build")          \
+    TR_MSG_ENTRY(MessagesTopic,      "Messages")       \
+    TR_MSG_ENTRY(InputTopic,         "Input")          \
+    TR_MSG_ENTRY(SourceBrowserTopic, "Source Browser") \
+    TR_MSG_ENTRY(IndexTopic,         "Index")          \
+    TR_MSG_ENTRY(RtfFormat,          "RTF")            \
+    TR_MSG_ENTRY(ManFormat,          "Man")            \
+    TR_MSG_ENTRY(AutoGenFormat,      "AutoGen")        \
+    TR_MSG_ENTRY(Sqlite3Format,      "Sqlite3")        \
+    TR_MSG_ENTRY(PerlModFormat,      "PerlMod")        \
+    TR_MSG_ENTRY(PreprocessorTopic,  "Preprocessor")   \
+    TR_MSG_ENTRY(ExternalTopic,      "External")       \
+    TR_MSG_ENTRY(DotTopic,           "Dot")
+
+#undef  TR_MSG_ENTRY
+#define TR_MSG_ENTRY(func,name) { QLatin1String(name), []() { return QCoreApplication::translate("Messages", name); } },
+
+static QMap<QString, std::function<QString()>> g_messageMap = {
+    TR_WIZARD_MESSAGES
+};
+
+#undef  TR_MSG_ENTRY
+#define TR_MSG_ENTRY(func,name) QString DoxygenWizard::msg##func() { return g_messageMap[QLatin1String(name)](); }
+TR_WIZARD_MESSAGES
+#undef  TR_MSG_ENTRY
+
+QString DoxygenWizard::translateExpertTopic(const QString &name)
+{
+  if (name == QLatin1String("Project")) return msgProjectTopic();
+  if (g_messageMap.contains(name)) return g_messageMap[name]();
+  return name;
+}
+
+#define TR_MSG(msg) QCoreApplication::translate("Messages",msg)
+QString DoxygenWizard::msgFileNotFound(const QString &fileName)       { return TR_MSG("Sorry, cannot find file(%1);").arg(fileName);      }
+QString DoxygenWizard::msgNoPreviewAvailable(const QString &fileName) { return TR_MSG("Sorry, no preview available (%1);").arg(fileName); }
+QString DoxygenWizard::msgNoProjectLogoSelected()                     { return TR_MSG("No Project logo selected.");                       }
+QString DoxygenWizard::msgBrowseToFile()                              { return TR_MSG("Browse to a file");                                }
+QString DoxygenWizard::msgBrowseToFolder()                            { return TR_MSG("Browse to a folder");                              }
+QString DoxygenWizard::msgSelectButton()                              { return TR_MSG("Select...");                                       }
+QString DoxygenWizard::msgPreviousButton()                            { return TR_MSG("Previous");                                        }
+QString DoxygenWizard::msgNextButton()                                { return TR_MSG("Next");                                            }
+QString DoxygenWizard::msgTopicsHeader()                              { return TR_MSG("Topics");                                          }
+QString DoxygenWizard::msgProjectTopic()                              { return TR_MSG("Project");                                         }
+#undef TR_MSG
 
 const int messageTimeout = 5000; //!< status bar message timeout in milliseconds.
 
@@ -61,6 +116,176 @@ MainWindow &MainWindow::instance()
 MainWindow::MainWindow()
   : m_settings(QString::fromLatin1("Doxygen.org"), QString::fromLatin1("Doxywizard"))
 {
+  m_translationManager = new TranslationManager;
+
+  m_languageActionGroup = new QActionGroup(this);
+  m_languageActionGroup->setExclusive(true);
+
+  m_expert = new Expert(m_translationManager);
+  m_wizard = new Wizard(m_expert->modelData(),m_translationManager);
+
+  // ----------- top part ------------------
+  QWidget *mainPart = new QWidget;
+  QVBoxLayout *mainLayout = new QVBoxLayout(mainPart);
+  QWidget *topPart = new QWidget;
+  QVBoxLayout *rowLayout = new QVBoxLayout(topPart);
+  mainLayout->addWidget(topPart);
+
+  // select working directory
+  QHBoxLayout *dirLayout = new QHBoxLayout;
+  m_workingDir = new QLineEdit;
+  m_selWorkingDir = new QPushButton(DoxygenWizard::msgSelectButton());
+  dirLayout->addWidget(m_workingDir);
+  dirLayout->addWidget(m_selWorkingDir);
+
+  //------------- bottom part --------------
+  m_runTab = new QWidget;
+  QVBoxLayout *runTabLayout = new QVBoxLayout(m_runTab);
+
+  // run doxygen
+  QHBoxLayout *runLayout = new QHBoxLayout;
+  m_run = new QPushButton(tr("Run doxygen"));
+  m_run->setEnabled(false);
+  m_runStatus = new QLabel(tr("Status: not running"));
+  m_saveLog = new QPushButton(tr("Save log..."));
+  m_saveLog->setEnabled(false);
+  m_showSettingsBtn = new QPushButton(tr("Show configuration"));
+
+  m_showCondensedSettings = new QCheckBox(this);
+  m_showCondensedSettings->setText(tr("Condensed"));
+  m_showCondensedSettings->setChecked(false);
+  m_showCondensedSettings->setToolTip(tr("Show only configuration settings different from default settings"));
+
+  // select extra run options
+  m_runOptions = new QLineEdit;
+  m_runOptionsLabel = new QLabel(tr("Specify additional command line options for running doxygen"));
+  runTabLayout->addWidget(m_runOptionsLabel);
+  runTabLayout->addWidget(m_runOptions);
+
+  QVBoxLayout *runVLayout = new QVBoxLayout;
+  runLayout->addLayout(runVLayout);
+  QHBoxLayout *runVHLayout = new QHBoxLayout;
+  runVLayout->addLayout(runVHLayout);
+  runVHLayout->addWidget(m_run);
+  runVHLayout->addWidget(m_runStatus);
+
+  QHBoxLayout *runVH2Layout = new QHBoxLayout;
+  runVLayout->addLayout(runVH2Layout);
+  m_launchHtml = new QPushButton();
+  runVH2Layout->addWidget(m_launchHtml);
+  runVH2Layout->addStretch(1); // to have launch button not being stretched
+
+  runLayout->addStretch(1);
+
+  QVBoxLayout *settingsLayout = new QVBoxLayout;
+  runLayout->addLayout(settingsLayout);
+  settingsLayout->addWidget(m_showCondensedSettings);
+  settingsLayout->addWidget(m_showSettingsBtn);
+
+  QVBoxLayout *saveLayout = new QVBoxLayout;
+  runLayout->addLayout(saveLayout);
+  saveLayout->addWidget(m_saveLog);
+  saveLayout->setAlignment(Qt::AlignTop);
+  // saveLayout->addWidget(new QWidget); // to have the save button at the top
+
+  // output produced by Doxygen
+  runTabLayout->addLayout(runLayout);
+  m_outputLabel = new QLabel();
+  runTabLayout->addWidget(m_outputLabel);
+  QGridLayout *grid = new QGridLayout;
+  //m_outputLog = new QTextEdit;
+  m_outputLog = new QTextBrowser;
+  //m_outputLog = new QPlainTextEdit;
+  m_outputLog->setReadOnly(true);
+  m_outputLog->setFontFamily(QString::fromLatin1("courier"));
+  m_outputLog->setMinimumWidth(600);
+  grid->addWidget(m_outputLog,0,0);
+  grid->setColumnStretch(0,1);
+  grid->setRowStretch(0,1);
+  runTabLayout->addLayout(grid);
+
+  m_tabs = new QTabWidget;
+  m_tabs->addTab(m_wizard,QString::fromLatin1("1"));
+  m_tabs->addTab(m_expert,QString::fromLatin1("2"));
+  m_tabs->addTab(m_runTab,QString::fromLatin1("3"));
+
+  m_workingDirLabel = new QLabel();
+  rowLayout->addWidget(m_workingDirLabel);
+  rowLayout->addLayout(dirLayout);
+  m_workingDirHintLabel = new QLabel();
+  rowLayout->addWidget(m_workingDirHintLabel);
+  mainLayout->addWidget(m_tabs);
+
+  setCentralWidget(mainPart);
+  statusBar()->showMessage(tr("Welcome to Doxygen"),messageTimeout);
+
+  m_runProcess = new QProcess;
+  m_running = false;
+  m_timer = new QTimer;
+
+  retranslateUi();
+
+  // connect signals and slots
+  connect(m_tabs,SIGNAL(currentChanged(int)),SLOT(selectTab(int)));
+  connect(m_selWorkingDir,SIGNAL(clicked()),SLOT(selectWorkingDir()));
+  connect(m_recentMenu,SIGNAL(triggered(QAction*)),SLOT(openRecent(QAction*)));
+  connect(m_workingDir,SIGNAL(returnPressed()),SLOT(updateWorkingDir()));
+  connect(m_runProcess,SIGNAL(readyReadStandardOutput()),SLOT(readStdout()));
+  connect(m_runProcess,SIGNAL(finished(int, QProcess::ExitStatus)),SLOT(runComplete()));
+  connect(m_timer,SIGNAL(timeout()),SLOT(readStdout()));
+  connect(m_run,SIGNAL(clicked()),SLOT(runDoxygen()));
+  connect(m_launchHtml,SIGNAL(clicked()),SLOT(showHtmlOutput()));
+  connect(m_saveLog,SIGNAL(clicked()),SLOT(saveLog()));
+  connect(m_showSettingsBtn,SIGNAL(clicked()),SLOT(showSettings()));
+  connect(m_expert,SIGNAL(changed()),SLOT(configChanged()));
+  connect(m_wizard,SIGNAL(done()),SLOT(selectRunTab()));
+  connect(m_expert,SIGNAL(done()),SLOT(selectRunTab()));
+  connect(m_translationManager, SIGNAL(languageChanged(QString)),
+          SLOT(onLanguageChanged(QString)));
+
+  loadSettings();
+  updateLaunchButtonState();
+  m_translationManager->initialize();
+  m_modified = false;
+  updateTitle();
+  m_wizard->refresh();
+}
+
+MainWindow::~MainWindow()
+{
+  delete m_translationManager;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  if (discardUnsavedChanges())
+  {
+    saveSettings();
+    event->accept();
+  }
+  else
+  {
+    event->ignore();
+  }
+}
+
+void MainWindow::changeEvent(QEvent *event)
+{
+  if (event->type() == QEvent::LanguageChange)
+  {
+    retranslateUi();
+  }
+  QMainWindow::changeEvent(event);
+}
+
+void MainWindow::retranslateUi()
+{
+  m_tabs->setTabText(0, tr("Wizard"));
+  m_tabs->setTabText(1, tr("Expert"));
+  m_tabs->setTabText(2, tr("Run"));
+
+  menuBar()->clear();
+
   QMenu *file = menuBar()->addMenu(tr("File"));
   file->addAction(tr("Open..."),
                   this, SLOT(openConfig()), QKeySequence{ Qt::CTRL | Qt::Key_O });
@@ -82,7 +307,23 @@ MainWindow::MainWindow()
   settings->addSeparator();
   m_runMenu = settings->addAction(tr("Run doxygen"),
                                   this, SLOT(runDoxygenMenu()), QKeySequence{ Qt::CTRL | Qt::Key_R });
-  m_runMenu->setEnabled(false);
+  m_runMenu->setEnabled(!m_workingDir->text().isEmpty());
+
+  m_languageMenu = menuBar()->addMenu(tr("Language"));
+
+  QString currentLang = m_translationManager->currentLanguageCode();
+  QStringList languages = m_translationManager->availableLanguages();
+
+  foreach (const QString &langCode, languages)
+  {
+      TranslationManager::LanguageInfo info = m_translationManager->languageInfo(langCode);
+      QAction *action = m_languageMenu->addAction(info.nativeName);
+      action->setData(langCode);
+      action->setCheckable(true);
+      action->setChecked(langCode == currentLang);
+      m_languageActionGroup->addAction(action);
+  }
+  connect(m_languageMenu, SIGNAL(triggered(QAction*)), SLOT(switchLanguage(QAction*)));
 
   QMenu *help = menuBar()->addMenu(tr("Help"));
   help->addAction(tr("Online manual"),
@@ -90,139 +331,25 @@ MainWindow::MainWindow()
   help->addAction(tr("About"),
                   this, SLOT(about()) );
 
-  m_expert = new Expert;
-  m_wizard = new Wizard(m_expert->modelData());
+  updateRecentFile();
+  updateTitle();
 
-  // ----------- top part ------------------
-  QWidget *mainPart = new QWidget;
-  QVBoxLayout *mainLayout = new QVBoxLayout(mainPart);
-  QWidget *topPart = new QWidget;
-  QVBoxLayout *rowLayout = new QVBoxLayout(topPart);
-  mainLayout->addWidget(topPart);
-
-  // select working directory
-  QHBoxLayout *dirLayout = new QHBoxLayout;
-  m_workingDir = new QLineEdit;
-  m_selWorkingDir = new QPushButton(tr("Select..."));
-  dirLayout->addWidget(m_workingDir);
-  dirLayout->addWidget(m_selWorkingDir);
-
-  //------------- bottom part --------------
-  m_runTab = new QWidget;
-  QVBoxLayout *runTabLayout = new QVBoxLayout(m_runTab);
-
-  // run doxygen
-  QHBoxLayout *runLayout = new QHBoxLayout;
-  m_run = new QPushButton(tr("Run doxygen"));
-  m_run->setEnabled(false);
-  m_runStatus = new QLabel(tr("Status: not running"));
-  m_saveLog = new QPushButton(tr("Save log..."));
-  m_saveLog->setEnabled(false);
-  QPushButton *showSettings = new QPushButton(tr("Show configuration"));
-
-  m_showCondensedSettings = new QCheckBox(this);
+  m_selWorkingDir->setText(DoxygenWizard::msgSelectButton());
+  m_run->setText(m_running ? tr("Stop doxygen") : tr("Run doxygen"));
+  m_runStatus->setText(m_running ? tr("Status: running") : tr("Status: not running"));
+  m_saveLog->setText(tr("Save log..."));
+  m_launchHtml->setText(tr("Show HTML output"));
   m_showCondensedSettings->setText(tr("Condensed"));
-  m_showCondensedSettings->setChecked(false);
   m_showCondensedSettings->setToolTip(tr("Show only configuration settings different from default settings"));
 
-  // select extra run options
-  m_runOptions = new QLineEdit;
+  m_runOptionsLabel->setText(tr("Specify additional command line options for running doxygen"));
+  m_outputLabel->setText(tr("Output produced by doxygen"));
+  m_workingDirLabel->setText(tr("Specify the working directory from which doxygen will run"));
+  m_workingDirHintLabel->setText(tr("Configure doxygen using the Wizard and/or Expert tab, then switch to the Run tab to generate the documentation"));
+  m_showSettingsBtn->setText(tr("Show configuration"));
 
-  runTabLayout->addWidget(new QLabel(tr("Specify additional command line options for running doxygen")));
-  runTabLayout->addWidget(m_runOptions);
-
-  QVBoxLayout *runVLayout = new QVBoxLayout;
-  runLayout->addLayout(runVLayout);
-  QHBoxLayout *runVHLayout = new QHBoxLayout;
-  runVLayout->addLayout(runVHLayout);
-  runVHLayout->addWidget(m_run);
-  runVHLayout->addWidget(m_runStatus);
-
-  QHBoxLayout *runVH2Layout = new QHBoxLayout;
-  runVLayout->addLayout(runVH2Layout);
-  m_launchHtml = new QPushButton(tr("Show HTML output"));
-  runVH2Layout->addWidget(m_launchHtml);
-  runVH2Layout->addStretch(1); // to have launch button not being stretched
-
-  runLayout->addStretch(1);
-
-  QVBoxLayout *settingsLayout = new QVBoxLayout;
-  runLayout->addLayout(settingsLayout);
-  settingsLayout->addWidget(m_showCondensedSettings);
-  settingsLayout->addWidget(showSettings);
-
-  QVBoxLayout *saveLayout = new QVBoxLayout;
-  runLayout->addLayout(saveLayout);
-  saveLayout->addWidget(m_saveLog);
-  saveLayout->setAlignment(Qt::AlignTop);
-  // saveLayout->addWidget(new QWidget); // to have the save button at the top
-
-  // output produced by Doxygen
-  runTabLayout->addLayout(runLayout);
-  runTabLayout->addWidget(new QLabel(tr("Output produced by doxygen")));
-  QGridLayout *grid = new QGridLayout;
-  //m_outputLog = new QTextEdit;
-  m_outputLog = new QTextBrowser;
-  //m_outputLog = new QPlainTextEdit;
-  m_outputLog->setReadOnly(true);
-  m_outputLog->setFontFamily(QString::fromLatin1("courier"));
-  m_outputLog->setMinimumWidth(600);
-  grid->addWidget(m_outputLog,0,0);
-  grid->setColumnStretch(0,1);
-  grid->setRowStretch(0,1);
-  runTabLayout->addLayout(grid);
-
-  m_tabs = new QTabWidget;
-  m_tabs->addTab(m_wizard,tr("Wizard"));
-  m_tabs->addTab(m_expert,tr("Expert"));
-  m_tabs->addTab(m_runTab,tr("Run"));
-
-  rowLayout->addWidget(new QLabel(tr("Specify the working directory from which doxygen will run")));
-  rowLayout->addLayout(dirLayout);
-  rowLayout->addWidget(new QLabel(tr("Configure doxygen using the Wizard and/or Expert tab, then switch to the Run tab to generate the documentation")));
-  mainLayout->addWidget(m_tabs);
-
-  setCentralWidget(mainPart);
-  statusBar()->showMessage(tr("Welcome to Doxygen"),messageTimeout);
-
-  m_runProcess = new QProcess;
-  m_running = false;
-  m_timer = new QTimer;
-
-  // connect signals and slots
-  connect(m_tabs,SIGNAL(currentChanged(int)),SLOT(selectTab(int)));
-  connect(m_selWorkingDir,SIGNAL(clicked()),SLOT(selectWorkingDir()));
-  connect(m_recentMenu,SIGNAL(triggered(QAction*)),SLOT(openRecent(QAction*)));
-  connect(m_workingDir,SIGNAL(returnPressed()),SLOT(updateWorkingDir()));
-  connect(m_runProcess,SIGNAL(readyReadStandardOutput()),SLOT(readStdout()));
-  connect(m_runProcess,SIGNAL(finished(int, QProcess::ExitStatus)),SLOT(runComplete()));
-  connect(m_timer,SIGNAL(timeout()),SLOT(readStdout()));
-  connect(m_run,SIGNAL(clicked()),SLOT(runDoxygen()));
-  connect(m_launchHtml,SIGNAL(clicked()),SLOT(showHtmlOutput()));
-  connect(m_saveLog,SIGNAL(clicked()),SLOT(saveLog()));
-  connect(showSettings,SIGNAL(clicked()),SLOT(showSettings()));
-  connect(m_expert,SIGNAL(changed()),SLOT(configChanged()));
-  connect(m_wizard,SIGNAL(done()),SLOT(selectRunTab()));
-  connect(m_expert,SIGNAL(done()),SLOT(selectRunTab()));
-
-  loadSettings();
-  updateLaunchButtonState();
-  m_modified = false;
-  updateTitle();
-  m_wizard->refresh();
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-  if (discardUnsavedChanges())
-  {
-    saveSettings();
-    event->accept();
-  }
-  else
-  {
-    event->ignore();
-  }
+  m_wizard->retranslateUi();
+  m_expert->retranslateUi();
 }
 
 void MainWindow::quit()
@@ -270,18 +397,22 @@ void MainWindow::about()
 {
   QString msg;
   QTextStream t(&msg,QIODevice::WriteOnly);
-  t << QString::fromLatin1("<qt><center>A tool to configure and run doxygen version ")+
-       QString::fromLatin1(getDoxygenVersion().c_str())+
-       QString::fromLatin1(" on your source files.</center>")+
-       QString::fromLatin1("<center>(Created with Qt version  ")+
-       QString::fromLatin1(QT_VERSION_STR);
-       if (qstrcmp(qVersion(),QT_VERSION_STR))
-       {
-         t << QString::fromLatin1(", running with ")+
-              QString::fromLatin1(qVersion());
-       }
-  t << QString::fromLatin1(")</center><p><br>"
-       "<center>Written by<br> Dimitri van Heesch<br>&copy; 2000-");
+  t << QString::fromLatin1("<qt><center>") +
+       tr("A tool to configure and run doxygen version %1 on your source files.").arg(QString::fromLatin1(getDoxygenVersion().c_str())) +
+       QString::fromLatin1("</center>") +
+       QString::fromLatin1("<center>");
+      if (!qstrcmp(qVersion(),QT_VERSION_STR))
+      {
+        t << tr("(Created with Qt version %1)").arg(QString::fromLatin1(QT_VERSION_STR));
+      }
+      else
+      {
+        t << tr("(Created with Qt version %1, running with %2)").arg(QString::fromLatin1(QT_VERSION_STR),QString::fromLatin1(qVersion()));
+      }
+  t << QString::fromLatin1("</center><p><br>"
+       "<center>") +
+       tr("Written by") +
+       QString::fromLatin1("<br> Dimitri van Heesch<br>&copy; 2000-");
   t << QDate::currentDate().year();
   t << QString::fromLatin1("</center><p></qt>");
   QMessageBox::about(this,tr("Doxygen GUI"),msg);
@@ -335,8 +466,7 @@ void MainWindow::saveConfig(const QString &fileName)
   {
     QMessageBox::warning(this,
         tr("Error saving"),
-        QString(tr("Error: cannot open the file "))+fileName+tr(" for writing!\n")+
-        tr("Reason given: ")+QString::number(f.error()));
+        tr("Error: cannot open the file %1 for writing!\nReason given: %2").arg(fileName).arg(f.error()));
     return;
   }
   QTextStream t(&f);
@@ -550,7 +680,7 @@ void MainWindow::runDoxygen()
       }
       else
       {
-        qDebug() << tr("Can't find the doxygen command, make sure it's in your $$PATH");
+        qDebug() << tr("Cannot find the doxygen command, make sure it is in your $$PATH");
         doxygenPath = QString::fromLatin1("");
       }
     }
@@ -707,7 +837,7 @@ void MainWindow::saveLog()
     else
     {
       QMessageBox::warning(nullptr, tr("Warning"),
-                           tr("Cannot open file ") + fn + tr(" for writing. Nothing saved!"), QMessageBox::Ok);
+                           tr("Cannot open file %1 for writing. Nothing saved!").arg(fn), QMessageBox::Ok);
     }
   }
 }
@@ -738,9 +868,9 @@ void MainWindow::configChanged()
 
 void MainWindow::updateTitle()
 {
-  QString title = tr("Doxygen GUI frontend");
+  QString title = tr("Doxygen GUI frontend") ;
   m_resetDefault->setEnabled(m_modified);
-  if (m_modified)
+    if (m_modified)
   {
     title+=QString::fromLatin1(" +");
   }
@@ -804,6 +934,21 @@ void MainWindow::outputLogFinish()
   m_outputLog->ensureCursorVisible();
   m_saveLog->setEnabled(true);
 }
+
+void MainWindow::switchLanguage(QAction *action)
+{
+  QString langCode = action->data().toString();
+  m_translationManager->switchLanguage(langCode);
+}
+
+void MainWindow::onLanguageChanged(const QString &langCode)
+{
+  foreach (QAction *action, m_languageActionGroup->actions())
+  {
+    action->setChecked(action->data().toString() == langCode);
+  }
+  statusBar()->showMessage(tr("Language changed to: %1").arg(m_translationManager->currentLanguage()), messageTimeout);
+}
 //-----------------------------------------------------------------------
 int main(int argc,char **argv)
 {
@@ -818,6 +963,7 @@ int main(int argc,char **argv)
 #endif
 
   QApplication a(argc,argv);
+
   int locArgc = argc;
 
   if (locArgc == 2)

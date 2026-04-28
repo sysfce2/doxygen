@@ -29,7 +29,7 @@ InputStrList::InputStrList( QGridLayout *layout,int &row,
                             const QString & docs)
   : m_default(sl), m_strList(sl), m_docs(docs), m_id(id)
 {
-  m_lab = new HelpLabel( id );
+  m_lab = new HelpLabel(id);
 
   m_le  = new QLineEdit;
   m_le->clear();
@@ -58,13 +58,13 @@ InputStrList::InputStrList( QGridLayout *layout,int &row,
     {
       m_brFile = toolBar->addAction(QIcon(QString::fromLatin1(":/images/file.svg")),QString(),
                                     this,SLOT(browseFiles()));
-      m_brFile->setToolTip(tr("Browse to a file"));
+      m_brFile->setToolTip(DoxygenWizard::msgBrowseToFile());
     }
     if (lm&ListDir)
     {
       m_brDir = toolBar->addAction(QIcon(QString::fromLatin1(":/images/folder.svg")),QString(),
                                    this,SLOT(browseDir()));
-      m_brDir->setToolTip(tr("Browse to a folder"));
+      m_brDir->setToolTip(DoxygenWizard::msgBrowseToFolder());
     }
   }
   QHBoxLayout *rowLayout = new QHBoxLayout;
@@ -213,6 +213,7 @@ void InputStrList::setValue(const QStringList &sl)
     m_lb->addItem(m_strList[i].trimmed());
   }
   updateDefault();
+  emit changed();
 }
 
 QVariant &InputStrList::value()
@@ -317,4 +318,9 @@ bool InputStrList::isEmpty()
     if (!s.isEmpty()) return false;
   }
   return true;
+}
+
+void InputStrList::retranslate()
+{
+  updateDefault();
 }

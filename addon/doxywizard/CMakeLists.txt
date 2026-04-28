@@ -69,6 +69,9 @@ add_custom_command(
 )
 set_source_files_properties(${GENERATED_SRC_WIZARD}/configdoc.cpp PROPERTIES GENERATED 1)
 
+# Localized config.xml files are manually placed in ${PROJECT_SOURCE_DIR}/src/translations
+# They are referenced directly in doxywizard.qrc
+
 set(LEX_FILES config_doxyw)
 
 if (NOT depfile_supported)
@@ -140,9 +143,62 @@ inputbool.h
 inputstring.h
 inputstrlist.h
 wizard.h
+translationmanager.h
 )
 
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
+
+# Generate localized config.qrc
+set(CONFIG_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n<qresource prefix=\"/config\">\n")
+string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"config.xml\">${PROJECT_SOURCE_DIR}/src/config.xml</file>\n")
+file(GLOB LANG_CONFIG_FILES CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/translations/config_*.xml")
+foreach(lang_file ${LANG_CONFIG_FILES})
+        get_filename_component(lang_name "${lang_file}" NAME)   # e.g. config_zh_CN.xml
+	string(APPEND CONFIG_QRC_CONTENT "  <file alias=\"${lang_name}\">${lang_file}</file>\n")
+endforeach()
+string(APPEND CONFIG_QRC_CONTENT "</qresource>\n</RCC>\n")
+
+file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/config.qrc
+  CONTENT ${CONFIG_QRC_CONTENT}
+)
+
+qt_add_resources(doxywizard_CONFIG_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/config.qrc)
+
+set(TRANSLATIONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/translations)
+
+file(GLOB DOXYWIZARD_TRANSLATION_FILES CONFIGURE_DEPENDS "${TRANSLATIONS_DIR}/doxywizard_*.ts")
+
+set(ALL_TRANSLATION_FILES
+  ${DOXYWIZARD_TRANSLATION_FILES}
+)
+
+find_package(Qt6LinguistTools QUIET)
+if(Qt6LinguistTools_FOUND)
+  set_source_files_properties(${ALL_TRANSLATION_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR})
+  qt6_add_translation(doxywizard_QM_FILES ${ALL_TRANSLATION_FILES})
+else()
+  find_package(Qt5LinguistTools QUIET)
+  if(Qt5LinguistTools_FOUND)
+    set_source_files_properties(${ALL_TRANSLATION_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR})
+    qt5_add_translation(doxywizard_QM_FILES ${ALL_TRANSLATION_FILES})
+  else()
+    set(doxywizard_QM_FILES)
+    message(STATUS "Qt Linguist tools not found, translation files will not be compiled")
+  endif()
+endif()
+
+set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/translations\">\n")
+foreach(qm_file ${doxywizard_QM_FILES})
+  get_filename_component(qm_name ${qm_file} NAME)
+  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file>${qm_name}</file>\n")
+endforeach()
+string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
+
+file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc
+  CONTENT ${TRANSLATIONS_QRC_CONTENT}
+)
+
+qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
 
 add_executable(doxywizard WIN32
 config_msg.cpp
@@ -153,12 +209,16 @@ inputbool.cpp
 inputstring.cpp
 inputint.cpp
 inputstrlist.cpp
+translationmanager.cpp
 ${GENERATED_SRC_WIZARD}/settings.h
 ${GENERATED_SRC_WIZARD}/config_doxyw.cpp
 ${GENERATED_SRC_WIZARD}/config_doxyw.l.h
 ${GENERATED_SRC_WIZARD}/configdoc.cpp
 ${doxywizard_MOC}
 ${doxywizard_RESOURCES_RCC}
+${doxywizard_CONFIG_RESOURCES}
+${doxywizard_TRANSLATION_RESOURCES}
+${doxywizard_QM_FILES}
 ${PROJECT_SOURCE_DIR}/templates/icon/doxygen.rc
 )
 
