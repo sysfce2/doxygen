@@ -119,21 +119,21 @@ QString convertDoxyCmdToHtml(const QString &s)
 
   // \ref specials
   regexp.setPattern(SA("\\\\ref[ ]+doxygen_usage"));
-  result.replace(regexp,SA("\"Doxygen usage\""));
+  result.replace(regexp,SA("\"") + Expert::tr("Doxygen usage") + SA("\""));
   regexp.setPattern(SA("\\\\ref[ ]+extsearch"));
-  result.replace(regexp,SA("\"External Indexing and Searching\""));
+  result.replace(regexp,SA("\"") + Expert::tr("External Indexing and Searching") + SA("\""));
   regexp.setPattern(SA("\\\\ref[ ]+external"));
-  result.replace(regexp,SA("\"Linking to external documentation\""));
+  result.replace(regexp,SA("\"") + Expert::tr("Linking to external documentation") + SA("\""));
   regexp.setPattern(SA("\\\\ref[ ]+formulas"));
-  result.replace(regexp,SA("\"Including formulas\""));
+  result.replace(regexp,SA("\"") + Expert::tr("Including formulas") + SA("\""));
 
   // fallback for not handled \ref
   result.replace(SA("\\\\ref"),SA(""));
   result.replace(SA("\\\\REF"),SA("\\\\ref"));
 
   // \note -> <br>Note:
-  result.replace(SA("\\note "),SA("<br>Note: "));
-  result.replace(SA("@note "),SA("<br>Note: "));
+  result.replace(SA("\\note "),SA("<br>") + Expert::tr("Note:") + SA(" "));
+  result.replace(SA("@note "),SA("<br>") + Expert::tr("Note:") + SA(" "));
 
   // \#include -> #include
   result.replace(SA("\\#include"),SA("#include"));
@@ -205,7 +205,7 @@ QString convertDoxyCmdToHtml(const QString &s)
   result.replace(SA(" - "),SA("<br>-"));
 
   // \sa -> <br>See also:
-  result.replace(SA("\\sa "),SA("<br>See also: "));
+  result.replace(SA("\\sa "),SA("<br>") + Expert::tr("See also:") + SA(" "));
 
   return result;
 }

@@ -65,6 +65,30 @@
         <source>This tag requires that the tag %1 is set to &lt;code&gt;YES&lt;/code&gt;.</source>
         <translation>Dieses Tag erfordert, dass das Tag %1 auf &lt;code&gt;YES&lt;/code&gt; gesetzt ist.</translation>
     </message>
+    <message>
+        <source>Note:</source>
+        <translation>Hinweis:</translation>
+    </message>
+    <message>
+        <source>See also:</source>
+        <translation>Siehe auch:</translation>
+    </message>
+    <message>
+        <source>Doxygen usage</source>
+        <translation>Doxygen-Verwendung</translation>
+    </message>
+    <message>
+        <source>External Indexing and Searching</source>
+        <translation>Externe Indizierung und Suche</translation>
+    </message>
+    <message>
+        <source>Linking to external documentation</source>
+        <translation>Verknüpfung mit externer Dokumentation</translation>
+    </message>
+    <message>
+        <source>Including formulas</source>
+        <translation>Formeln einbinden</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

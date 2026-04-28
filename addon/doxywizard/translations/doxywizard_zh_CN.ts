@@ -65,6 +65,30 @@
         <source>This tag requires that the tag %1 is set to &lt;code&gt;YES&lt;/code&gt;.</source>
         <translation>此标签要求标签 %1 设置为 &lt;code&gt;YES&lt;/code&gt;。</translation>
     </message>
+    <message>
+        <source>Note:</source>
+        <translation>注意：</translation>
+    </message>
+    <message>
+        <source>See also:</source>
+        <translation>另请参阅：</translation>
+    </message>
+    <message>
+        <source>Doxygen usage</source>
+        <translation>Doxygen 用法</translation>
+    </message>
+    <message>
+        <source>External Indexing and Searching</source>
+        <translation>外部索引和搜索</translation>
+    </message>
+    <message>
+        <source>Linking to external documentation</source>
+        <translation>链接到外部文档</translation>
+    </message>
+    <message>
+        <source>Including formulas</source>
+        <translation>包含公式</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

@@ -65,6 +65,30 @@
         <source>This tag requires that the tag %1 is set to &lt;code&gt;YES&lt;/code&gt;.</source>
         <translation>このタグはタグ %1 を &lt;code&gt;YES&lt;/code&gt; に設定する必要があります。</translation>
     </message>
+    <message>
+        <source>Note:</source>
+        <translation>注:</translation>
+    </message>
+    <message>
+        <source>See also:</source>
+        <translation>参照:</translation>
+    </message>
+    <message>
+        <source>Doxygen usage</source>
+        <translation>Doxygenの使用方法</translation>
+    </message>
+    <message>
+        <source>External Indexing and Searching</source>
+        <translation>外部インデックス作成と検索</translation>
+    </message>
+    <message>
+        <source>Linking to external documentation</source>
+        <translation>外部ドキュメントへのリンク</translation>
+    </message>
+    <message>
+        <source>Including formulas</source>
+        <translation>数式の含め方</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>
