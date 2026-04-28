@@ -140,13 +140,6 @@ QString convertDoxyCmdToHtml(const QString &s)
   result.replace(SA("\\#undef"),SA("#undef"));
   result.replace(SA("\\# "),SA("# "));
 
-  // -# -> <br>-
-  result.replace(SA("-#"),SA("<br>-"));
-  result.replace(SA(" - "),SA("<br>-"));
-
-  // \sa -> <br>See also:
-  result.replace(SA("\\sa "),SA("<br>See also: "));
-
   // \par -> <br>
   result.replace(SA("\\par "),SA("<br>"));
 
@@ -180,7 +173,7 @@ QString convertDoxyCmdToHtml(const QString &s)
 
   // http/https URLs -> links
   // Only match URL-safe characters, exclude trailing punctuation
-  regexp.setPattern(SA(" (https?://[a-zA-Z0-9_\\-./~%#+?=&]*[a-zA-Z0-9_\\-/~%#+?=&])"));
+  regexp.setPattern(SA(" (https?://[a-zA-Z0-9_\\-./~%#+?=&@]*[a-zA-Z0-9_\\-/~%#+?=&])"));
   QRegularExpressionMatchIterator urlIt = regexp.globalMatch(result);
   QStringList urlReplacements;
   while (urlIt.hasNext())
@@ -206,6 +199,13 @@ QString convertDoxyCmdToHtml(const QString &s)
   // <br> -> <br/>
   result.replace(SA("&lt;br&gt;"), SA("<br/>"));
   result.replace(SA("&lt;br/&gt;"), SA("<br/>"));
+
+  // -# -> <br>-
+  result.replace(SA("-#"),SA("<br>-"));
+  result.replace(SA(" - "),SA("<br>-"));
+
+  // \sa -> <br>See also:
+  result.replace(SA("\\sa "),SA("<br>See also: "));
 
   return result;
 }

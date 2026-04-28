@@ -166,16 +166,7 @@ qt_add_resources(doxywizard_CONFIG_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/config.
 
 set(TRANSLATIONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/translations)
 
-set(DOXYWIZARD_TRANSLATION_FILES
-  ${TRANSLATIONS_DIR}/doxywizard_zh_CN.ts
-  ${TRANSLATIONS_DIR}/doxywizard_zh_TW.ts
-  ${TRANSLATIONS_DIR}/doxywizard_de.ts
-  ${TRANSLATIONS_DIR}/doxywizard_fr.ts
-  ${TRANSLATIONS_DIR}/doxywizard_ja.ts
-  ${TRANSLATIONS_DIR}/doxywizard_ko.ts
-  ${TRANSLATIONS_DIR}/doxywizard_es.ts
-  ${TRANSLATIONS_DIR}/doxywizard_ru.ts
-)
+file(GLOB DOXYWIZARD_TRANSLATION_FILES CONFIGURE_DEPENDS "${TRANSLATIONS_DIR}/doxywizard_*.ts")
 
 set(ALL_TRANSLATION_FILES
   ${DOXYWIZARD_TRANSLATION_FILES}
