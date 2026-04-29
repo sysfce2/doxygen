@@ -1775,11 +1775,6 @@
 <![CDATA[\c MAX_DOT_GRAPH_DEPTH 标签可用于设置由 \c dot 生成的图的最大深度。深度值 3 意味着只显示从根通过最多 3 条边的路径可达的节点。距离根节点更远的节点将被省略。请注意，将此选项设置为 1 或 2 可能会大大减少大型代码库所需的计算时间。另请注意，图的大小可以通过 \ref cfg_dot_graph_max_nodes "DOT_GRAPH_MAX_NODES" 进一步限制。使用深度 0 表示没有深度限制。]]>
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[将 \c DOT_MULTI_TARGETS 标签设置为 \c YES 以允许 dot 在一次运行中生成多个输出文件（即命令行上有多个 -o 和 -T 选项）。这使 \c dot 运行得更快，但由于只有更新版本的 \c dot（>1.8.10）支持此功能，因此默认情况下禁用此功能。]]>
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[如果 \c GENERATE_LEGEND 标签设置为 \c YES，Doxygen 将生成一个图例页面，解释 dot 生成的图中各种框和箭头的含义。\note 此标签要求未设置 \ref cfg_uml_look "UML_LOOK"，即使用 Doxygen 内部继承和协作图的图形表示。]]>

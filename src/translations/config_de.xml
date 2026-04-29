@@ -1775,11 +1775,6 @@
 <![CDATA[Das \c MAX_DOT_GRAPH_DEPTH-Tag kann verwendet werden, um die maximale Tiefe der von \c dot generierten Graphen festzulegen. Ein Tiefenwert von 3 bedeutet, dass nur Knoten angezeigt werden, die vom Wurzelknoten aus durch einen Pfad uber hochstens 3 Kanten erreichbar sind. Knoten, die weiter vom Wurzelknoten entfernt liegen, werden weggelassen. Beachten Sie, dass das Setzen dieser Option auf 1 oder 2 die fur große Codebasen benotigte Rechenzeit erheblich reduzieren kann. Beachten Sie auch, dass die Große eines Graphen durch \ref cfg_dot_graph_max_nodes "DOT_GRAPH_MAX_NODES" weiter eingeschrankt werden kann. Die Verwendung einer Tiefe von 0 bedeutet keine Tiefenbeschrankung.]]>        
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[Setzen Sie das \c DOT_MULTI_TARGETS-Tag auf \c YES, um \c dot zu erlauben, mehrere Ausgabedateien in einem Lauf zu generieren (d.h. mehrere -o und -T Optionen in der Befehlszeile). Dies macht \c dot schneller, aber da nur neuere Versionen von \c dot (>1.8.10) dies unterstutzen, ist diese Funktion standardmäßig deaktiviert.]]>        
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[Wenn das \c GENERATE_LEGEND-Tag auf \c YES gesetzt ist, generiert Doxygen eine Legenden-Seite, die die Bedeutung der verschiedenen Boxen in den von dot erzeugten Graphen erklart.]]>        

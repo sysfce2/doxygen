@@ -1775,11 +1775,6 @@
 <![CDATA[La etiqueta \c MAX_DOT_GRAPH_DEPTH se puede usar para establecer la profundidad maxima de los grafos generados por \c dot. Un valor de profundidad de 3 significa que solo se mostraran los nodos que son accesibles desde el nodo raiz a traves de una ruta de como maximo 3 aristas. Los nodos que se encuentran mas lejos del nodo raiz se omitiran. Tenga en cuenta que configurar esta opcion en 1 o 2 puede reducir en gran medida el tiempo de computacion necesario para bases de codigo grandes. Tenga en cuenta tambien que el tamano de un grafo puede estar mas limitado por \ref cfg_dot_graph_max_nodes "DOT_GRAPH_MAX_NODES". Usar una profundidad de 0 significa sin limite de profundidad.]]>
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[Configure la etiqueta \c DOT_MULTI_TARGETS en \c YES para permitir que \c dot genere multiples archivos de salida en una sola ejecucion (es decir, multiples opciones -o y -T en la linea de comandos). Esto hace que \c dot sea mas rapido, pero dado que solo las versiones mas nuevas de \c dot (>1.8.10) admiten esto, esta funcion esta deshabilitada por defecto.]]>
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[Si la etiqueta \c GENERATE_LEGEND esta configurada en \c YES, Doxygen generara una pagina de leyenda que explica el significado de los diferentes cuadros en los grafos producidos por dot.]]>

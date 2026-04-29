@@ -1775,11 +1775,6 @@
 <![CDATA[La balise \c MAX_DOT_GRAPH_DEPTH peut etre utilisee pour definir la profondeur maximale des graphes generes par \c dot. Une valeur de profondeur de 3 signifie que seuls les noeuds atteignables depuis la racine en suivant un chemin via au maximum 3 aretes seront affiches. Les noeuds qui se trouvent plus loin du noeud racine seront omis. Notez que definir cette option a 1 ou 2 peut reduire considerablement le temps de calcul necessaire pour les grandes bases de code. Notez egalement que la taille d'un graphe peut etre encore restreinte par \ref cfg_dot_graph_max_nodes "DOT_GRAPH_MAX_NODES". Utiliser une profondeur de 0 signifie aucune restriction de profondeur.]]>
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[Definissez la balise \c DOT_MULTI_TARGETS a \c YES pour permettre a dot de generer plusieurs fichiers de sortie en une seule execution (c'est-a-dire plusieurs options -o et -T sur la ligne de commande). Cela fait fonctionner \c dot plus rapidement, mais comme seules les versions plus recentes de \c dot (>1.8.10) prennent en charge cela, cette fonctionnalite est desactivee par defaut.]]>
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[Si la balise \c GENERATE_LEGEND est definie a \c YES, Doxygen generera une page de legende expliquant la signification des diverses boites et fleches dans les graphes generes par dot. \note Cette balise necessite que \ref cfg_uml_look "UML_LOOK" ne soit pas defini, c'est-a-dire que la representation graphique interne de Doxygen pour les diagrammes d'heritage et de collaboration soit utilisee.]]>
