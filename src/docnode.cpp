@@ -502,9 +502,8 @@ bool DocXRefItem::parse()
 
       if (!item->text().isEmpty())
       {
-        parser()->pushContext();
+        DocParser::AutoSaveContext saveContext(*parser());
         parser()->internalValidatingParseDoc(thisVariant(),children(),item->text());
-        parser()->popContext();
       }
     }
     return TRUE;
@@ -922,9 +921,9 @@ void DocRef::parse(char cmdChar,const QCString &cmdName)
           "Potential recursion while resolving {:c}{} command!",cmdChar,cmdName);
     }
     parser()->context.insideHtmlLink=TRUE;
-    parser()->pushContext();
-    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-    parser()->popContext();
+    { DocParser::AutoSaveContext saveContext(*parser());
+      parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+    }
     parser()->context.insideHtmlLink=FALSE;
     parser()->tokenizer.setStatePara();
     flattenParagraphs(thisVariant(),children());
@@ -2046,15 +2045,15 @@ static Token skipSpacesForTable(DocParser *parser)
       auto cmdType = Mappers::cmdMapper->map(cmdName);
       if (cmdType==CommandType::CMD_ILINE)
       {
-        parser->tokenizer.pushState();
-        parser->tokenizer.setStateILine();
-        tok = parser->tokenizer.lex();
-        if (!tok.is(TokenRetval::TK_WORD))
-        {
-          warn_doc_error(parser->context.fileName,parser->tokenizer.getLineNr(),"invalid argument for command '{:c}{}'",
-              tok.command_to_char(),cmdName);
+        { DocTokenizer::AutoSaveState saveState(parser->tokenizer);
+          parser->tokenizer.setStateILine();
+          tok = parser->tokenizer.lex();
+          if (!tok.is(TokenRetval::TK_WORD))
+          {
+            warn_doc_error(parser->context.fileName,parser->tokenizer.getLineNr(),"invalid argument for command '{:c}{}'",
+                tok.command_to_char(),cmdName);
+          }
         }
-        parser->tokenizer.popState();
         tok = parser->tokenizer.lex();
       }
       else
@@ -3127,9 +3126,9 @@ void DocTitle::parse()
 void DocTitle::parseFromString(DocNodeVariant *parent,const QCString &text)
 {
   parser()->context.insideHtmlLink=TRUE;
-  parser()->pushContext(); // this will create a new parser->context.token
-  parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-  parser()->popContext(); // this will restore the old parser->context.token
+  { DocParser::AutoSaveContext saveContext(*parser());
+    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+  }
   parser()->context.insideHtmlLink=FALSE;
   parser()->tokenizer.setStatePara();
   flattenParagraphs(thisVariant(),children());
@@ -3194,9 +3193,9 @@ Token DocSimpleSect::parseRcs()
   title->parseFromString(thisVariant(),parser()->context.token->name);
 
   QCString text = parser()->context.token->text;
-  parser()->pushContext(); // this will create a new parser->context.token
-  parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-  parser()->popContext(); // this will restore the old parser->context.token
+  { DocParser::AutoSaveContext saveContext(*parser());
+    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+  }
 
   return Token::make_RetVal_OK();
 }
@@ -3535,111 +3534,6 @@ Token DocPara::handleParamSection(const QCString &cmdName,
                    static_cast<DocParamSect::Direction>(direction));
   AUTO_TRACE_EXIT("retval={}",rv.to_string());
   return (!rv.is(TokenRetval::TK_NEWPARA)) ? rv : Token::make_RetVal_OK();
-}
-
-void DocPara::handleCite(char cmdChar,const QCString &cmdName)
-{
-  AUTO_TRACE();
-  QCString saveCmdName = cmdName;
-  // get the argument of the cite command.
-  Token tok=parser()->tokenizer.lex();
-
-  CiteInfoOption option;
-  if (tok.is(TokenRetval::TK_WORD) && parser()->context.token->name=="{")
-  {
-    parser()->tokenizer.setStateOptions();
-    parser()->tokenizer.lex();
-    StringVector optList=split(parser()->context.token->name.str(),",");
-    for (auto const &opt : optList)
-    {
-      if (opt == "number")
-      {
-        if (!option.isUnknown())
-        {
-          warn(parser()->context.fileName,parser()->tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", saveCmdName, opt);
-        }
-        else
-        {
-          option = CiteInfoOption::makeNumber();
-        }
-      }
-      else if (opt == "year")
-      {
-        if (!option.isUnknown())
-        {
-          warn(parser()->context.fileName,parser()->tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", saveCmdName, opt);
-        }
-        else
-        {
-          option = CiteInfoOption::makeYear();
-        }
-      }
-      else if (opt == "shortauthor")
-      {
-        if (!option.isUnknown())
-        {
-          warn(parser()->context.fileName,parser()->tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", saveCmdName, opt);
-        }
-        else
-        {
-          option = CiteInfoOption::makeShortAuthor();
-        }
-      }
-      else if (opt == "nopar")
-      {
-        option.setNoPar();
-      }
-      else if (opt == "nocite")
-      {
-        option.setNoCite();
-      }
-      else
-      {
-        warn(parser()->context.fileName,parser()->tokenizer.getLineNr(),"Unknown option specified with \\{}, discarding '{}'", saveCmdName, opt);
-      }
-    }
-
-    if (option.isUnknown()) option.changeToNumber();
-
-    parser()->tokenizer.setStatePara();
-    tok=parser()->tokenizer.lex();
-    if (!tok.is(TokenRetval::TK_WHITESPACE))
-    {
-      warn_doc_error(parser()->context.fileName,parser()->tokenizer.getLineNr(),"expected whitespace after \\{} command",
-          saveCmdName);
-      return;
-    }
-  }
-  else if (!tok.is(TokenRetval::TK_WHITESPACE))
-  {
-    warn_doc_error(parser()->context.fileName,parser()->tokenizer.getLineNr(),"expected whitespace after '{:c}{}' command",
-      cmdChar,saveCmdName);
-    return;
-  }
-  else
-  {
-    option = CiteInfoOption::makeNumber();
-  }
-
-  parser()->tokenizer.setStateCite();
-  tok=parser()->tokenizer.lex();
-  if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
-  {
-    warn_doc_error(parser()->context.fileName,parser()->tokenizer.getLineNr(),"THE ONE unexpected end of comment block while parsing the "
-        "argument of command '{:c}{}'",cmdChar,saveCmdName);
-    return;
-  }
-  else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
-  {
-    warn_doc_error(parser()->context.fileName,parser()->tokenizer.getLineNr(),"unexpected token {} as the argument of '{:c}{}'",
-        tok.to_string(),cmdChar,saveCmdName);
-    return;
-  }
-  parser()->context.token->sectionId = parser()->context.token->name;
-  children().append<DocCite>(
-        parser(),thisVariant(),parser()->context.token->name,parser()->context.context,option);
-
-  parser()->tokenizer.setStatePara();
 }
 
 void DocPara::handleEmoji(char cmdChar,const QCString &cmdName)
@@ -4201,25 +4095,29 @@ void DocPara::handleInheritDoc()
     if (reMd) // member from which was inherited.
     {
       const MemberDef *thisMd = parser()->context.memberDef;
-      //printf("{InheritDocs:%s=>%s}\n",qPrint(parser()->context.memberDef->qualifiedName()),qPrint(reMd->qualifiedName()));
-      parser()->pushContext();
-      parser()->context.scope=reMd->getOuterScope();
-      if (parser()->context.scope!=Doxygen::globalScope)
-      {
-        parser()->context.context=parser()->context.scope->name();
+      bool hasParamCommand = false;
+      bool hasReturnCommand = false;
+      StringMultiSet retvalsFound;
+      StringMultiSet paramsFound;
+      { DocParser::AutoSaveContext saveContext(*parser());
+        //printf("{InheritDocs:%s=>%s}\n",qPrint(parser()->context.memberDef->qualifiedName()),qPrint(reMd->qualifiedName()));
+        parser()->context.scope=reMd->getOuterScope();
+        if (parser()->context.scope!=Doxygen::globalScope)
+        {
+          parser()->context.context=parser()->context.scope->name();
+        }
+        parser()->context.memberDef=reMd;
+        while (!parser()->context.styleStack.empty()) parser()->context.styleStack.pop();
+        while (!parser()->context.nodeStack.empty()) parser()->context.nodeStack.pop();
+        parser()->context.copyStack.push_back(reMd);
+        parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->briefDescription());
+        parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->documentation());
+        parser()->context.copyStack.pop_back();
+        hasParamCommand   = parser()->context.hasParamCommand;
+        hasReturnCommand  = parser()->context.hasReturnCommand;
+        retvalsFound      = parser()->context.retvalsFound;
+        paramsFound       = parser()->context.paramsFound;
       }
-      parser()->context.memberDef=reMd;
-      while (!parser()->context.styleStack.empty()) parser()->context.styleStack.pop();
-      while (!parser()->context.nodeStack.empty()) parser()->context.nodeStack.pop();
-      parser()->context.copyStack.push_back(reMd);
-      parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->briefDescription());
-      parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->documentation());
-      parser()->context.copyStack.pop_back();
-      auto hasParamCommand   = parser()->context.hasParamCommand;
-      auto hasReturnCommand  = parser()->context.hasReturnCommand;
-      auto retvalsFound      = parser()->context.retvalsFound;
-      auto paramsFound       = parser()->context.paramsFound;
-      parser()->popContext();
       parser()->context.hasParamCommand      = hasParamCommand;
       parser()->context.hasReturnCommand     = hasReturnCommand;
       parser()->context.retvalsFound         = retvalsFound;
@@ -4946,7 +4844,9 @@ Token DocPara::handleCommand(char cmdChar, const QCString &cmdName)
       handleLink(cmdName,TRUE);
       break;
     case CommandType::CMD_CITE:
-      handleCite(cmdChar,cmdName);
+      {
+        parser()->handleCite(thisVariant(),children());
+      }
       break;
     case CommandType::CMD_EMOJI:
       handleEmoji(cmdChar,cmdName);
