@@ -62,19 +62,18 @@ void TranslationManager::loadAvailableLanguages()
   struct LanguageData {
     const char *code;
     const char *nativeName;
-    const char *englishName;
   };
 
   static const std::array languageTable = {
-    LanguageData { "en",    "English",  "English"             },
-    LanguageData { "zh_CN", "简体中文", "Simplified Chinese"  },
-    LanguageData { "zh_TW", "繁體中文", "Traditional Chinese" },
-    LanguageData { "de",    "Deutsch",  "German"              },
-    LanguageData { "fr",    "Français", "French"              },
-    LanguageData { "ja",    "日本語",   "Japanese"            },
-    LanguageData { "ko",    "한국어",   "Korean"              },
-    LanguageData { "es",    "Español",  "Spanish"             },
-    LanguageData { "ru",    "Русский",  "Russian"             }
+    LanguageData { "en",    "English"  },
+    LanguageData { "zh_CN", "简体中文" },
+    LanguageData { "zh_TW", "繁體中文" },
+    LanguageData { "de",    "Deutsch"  },
+    LanguageData { "fr",    "Français" },
+    LanguageData { "ja",    "日本語"   },
+    LanguageData { "ko",    "한국어"   },
+    LanguageData { "es",    "Español"  },
+    LanguageData { "ru",    "Русский"  }
   };
 
   for (const auto &lang : languageTable)
@@ -82,19 +81,16 @@ void TranslationManager::loadAvailableLanguages()
     LanguageInfo info;
     info.code        = QString::fromLatin1(lang.code);
     info.nativeName  = QString::fromUtf8(lang.nativeName);
-    info.englishName = QString::fromLatin1(lang.englishName);
 
     if (info.code == QLatin1String("en"))
     {
       info.tsFile        = QString();
       info.qmFile        = QString();
-      info.optionsQmFile = QString();
     }
     else
     {
       info.tsFile        = QString::fromLatin1("doxywizard_%1.ts").arg(info.code);
       info.qmFile        = QString::fromLatin1("doxywizard_%1.qm").arg(info.code);
-      info.optionsQmFile = QString::fromLatin1("doxywizard_options_%1.qm").arg(info.code);
     }
 
     m_languages.insert(info.code, info);
@@ -213,9 +209,6 @@ bool TranslationManager::switchLanguage(const QString &langCode)
   }
   qApp->installTranslator(m_translator);
 
-  // Note: Options translations are now handled via localized config_xx.xml files
-  // The doxywizard_options_xx.qm files are no longer loaded here
-
   m_qtTranslator = new QTranslator(this);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
   QString qtQmPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath) +
@@ -329,34 +322,4 @@ QString TranslationManager::tsFilePath(const QString &langCode) const
   }
 
   return m_languages[langCode].tsFile;
-}
-
-QString TranslationManager::qmOptionsFilePath(const QString &langCode) const
-{
-  if (!m_languages.contains(langCode))
-  {
-    return QString();
-  }
-
-  const LanguageInfo &info = m_languages[langCode];
-  if (info.optionsQmFile.isEmpty())
-  {
-    return QString();
-  }
-
-  QString resourcePath = QString::fromLatin1(":/translations/") + info.optionsQmFile;
-  if (QFileInfo::exists(resourcePath))
-  {
-    return resourcePath;
-  }
-
-  QString appDir = QCoreApplication::applicationDirPath();
-  QString qmPath = appDir + QDir::separator() + info.optionsQmFile;
-
-  if (QFileInfo::exists(qmPath))
-  {
-    return qmPath;
-  }
-
-  return QString();
 }
