@@ -27,10 +27,8 @@ class TranslationManager : public QObject
     {
       QString code;
       QString nativeName;
-      QString englishName;
       QString tsFile;
       QString qmFile;
-      QString optionsQmFile;
     };
 
     TranslationManager();
@@ -62,7 +60,6 @@ class TranslationManager : public QObject
     bool loadTranslation(const QString &qmFilePath);
     void unloadTranslation();
     QString qmFilePath(const QString &langCode) const;
-    QString qmOptionsFilePath(const QString &langCode) const;
     QString tsFilePath(const QString &langCode) const;
 
     QTranslator *m_translator;
