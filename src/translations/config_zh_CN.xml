@@ -1174,9 +1174,9 @@
  的本地副本。
 
  默认值为：
- - MathJax 版本 2 的情况：https://cdn.jsdelivr.net/npm/mathjax@2
- - MathJax 版本 3 的情况：https://cdn.jsdelivr.net/npm/mathjax@3
- - MathJax 版本 4 的情况：https://cdn.jsdelivr.net/npm/mathjax@4
+ - MathJax 版本 2 的情况: https://cdn.jsdelivr.net/npm/mathjax@2
+ - MathJax 版本 3 的情况: https://cdn.jsdelivr.net/npm/mathjax@3
+ - MathJax 版本 4 的情况: https://cdn.jsdelivr.net/npm/mathjax@4
 ]]>
       </docs>
     </option>
