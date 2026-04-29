@@ -334,20 +334,6 @@
       <value name="DATETIME"/>
       <value name="DATE"/>
     </option>
-        <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
-      <docs>
-<![CDATA[
- El \c DOT_BATCH_SIZE especifica el numero de graficos \c dot que Doxygen puede compilar
- en una sola invocacion de \c dot. Cuando se establece en \c 1, Doxygen invocara \c dot
- para cada grafico por separado, lo que puede causar una sobrecarga significativa de
- creacion de procesos, especialmente en sistemas con muchos nucleos de CPU. Junto con
- \c DOT_NUM_THREADS, esta configuracion se puede utilizar para optimizar la velocidad
- de procesamiento de dot para un sistema en particular. Doxygen intentara asignar a cada
- hilo una carga de trabajo equilibrada. Si el numero total de graficos a procesar excede
- `DOT_NUM_THREADS * DOT_BATCH_SIZE`, se crearan lotes adicionales para que \c dot los procese.
-]]>
-      </docs>
-    </option>
   </group>
   <group name="Build" docs="Build related configuration options">
     <option type="bool" id="EXTRACT_ALL" defval="0">
@@ -1576,6 +1562,20 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[La etiqueta \c DOT_NUM_THREADS especifica el numero de invocaciones de \c dot que Doxygen puede ejecutar en paralelo. Cuando se configura en \c 0, Doxygen lo basara en el numero de procesadores disponibles en el sistema. Puede configurarlo explicitamente en un valor mayor que 0 para obtener control sobre el equilibrio entre la carga de la CPU y la velocidad de procesamiento.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ El \c DOT_BATCH_SIZE especifica el numero de graficos \c dot que Doxygen puede compilar
+ en una sola invocacion de \c dot. Cuando se establece en \c 1, Doxygen invocara \c dot
+ para cada grafico por separado, lo que puede causar una sobrecarga significativa de
+ creacion de procesos, especialmente en sistemas con muchos nucleos de CPU. Junto con
+ \c DOT_NUM_THREADS, esta configuracion se puede utilizar para optimizar la velocidad
+ de procesamiento de dot para un sistema en particular. Doxygen intentara asignar a cada
+ hilo una carga de trabajo equilibrada. Si el numero total de graficos a procesar excede
+ `DOT_NUM_THREADS * DOT_BATCH_SIZE`, se crearan lotes adicionales para que \c dot los procese.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

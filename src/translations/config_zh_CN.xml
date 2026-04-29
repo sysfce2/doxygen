@@ -334,17 +334,6 @@
       <value name="DATETIME"/>
       <value name="DATE"/>
     </option>
-        <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
-      <docs>
-<![CDATA[
- \c DOT_BATCH_SIZE 指定 Doxygen 在单次 \c dot 调用中允许编译的 \c dot 图表数量。
- 当设置为 \c 1 时，Doxygen 将为每个图表单独调用 \c dot，这可能会导致显著的进程创建开销，
- 特别是在具有许多 CPU 核心的系统上。与 \c DOT_NUM_THREADS 一起使用此设置可以优化特定系统的
- dot 处理速度。Doxygen 将尝试为每个线程分配均衡的工作量。如果要处理的图表总数超过
- `DOT_NUM_THREADS * DOT_BATCH_SIZE`，则会为 \c dot 创建额外的批次进行处理。
-]]>
-      </docs>
-    </option>
   </group>
   <group name="Build" docs="Build related configuration options">
     <option type="bool" id="EXTRACT_ALL" defval="0">
@@ -1571,6 +1560,17 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[\c DOT_NUM_THREADS 指定 Doxygen 允许并行运行的 \c dot 调用次数。设置为 \c 0 时，Doxygen 将根据系统中可用的处理器数量进行设置。您可以将其显式设置为大于 0 的值，以更好地控制 CPU 负载和处理速度之间的平衡。]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ \c DOT_BATCH_SIZE 指定 Doxygen 在单次 \c dot 调用中允许编译的 \c dot 图表数量。
+ 当设置为 \c 1 时，Doxygen 将为每个图表单独调用 \c dot，这可能会导致显著的进程创建开销，
+ 特别是在具有许多 CPU 核心的系统上。与 \c DOT_NUM_THREADS 一起使用此设置可以优化特定系统的
+ dot 处理速度。Doxygen 将尝试为每个线程分配均衡的工作量。如果要处理的图表总数超过
+ `DOT_NUM_THREADS * DOT_BATCH_SIZE`，则会为 \c dot 创建额外的批次进行处理。
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

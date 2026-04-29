@@ -315,7 +315,6 @@
       </docs>
     </option>
     <option type="int" id="LOOKUP_CACHE_SIZE" minval="0" maxval="9" defval="0">
-      <!-- be careful when changing these formulas as they are hard coded in the conversion script -->
       <docs>
 <![CDATA[Die Grose des Symbol-Lookup-Caches kann mit \c LOOKUP_CACHE_SIZE festgelegt werden. Dieser Cache wird verwendet, um Symbole anhand ihres Namens und Bereichs aufzulosen. Da dies ein aufwendiger Prozess sein kann und dasselbe Symbol oft mehrmals im Code erscheint, halt Doxygen einen Cache von voraufgelosten Symbolen. Wenn der Cache zu klein ist, wird Doxygen langsamer. Wenn der Cache zu groß ist, wird Speicher verschwendet. Die Cache-Grose wird durch diese Formel gegeben: \f$2^{(16+\mbox{LOOKUP\_CACHE\_SIZE})}\f$. Der gultige Bereich ist 0..9, der Standard ist 0, was einer Cache-Grose von \f$2^{16} = 65536\f$ Symbolen entspricht. Am Ende eines Laufs meldet Doxygen die Cache-Nutzung und schlagt die optimale Cache-Grose aus Geschwindigkeitssicht vor.]]>
       </docs>
@@ -333,20 +332,6 @@
       <value name="NO"/>
       <value name="DATETIME"/>
       <value name="DATE"/>
-    </option>
-        <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
-      <docs>
-<![CDATA[
- Das \c DOT_BATCH_SIZE gibt die Anzahl der \c dot-Graphen an, die Doxygen in einem einzigen
- \c dot-Aufruf kompilieren darf. Wenn auf \c 1 gesetzt, wird Doxygen \c dot fur jeden Graphen
- separat aufrufen, was zu erheblichem Prozess-Erstellungsaufwand fuhren kann, insbesondere
- auf Systemen mit vielen CPU-Kernen. Zusammen mit \c DOT_NUM_THREADS kann diese Einstellung
- verwendet werden, um die dot-Verarbeitungsgeschwindigkeit fur ein bestimmtes System zu optimieren.
- Doxygen wird versuchen, jedem Thread eine ausgewogene Arbeitsmenge zuzuweisen. Wenn die
- Gesamtzahl der zu verarbeitenden Graphen `DOT_NUM_THREADS * DOT_BATCH_SIZE` uberschreitet,
- werden zusatzliche Batches fur \c dot erstellt.
-]]>
-      </docs>
     </option>
   </group>
   <group name="Build" docs="Build related configuration options">
@@ -1576,6 +1561,20 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[Das \c DOT_NUM_THREADS gibt die Anzahl der \c dot-Aufrufe an, die Doxygen parallel ausfuhren darf. Wenn auf \c 0 gesetzt, wird Doxygen dies auf der Anzahl der im System verfugbaren Prozessoren basieren. Sie konnen es explizit auf einen Wert groser als 0 setzen, um die Kontrolle uber das Gleichgewicht zwischen CPU-Last und Verarbeitungsgeschwindigkeit zu erhalten.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ Das \c DOT_BATCH_SIZE gibt die Anzahl der \c dot-Graphen an, die Doxygen in einem einzigen
+ \c dot-Aufruf kompilieren darf. Wenn auf \c 1 gesetzt, wird Doxygen \c dot fur jeden Graphen
+ separat aufrufen, was zu erheblichem Prozess-Erstellungsaufwand fuhren kann, insbesondere
+ auf Systemen mit vielen CPU-Kernen. Zusammen mit \c DOT_NUM_THREADS kann diese Einstellung
+ verwendet werden, um die dot-Verarbeitungsgeschwindigkeit fur ein bestimmtes System zu optimieren.
+ Doxygen wird versuchen, jedem Thread eine ausgewogene Arbeitsmenge zuzuweisen. Wenn die
+ Gesamtzahl der zu verarbeitenden Graphen `DOT_NUM_THREADS * DOT_BATCH_SIZE` uberschreitet,
+ werden zusatzliche Batches fur \c dot erstellt.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

@@ -334,20 +334,6 @@
       <value name="DATETIME"/>
       <value name="DATE"/>
     </option>
-        <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
-      <docs>
-<![CDATA[
- \c DOT_BATCH_SIZE указывает количество \c dot-графов, которые Doxygen может скомпилировать
- за один вызов \c dot. При установке значения \c 1 Doxygen будет вызывать \c dot для каждого
- графа отдельно, что может привести к значительным накладным расходам на создание процессов,
- особенно на системах с большим количеством ядер ЦП. Вместе с \c DOT_NUM_THREADS этот параметр
- можно использовать для оптимизации скорости обработки dot для конкретной системы. Doxygen будет
- пытаться распределить нагрузку между потоками равномерно. Если общее количество графов для
- обработки превышает `DOT_NUM_THREADS * DOT_BATCH_SIZE`, будут созданы дополнительные пакеты
- для обработки \c dot.
-]]>
-      </docs>
-    </option>
   </group>
   <group name="Build" docs="Build related configuration options">
     <option type="bool" id="EXTRACT_ALL" defval="0">
@@ -1576,6 +1562,20 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[Тег \c DOT_NUM_THREADS определяет количество потоков, используемых dot.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ \c DOT_BATCH_SIZE указывает количество \c dot-графов, которые Doxygen может скомпилировать
+ за один вызов \c dot. При установке значения \c 1 Doxygen будет вызывать \c dot для каждого
+ графа отдельно, что может привести к значительным накладным расходам на создание процессов,
+ особенно на системах с большим количеством ядер ЦП. Вместе с \c DOT_NUM_THREADS этот параметр
+ можно использовать для оптимизации скорости обработки dot для конкретной системы. Doxygen будет
+ пытаться распределить нагрузку между потоками равномерно. Если общее количество графов для
+ обработки превышает `DOT_NUM_THREADS * DOT_BATCH_SIZE`, будут созданы дополнительные пакеты
+ для обработки \c dot.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">
