@@ -65,6 +65,30 @@
         <source>This tag requires that the tag %1 is set to &lt;code&gt;YES&lt;/code&gt;.</source>
         <translation>이 태그는 태그 %1을 &lt;code&gt;YES&lt;/code&gt;로 설정해야 합니다.</translation>
     </message>
+    <message>
+        <source>Note:</source>
+        <translation>참고:</translation>
+    </message>
+    <message>
+        <source>See also:</source>
+        <translation>참조:</translation>
+    </message>
+    <message>
+        <source>Doxygen usage</source>
+        <translation>Doxygen 사용법</translation>
+    </message>
+    <message>
+        <source>External Indexing and Searching</source>
+        <translation>외부 인덱싱 및 검색</translation>
+    </message>
+    <message>
+        <source>Linking to external documentation</source>
+        <translation>외부 문서 연결</translation>
+    </message>
+    <message>
+        <source>Including formulas</source>
+        <translation>수식 포함</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

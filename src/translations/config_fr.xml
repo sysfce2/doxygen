@@ -1162,9 +1162,24 @@
       <value name="chtml" desc="(C'est le nom pour MathJax version 3, pour MathJax version 2 cela sera traduit en \c HTML-CSS)"/>
       <value name="SVG"/>
     </option>
-    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
-<![CDATA[Lorsque MathJax est active, vous devez specifier l'emplacement relatif au repertoire de sortie HTML en utilisant l'option \c MATHJAX_RELPATH. Pour la version 2 de Mathjax, le repertoire de destination doit contenir le script `MathJax.js`. Par exemple, si le repertoire \c mathjax est situe au meme niveau que le repertoire de sortie HTML, alors \c MATHJAX_RELPATH doit etre <code>../mathjax</code>. Pour les versions 3 et 4 de Mathjax, le repertoire de destination doit contenir le script `tex-<format>.js` (ou `<format>` est soit `chtml` soit `svg`). La valeur par defaut pointe vers le reseau de diffusion de contenu MathJax afin que vous puissiez voir rapidement le resultat sans installer MathJax. Cependant, il est fortement recommande d'installer une copie locale de MathJax depuis https://www.mathjax.org avant le deploiement. La valeur par defaut est: - dans le cas de la version 2 de MathJax: https://cdn.jsdelivr.net/npm/mathjax@2 - dans le cas de la version 3 de MathJax: https://cdn.jsdelivr.net/npm/mathjax@3 - dans le cas de la version 4 de MathJax: https://cdn.jsdelivr.net/npm/mathjax@4]]>
+<![CDATA[
+ Lorsque MathJax est active, vous devez specifier l'emplacement relatif au repertoire
+ de sortie HTML en utilisant l'option \c MATHJAX_RELPATH. Pour MathJax version 2, le repertoire
+ de destination doit contenir le script `MathJax.js`. Par exemple, si le repertoire \c mathjax
+ se trouve au meme niveau que le repertoire de sortie HTML, alors \c MATHJAX_RELPATH doit
+ etre <code>../mathjax</code>. Pour MathJax versions 3 et 4, le repertoire de destination
+ doit contenir le script `tex-<format>.js` (ou `<format>` est `chtml` ou `svg`).
+ La valeur par defaut pointe vers le Reseau de Distribution de Contenu MathJax pour que
+ vous puissiez voir rapidement le resultat sans installer MathJax. Cependant, il est fortement
+ recommande d'installer une copie locale de MathJax depuis https://www.mathjax.org avant le deploiement.
+
+ La valeur par defaut est :
+ - dans le cas de MathJax version 2 : https://cdn.jsdelivr.net/npm/mathjax@2
+ - dans le cas de MathJax version 3 : https://cdn.jsdelivr.net/npm/mathjax@3
+ - dans le cas de MathJax version 4 : https://cdn.jsdelivr.net/npm/mathjax@4
+]]>
       </docs>
     </option>
     <option type="list" id="MATHJAX_EXTENSIONS" format="string" depends="USE_MATHJAX">
@@ -1547,6 +1562,21 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[Le \c DOT_NUM_THREADS specifie le nombre d'invocations \c dot que Doxygen est autorise a executer en parallele. Lorsqu'il est defini a \c 0, Doxygen le basera sur le nombre de processeurs disponibles dans le systeme. Vous pouvez le definir explicitement a une valeur superieure a 0 pour avoir un controle sur l'equilibre entre la charge CPU et la vitesse de traitement.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ Le \c DOT_BATCH_SIZE specifie le nombre de graphiques \c dot que Doxygen est autorise
+ a compiler en une seule invocation de \c dot. Lorsqu'il est defini sur \c 1, Doxygen
+ invoquera \c dot pour chaque graphique separement, ce qui peut entrainer une surcharge
+ significative de creation de processus, en particulier sur les systemes avec de nombreux
+ cœurs de CPU. Ensemble avec \c DOT_NUM_THREADS, ce parametre peut etre utilise pour
+ optimiser la vitesse de traitement de dot pour un systeme particulier. Doxygen essaiera
+ d'attribuer a chaque thread une charge de travail equilibree. Si le nombre total de
+ graphiques a traiter depasse `DOT_NUM_THREADS * DOT_BATCH_SIZE`, des lots supplementaires
+ seront crees pour que \c dot les traite.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

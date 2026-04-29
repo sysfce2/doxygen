@@ -73,6 +73,8 @@ class Expert : public QSplitter, public DocIntf
     void createTopics(const QDomElement &);
     void saveTopic(QTextStream &t,QDomElement &elem,TextCodecAdapter *codec,bool brief,bool dondensed,bool convert);
     void loadConfigXml();
+    QString convertDoxyCmdToHtml(const QString &s) const;
+    QString getDocsForNode(const QDomElement &child) const;
 
     QSplitter               *m_splitter;
     QTextBrowser            *m_helper;

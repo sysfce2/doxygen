@@ -1162,9 +1162,24 @@
       <value name="chtml" desc="(これはMathJaxバージョン3の名称で、MathJaxバージョン2では\c HTML-CSSに変換されます)"/>
       <value name="SVG"/>
     </option>
-    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
-<![CDATA[MathJaxが有効になっている場合、\c MATHJAX_RELPATHオプションを使用してHTML出力ディレクトリからの相対的な場所を指定する必要があります。Mathjaxバージョン2の場合、宛先ディレクトリには`MathJax.js`スクリプトが含まれている必要があります。例えば、\c mathjaxディレクトリがHTML出力ディレクトリと同じレベルにある場合、\c MATHJAX_RELPATHは<code>../mathjax</code>である必要があります。Mathjaxバージョン3および4の場合、宛先ディレクトリには`tex-<format>.js`スクリプト（`<format>`は`chtml`または`svg`のいずれか）が含まれている必要があります。デフォルト値はMathJaxコンテンツ配信ネットワークを指しているため、MathJaxをインストールしなくても結果をすぐに確認できます。ただし、デプロイ前にhttps://www.mathjax.orgからMathJaxのローカルコピーをインストールすることを強くお勧めします。デフォルト値は：- MathJaxバージョン2の場合：https://cdn.jsdelivr.net/npm/mathjax@2 - MathJaxバージョン3の場合：https://cdn.jsdelivr.net/npm/mathjax@3 - MathJaxバージョン4の場合：https://cdn.jsdelivr.net/npm/mathjax@4]]>
+<![CDATA[
+ MathJaxが有効な場合、\c MATHJAX_RELPATHオプションを使用してHTML出力ディレクトリからの
+ 相対パスを指定する必要があります。MathJaxバージョン2の場合、宛先ディレクトリには
+ `MathJax.js`スクリプトが含まれている必要があります。例えば、\c mathjaxディレクトリが
+ HTML出力ディレクトリと同じレベルにある場合、\c MATHJAX_RELPATHは<code>../mathjax</code>
+ である必要があります。MathJaxバージョン3および4の場合、宛先ディレクトリには
+ `tex-<format>.js`スクリプト（`<format>`は`chtml`または`svg`）が含まれている必要があります。
+ デフォルト値はMathJaxコンテンツ配信ネットワークを指しているため、MathJaxをインストール
+ せずに結果をすぐに確認できます。ただし、デプロイ前にhttps://www.mathjax.orgから
+ MathJaxのローカルコピーをインストールすることを強くお勧めします。
+
+ デフォルト値は：
+ - MathJaxバージョン2の場合：https://cdn.jsdelivr.net/npm/mathjax@2
+ - MathJaxバージョン3の場合：https://cdn.jsdelivr.net/npm/mathjax@3
+ - MathJaxバージョン4の場合：https://cdn.jsdelivr.net/npm/mathjax@4
+]]>
       </docs>
     </option>
     <option type="list" id="MATHJAX_EXTENSIONS" format="string" depends="USE_MATHJAX">
@@ -1547,6 +1562,18 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[\c DOT_NUM_THREADSは、Doxygenが並列で実行を許可される\c dot呼び出しの数を指定します。\c 0に設定すると、Doxygenはシステムで利用可能なプロセッサの数に基づいて設定します。CPU負荷と処理速度のバランスをより制御するために、0より大きい値に明示的に設定できます。]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ \c DOT_BATCH_SIZE は、Doxygen が1回の \c dot 呼び出しでコンパイルできる \c dot グラフの数を指定します。
+ \c 1 に設定すると、Doxygen は各グラフに対して個別に \c dot を呼び出しますが、特に多くの CPU コアを
+ 持つシステムでは、プロセス作成のオーバーヘッドが大きくなる可能性があります。\c DOT_NUM_THREADS と
+ 共にこの設定を使用することで、特定のシステムの dot 処理速度を最適化できます。Doxygen は各スレッドに
+ バランスの取れた作業量を割り当てようとします。処理するグラフの総数が `DOT_NUM_THREADS * DOT_BATCH_SIZE`
+ を超える場合、\c dot が処理するための追加バッチが作成されます。
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

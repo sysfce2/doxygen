@@ -1162,9 +1162,24 @@
       <value name="chtml" desc="(Este es el nombre para MathJax version 3, para MathJax version 2 se traducira a \c HTML-CSS)"/>
       <value name="SVG"/>
     </option>
-    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
-<![CDATA[Si MathJax esta habilitado, debe especificar la ubicacion relativa al directorio de salida HTML con la opcion \c MATHJAX_RELPATH. Para MathJax Version 2, el directorio de destino debe contener el script `MathJax.js`. Si, por ejemplo, el directorio \c mathjax esta en el mismo nivel que el directorio de salida HTML, entonces \c MATHJAX_RELPATH debe ser <code>../mathjax</code>. Para MathJax Versiones 3 y 4, el directorio de destino debe contener el script `tex-<format>.js` (donde `<format>` es `chtml` o `svg`). El valor predeterminado apunta a la Red de Distribucion de Contenido de MathJax, por lo que puede ver el resultado rapidamente sin instalar MathJax. Sin embargo, se recomienda encarecidamente instalar una copia local de MathJax desde https://www.mathjax.org antes de implementar. El valor predeterminado es: - en el caso de MathJax Version 2: https://cdn.jsdelivr.net/npm/mathjax@2 - en el caso de MathJax Version 3: https://cdn.jsdelivr.net/npm/mathjax@3 - en el caso de MathJax Version 4: https://cdn.jsdelivr.net/npm/mathjax@4]]>
+<![CDATA[
+ Cuando MathJax esta activado, necesita especificar la ubicacion relativa al directorio
+ de salida HTML usando la opcion \c MATHJAX_RELPATH. Para MathJax version 2, el directorio
+ de destino debe contener el script `MathJax.js`. Por ejemplo, si el directorio \c mathjax
+ se encuentra en el mismo nivel que el directorio de salida HTML, entonces \c MATHJAX_RELPATH
+ debe ser <code>../mathjax</code>. Para MathJax versiones 3 y 4, el directorio de destino
+ debe contener el script `tex-<format>.js` (donde `<format>` es `chtml` o `svg`).
+ El valor predeterminado apunta a la Red de Distribucion de Contenido de MathJax para que
+ pueda ver rapidamente el resultado sin instalar MathJax. Sin embargo, se recomienda encarecidamente
+ instalar una copia local de MathJax desde https://www.mathjax.org antes de la implementacion.
+
+ El valor predeterminado es:
+ - en caso de MathJax version 2: https://cdn.jsdelivr.net/npm/mathjax@2
+ - en caso de MathJax version 3: https://cdn.jsdelivr.net/npm/mathjax@3
+ - en caso de MathJax version 4: https://cdn.jsdelivr.net/npm/mathjax@4
+]]>
       </docs>
     </option>
     <option type="list" id="MATHJAX_EXTENSIONS" format="string" depends="USE_MATHJAX">
@@ -1547,6 +1562,20 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[La etiqueta \c DOT_NUM_THREADS especifica el numero de invocaciones de \c dot que Doxygen puede ejecutar en paralelo. Cuando se configura en \c 0, Doxygen lo basara en el numero de procesadores disponibles en el sistema. Puede configurarlo explicitamente en un valor mayor que 0 para obtener control sobre el equilibrio entre la carga de la CPU y la velocidad de procesamiento.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ El \c DOT_BATCH_SIZE especifica el numero de graficos \c dot que Doxygen puede compilar
+ en una sola invocacion de \c dot. Cuando se establece en \c 1, Doxygen invocara \c dot
+ para cada grafico por separado, lo que puede causar una sobrecarga significativa de
+ creacion de procesos, especialmente en sistemas con muchos nucleos de CPU. Junto con
+ \c DOT_NUM_THREADS, esta configuracion se puede utilizar para optimizar la velocidad
+ de procesamiento de dot para un sistema en particular. Doxygen intentara asignar a cada
+ hilo una carga de trabajo equilibrada. Si el numero total de graficos a procesar excede
+ `DOT_NUM_THREADS * DOT_BATCH_SIZE`, se crearan lotes adicionales para que \c dot los procese.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

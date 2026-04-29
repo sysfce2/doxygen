@@ -65,6 +65,30 @@
         <source>This tag requires that the tag %1 is set to &lt;code&gt;YES&lt;/code&gt;.</source>
         <translation>Этот тег требует, чтобы тег %1 был установлен в &lt;code&gt;YES&lt;/code&gt;.</translation>
     </message>
+    <message>
+        <source>Note:</source>
+        <translation>Примечание:</translation>
+    </message>
+    <message>
+        <source>See also:</source>
+        <translation>См. также:</translation>
+    </message>
+    <message>
+        <source>Doxygen usage</source>
+        <translation>Использование Doxygen</translation>
+    </message>
+    <message>
+        <source>External Indexing and Searching</source>
+        <translation>Внешнее индексирование и поиск</translation>
+    </message>
+    <message>
+        <source>Linking to external documentation</source>
+        <translation>Ссылка на внешнюю документацию</translation>
+    </message>
+    <message>
+        <source>Including formulas</source>
+        <translation>Включение формул</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

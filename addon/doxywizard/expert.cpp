@@ -55,161 +55,6 @@ static QString convertToComment(const QString &s)
   }
 }
 
-QString convertDoxyCmdToHtml(const QString &s)
-{
-  QString result = s;
-
-  // Remove / replace doxygen markup strings
-  // the regular expressions are hard to read so the intention will be given
-  // Note: see also configgen.py in the src directory for other doxygen parts
-  QRegularExpression regexp;
-
-  // remove \n at end and replace by a space
-  regexp.setPattern(SA("\\n$"));
-  result.replace(regexp,SA(" "));
-
-  // remove <br> at end
-  regexp.setPattern(SA("<br> *$"));
-  result.replace(regexp,SA(" "));
-
-  // \c word -> <code>word</code>; word ends with ')', ',', '.' or ' '
-  regexp.setPattern(SA("\\\\c[ ]+([^ \\)]+)\\)"));
-  result.replace(regexp,SA("<code>\\1</code>)"));
-
-  regexp.setPattern(SA("\\\\c[ ]+([^ ,]+),"));
-  result.replace(regexp,SA("<code>\\1</code>,"));
-
-  regexp.setPattern(SA("\\\\c[ ]+([^ \\.]+)\\."));
-  result.replace(regexp,SA("<code>\\1</code>."));
-
-  regexp.setPattern(SA("\\\\c[ ]+([^ ]+) "));
-  result.replace(regexp,SA("<code>\\1</code> "));
-
-  result.replace(SA("\\c("), SA("<code>("));
-
-  // `word` -> <code>word</code>
-  result.replace(SA("``"),SA(""));
-  regexp.setPattern(SA("`([^`]+)`"));
-  result.replace(regexp,SA("<code>\\1</code>"));
-
-  // \p word -> <code>word</code>
-  result.replace(SA("\\p "), SA("<code>"));
-  result.replace(SA("\\p("), SA("<code>("));
-
-  // \b word -> <b>word</b>
-  regexp.setPattern(SA("\\\\b[ ]+([^ ]+) "));
-  result.replace(regexp,SA("<b>\\1</b> "));
-
-  // \e word -> <em>word</em>
-  regexp.setPattern(SA("\\\\e[ ]+([^ ]+) "));
-  result.replace(regexp,SA("<em>\\1</em> "));
-  result.replace(SA("\\e "), SA("<em>"));
-  result.replace(SA("\\e("), SA("<em>("));
-
-  // \a word -> <em>word</em>
-  result.replace(SA("\\a "), SA("<em>"));
-  result.replace(SA("\\a("), SA("<em>("));
-
-  // \ref key "desc" -> desc
-  // First handle special \ref cases that need to preserve the \ref for later
-  regexp.setPattern(SA("\\\\ref[ ]+[^ ]+[ ]+\"\\\\\\\\ref\""));
-  result.replace(regexp,SA("\\\\REF"));
-  regexp.setPattern(SA("\\\\ref[ ]+[^ ]+[ ]+\"([^\"]+)\""));
-  result.replace(regexp,SA("<code>\\1</code> "));
-
-  // \ref specials
-  regexp.setPattern(SA("\\\\ref[ ]+doxygen_usage"));
-  result.replace(regexp,SA("\"Doxygen usage\""));
-  regexp.setPattern(SA("\\\\ref[ ]+extsearch"));
-  result.replace(regexp,SA("\"External Indexing and Searching\""));
-  regexp.setPattern(SA("\\\\ref[ ]+external"));
-  result.replace(regexp,SA("\"Linking to external documentation\""));
-  regexp.setPattern(SA("\\\\ref[ ]+formulas"));
-  result.replace(regexp,SA("\"Including formulas\""));
-
-  // fallback for not handled \ref
-  result.replace(SA("\\\\ref"),SA(""));
-  result.replace(SA("\\\\REF"),SA("\\\\ref"));
-
-  // \note -> <br>Note:
-  result.replace(SA("\\note "),SA("<br>Note: "));
-  result.replace(SA("@note "),SA("<br>Note: "));
-
-  // \#include -> #include
-  result.replace(SA("\\#include"),SA("#include"));
-  result.replace(SA("\\#undef"),SA("#undef"));
-  result.replace(SA("\\# "),SA("# "));
-
-  // \par -> <br>
-  result.replace(SA("\\par "),SA("<br>"));
-
-  // \verbatim -> <pre>
-  result.replace(SA("\\verbatim"),SA("<pre>"));
-  result.replace(SA("\\endverbatim"),SA("</pre>"));
-
-  // \n -> <br/>
-  result.replace(SA("\\n"),SA("<br/>"));
-
-  // \& -> &amp;
-  result.replace(SA("\\&lt;"), SA("&lt;"));
-  result.replace(SA("\\&gt;"), SA("&gt;"));
-  result.replace(SA("\\&amp;"), SA("&amp;"));
-  result.replace(SA("\\&"),SA("&amp;"));
-
-  // \$ -> $
-  result.replace(SA("\\$"),SA("$"));
-
-  // \< -> &lt;
-  result.replace(SA("\\<"),SA("&lt;"));
-
-  // \> -> &gt;
-  result.replace(SA("\\>"),SA("&gt;"));
-
-  // \@ -> @
-  result.replace(SA("\\@"),SA("@"));
-
-  // 2xbackslash -> backslash
-  result.replace(SA("\\\\"),SA("\\"));
-
-  // http/https URLs -> links
-  // Only match URL-safe characters, exclude trailing punctuation
-  regexp.setPattern(SA(" (https?://[a-zA-Z0-9_\\-./~%#+?=&@]*[a-zA-Z0-9_\\-/~%#+?=&])"));
-  QRegularExpressionMatchIterator urlIt = regexp.globalMatch(result);
-  QStringList urlReplacements;
-  while (urlIt.hasNext())
-  {
-    QRegularExpressionMatch match = urlIt.next();
-    QString url = match.captured(1);
-    urlReplacements.append(match.captured(0));
-    urlReplacements.append(SA(" <a href=\"") + url + SA("\">") + url + SA("</a>"));
-  }
-  for (int i = 0; i < urlReplacements.size(); i += 2)
-  {
-    result.replace(urlReplacements[i], urlReplacements[i + 1]);
-  }
-
-  // LaTeX formulas
-  regexp.setPattern(SA("\\\\f\\$\\\\mbox\\{\\\\LaTeX\\}\\\\f\\$"));
-  result.replace(regexp,SA("LaTeX"));
-  regexp.setPattern(SA("\\\\f\\$2\\^\\{\\(16\\+\\\\mbox\\{LOOKUP\\\\_CACHE\\\\_SIZE\\}\\)\\}\\\\f\\$"));
-  result.replace(regexp,SA("2^(16+LOOKUP_CACHE_SIZE)"));
-  regexp.setPattern(SA("\\\\f\\$2\\^\\{16\\} = 65536\\\\f\\$"));
-  result.replace(regexp,SA("2^16=65536"));
-
-  // <br> -> <br/>
-  result.replace(SA("&lt;br&gt;"), SA("<br/>"));
-  result.replace(SA("&lt;br/&gt;"), SA("<br/>"));
-
-  // -# -> <br>-
-  result.replace(SA("-#"),SA("<br>-"));
-  result.replace(SA(" - "),SA("<br>-"));
-
-  // \sa -> <br>See also:
-  result.replace(SA("\\sa "),SA("<br>See also: "));
-
-  return result;
-}
-
 void Expert::setHeader(const char *header)
 {
   m_header = SA(header);
@@ -282,6 +127,7 @@ void Expert::loadConfigXml()
   }
 
   if (m_configLoaded==configPath) return; // already loaded
+  //printf("loadConfigXml path=%s\n",qPrintable(configPath));
 
   QFile file(configPath);
   QString err;
@@ -345,7 +191,162 @@ void Expert::createTopics(const QDomElement &rootElem)
           SLOT(activateTopic(QTreeWidgetItem *,QTreeWidgetItem *)));
 }
 
-static QString getDocsForNode(const QDomElement &child)
+QString Expert::convertDoxyCmdToHtml(const QString &s) const
+{
+  QString result = s;
+
+  // Remove / replace doxygen markup strings
+  // the regular expressions are hard to read so the intention will be given
+  // Note: see also configgen.py in the src directory for other doxygen parts
+  QRegularExpression regexp;
+
+  // remove \n at end and replace by a space
+  regexp.setPattern(SA("\\n$"));
+  result.replace(regexp,SA(" "));
+
+  // remove <br> at end
+  regexp.setPattern(SA("<br> *$"));
+  result.replace(regexp,SA(" "));
+
+  // \c word -> <code>word</code>; word ends with ')', ',', '.' or ' '
+  regexp.setPattern(SA("\\\\c[ ]+([^ \\)]+)\\)"));
+  result.replace(regexp,SA("<code>\\1</code>)"));
+
+  regexp.setPattern(SA("\\\\c[ ]+([^ ,]+),"));
+  result.replace(regexp,SA("<code>\\1</code>,"));
+
+  regexp.setPattern(SA("\\\\c[ ]+([^ \\.]+)\\."));
+  result.replace(regexp,SA("<code>\\1</code>."));
+
+  regexp.setPattern(SA("\\\\c[ ]+([^ ]+) "));
+  result.replace(regexp,SA("<code>\\1</code> "));
+
+  result.replace(SA("\\c("), SA("<code>("));
+
+  // `word` -> <code>word</code>
+  result.replace(SA("``"),SA(""));
+  regexp.setPattern(SA("`([^`]+)`"));
+  result.replace(regexp,SA("<code>\\1</code>"));
+
+  // \p word -> <code>word</code>
+  result.replace(SA("\\p "), SA("<code>"));
+  result.replace(SA("\\p("), SA("<code>("));
+
+  // \b word -> <b>word</b>
+  regexp.setPattern(SA("\\\\b[ ]+([^ ]+) "));
+  result.replace(regexp,SA("<b>\\1</b> "));
+
+  // \e word -> <em>word</em>
+  regexp.setPattern(SA("\\\\e[ ]+([^ ]+) "));
+  result.replace(regexp,SA("<em>\\1</em> "));
+  result.replace(SA("\\e "), SA("<em>"));
+  result.replace(SA("\\e("), SA("<em>("));
+
+  // \a word -> <em>word</em>
+  result.replace(SA("\\a "), SA("<em>"));
+  result.replace(SA("\\a("), SA("<em>("));
+
+  // \ref key "desc" -> desc
+  // First handle special \ref cases that need to preserve the \ref for later
+  regexp.setPattern(SA("\\\\ref[ ]+[^ ]+[ ]+\"\\\\\\\\ref\""));
+  result.replace(regexp,SA("\\\\REF"));
+  regexp.setPattern(SA("\\\\ref[ ]+[^ ]+[ ]+\"([^\"]+)\""));
+  result.replace(regexp,SA("<code>\\1</code> "));
+
+  // \ref specials
+  regexp.setPattern(SA("\\\\ref[ ]+doxygen_usage"));
+  result.replace(regexp,SA("\"") + tr("Doxygen usage") + SA("\""));
+  regexp.setPattern(SA("\\\\ref[ ]+extsearch"));
+  result.replace(regexp,SA("\"") + tr("External Indexing and Searching") + SA("\""));
+  regexp.setPattern(SA("\\\\ref[ ]+external"));
+  result.replace(regexp,SA("\"") + tr("Linking to external documentation") + SA("\""));
+  regexp.setPattern(SA("\\\\ref[ ]+formulas"));
+  result.replace(regexp,SA("\"") + tr("Including formulas") + SA("\""));
+
+  // fallback for not handled \ref
+  result.replace(SA("\\\\ref"),SA(""));
+  result.replace(SA("\\\\REF"),SA("\\\\ref"));
+
+  // \note -> <br>Note:
+  result.replace(SA("\\note "),SA("<br>") + tr("Note:") + SA(" "));
+  result.replace(SA("@note "),SA("<br>") + tr("Note:") + SA(" "));
+
+  // \#include -> #include
+  result.replace(SA("\\#include"),SA("#include"));
+  result.replace(SA("\\#undef"),SA("#undef"));
+  result.replace(SA("\\# "),SA("# "));
+
+  // \par -> <br>
+  result.replace(SA("\\par "),SA("<br>"));
+
+  // \verbatim -> <pre>
+  result.replace(SA("\\verbatim"),SA("<pre>"));
+  result.replace(SA("\\endverbatim"),SA("</pre>"));
+
+  // \n -> <br/>
+  result.replace(SA("\\n"),SA("<br/>"));
+
+  // \& -> &amp;
+  result.replace(SA("\\&lt;"), SA("&lt;"));
+  result.replace(SA("\\&gt;"), SA("&gt;"));
+  result.replace(SA("\\&amp;"), SA("&amp;"));
+  result.replace(SA("\\&"),SA("&amp;"));
+
+  // \$ -> $
+  result.replace(SA("\\$"),SA("$"));
+
+  // \< -> &lt;
+  result.replace(SA("\\<"),SA("&lt;"));
+
+  // \> -> &gt;
+  result.replace(SA("\\>"),SA("&gt;"));
+
+  // \@ -> @
+  result.replace(SA("\\@"),SA("@"));
+
+  // 2xbackslash -> backslash
+  result.replace(SA("\\\\"),SA("\\"));
+
+  // http/https URLs -> links
+  // Only match URL-safe characters, exclude trailing punctuation
+  regexp.setPattern(SA(" (https?://[a-zA-Z0-9_\\-./~%#+?=&@]*[a-zA-Z0-9_\\-/~%#+?=&])"));
+  QRegularExpressionMatchIterator urlIt = regexp.globalMatch(result);
+  QStringList urlReplacements;
+  while (urlIt.hasNext())
+  {
+    QRegularExpressionMatch match = urlIt.next();
+    QString url = match.captured(1);
+    urlReplacements.append(match.captured(0));
+    urlReplacements.append(SA(" <a href=\"") + url + SA("\">") + url + SA("</a>"));
+  }
+  for (int i = 0; i < urlReplacements.size(); i += 2)
+  {
+    result.replace(urlReplacements[i], urlReplacements[i + 1]);
+  }
+
+  // LaTeX formulas
+  regexp.setPattern(SA("\\\\f\\$\\\\mbox\\{\\\\LaTeX\\}\\\\f\\$"));
+  result.replace(regexp,SA("LaTeX"));
+  regexp.setPattern(SA("\\\\f\\$2\\^\\{\\(16\\+\\\\mbox\\{LOOKUP\\\\_CACHE\\\\_SIZE\\}\\)\\}\\\\f\\$"));
+  result.replace(regexp,SA("2^(16+LOOKUP_CACHE_SIZE)"));
+  regexp.setPattern(SA("\\\\f\\$2\\^\\{16\\} = 65536\\\\f\\$"));
+  result.replace(regexp,SA("2^16=65536"));
+
+  // <br> -> <br/>
+  result.replace(SA("&lt;br&gt;"), SA("<br/>"));
+  result.replace(SA("&lt;br/&gt;"), SA("<br/>"));
+
+  // -# -> <br>-
+  result.replace(SA("-#"),SA("<br>-"));
+  result.replace(SA(" - "),SA("<br>-"));
+
+  // \sa -> <br>See also:
+  result.replace(SA("\\sa "),SA("<br>") + tr("See also:") + SA(" "));
+
+  return result;
+}
+
+QString Expert::getDocsForNode(const QDomElement &child) const
 {
   QString type = child.attribute(SA("type"));
   QString id = child.attribute(SA("id"));
@@ -372,7 +373,7 @@ static QString getDocsForNode(const QDomElement &child)
   {
     if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs += SA("<br/>");
-    docs += Expert::tr("Possible values are:");
+    docs += tr("Possible values are:");
     docs += SA(" ");
     int numValues=0;
     docsVal = child.firstChildElement();
@@ -399,7 +400,7 @@ static QString getDocsForNode(const QDomElement &child)
         }
         if (i==numValues-1)
         {
-          docs+=SA(" ") + Expert::tr("and") + SA(" ");
+          docs+=SA(" ") + tr("and") + SA(" ");
         }
         else if (i==numValues)
         {
@@ -417,7 +418,7 @@ static QString getDocsForNode(const QDomElement &child)
       docs+=SA("<br/>");
       docs+=SA("<br/>");
       QString defval = child.attribute(SA("defval"));
-      docs+=SA(" ")+Expert::tr("The default value is: <code>%1</code>.").arg(defval);
+      docs+=SA(" ")+tr("The default value is: <code>%1</code>.").arg(defval);
     }
     docs+= SA("<br/>");
   }
@@ -428,7 +429,7 @@ static QString getDocsForNode(const QDomElement &child)
     QString minval = child.attribute(SA("minval"));
     QString maxval = child.attribute(SA("maxval"));
     QString defval = child.attribute(SA("defval"));
-    docs+=Expert::tr("Minimum value: %1, maximum value: %2, default value: %3.").arg(minval).arg(maxval).arg(defval);
+    docs+=tr("Minimum value: %1, maximum value: %2, default value: %3.").arg(minval).arg(maxval).arg(defval);
     docs+= SA("<br/>");
   }
   else if (type==SA("bool"))
@@ -437,13 +438,13 @@ static QString getDocsForNode(const QDomElement &child)
     docs += SA("<br/>");
     if (child.hasAttribute(SA("altdefval")))
     {
-      docs+=SA(" ")+Expert::tr("The default value is: system dependent.");
+      docs+=SA(" ")+tr("The default value is: system dependent.");
     }
     else
     {
       QString defval = child.attribute(SA("defval"));
       QString valStr = (defval==SA("1")?SA("YES"):SA("NO"));
-      docs+=SA(" ")+Expert::tr("The default value is: <code>%1</code>.").arg(valStr);
+      docs+=SA(" ")+tr("The default value is: <code>%1</code>.").arg(valStr);
     }
     docs+= SA("<br/>");
   }
@@ -470,7 +471,7 @@ static QString getDocsForNode(const QDomElement &child)
       {
         if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs += SA("<br/>");
-        docs += Expert::tr("Possible values are:");
+        docs += tr("Possible values are:");
         docs += SA(" ");
         int i = 0;
         docsVal = child.firstChildElement();
@@ -494,7 +495,7 @@ static QString getDocsForNode(const QDomElement &child)
               }
               if (i==numValues-1)
               {
-                docs += SA(" ") + Expert::tr("and") + SA(" ");
+                docs += SA(" ") + tr("and") + SA(" ");
               }
               else if (i==numValues)
               {
@@ -520,7 +521,7 @@ static QString getDocsForNode(const QDomElement &child)
       {
         if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs += SA("<br/>");
-        docs += SA(" ")+Expert::tr("The default directory is: <code>%1</code>.").arg(defval);
+        docs += SA(" ")+tr("The default directory is: <code>%1</code>.").arg(defval);
         docs += SA("<br/>");
       }
     }
@@ -533,11 +534,11 @@ static QString getDocsForNode(const QDomElement &child)
         docs += SA("<br/>");
         if (abspath != SA("1"))
         {
-          docs += SA(" ")+Expert::tr("The default file is: <code>%1</code>.").arg(defval);
+          docs += SA(" ")+tr("The default file is: <code>%1</code>.").arg(defval);
         }
         else
         {
-          docs += SA(" ")+Expert::tr("The default file (with absolute path) is: <code>%1</code>.").arg(defval);
+          docs += SA(" ")+tr("The default file (with absolute path) is: <code>%1</code>.").arg(defval);
         }
         docs += SA("<br/>");
       }
@@ -547,7 +548,7 @@ static QString getDocsForNode(const QDomElement &child)
         {
           if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
           docs += SA("<br/>");
-          docs += SA(" ")+Expert::tr("The file has to be specified with full path.");
+          docs += SA(" ")+tr("The file has to be specified with full path.");
           docs += SA("<br/>");
         }
       }
@@ -561,11 +562,11 @@ static QString getDocsForNode(const QDomElement &child)
         docs += SA("<br/>");
         if (abspath != SA("1"))
         {
-          docs += SA(" ")+Expert::tr("The default image is: <code>%1</code>.").arg(defval);
+          docs += SA(" ")+tr("The default image is: <code>%1</code>.").arg(defval);
         }
         else
         {
-          docs += SA(" ")+Expert::tr("The default image (with absolute path) is: <code>%1</code>.").arg(defval);
+          docs += SA(" ")+tr("The default image (with absolute path) is: <code>%1</code>.").arg(defval);
         }
         docs += SA("<br/>");
       }
@@ -575,7 +576,7 @@ static QString getDocsForNode(const QDomElement &child)
         {
           if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
           docs += SA("<br/>");
-          docs += SA(" ")+Expert::tr("The image has to be specified with full path.");
+          docs += SA(" ")+tr("The image has to be specified with full path.");
           docs += SA("<br/>");
         }
       }
@@ -586,7 +587,7 @@ static QString getDocsForNode(const QDomElement &child)
       {
         if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs += SA("<br/>");
-        docs += SA(" ")+Expert::tr("The default value is: <code>%1</code>.").arg(defval);
+        docs += SA(" ")+tr("The default value is: <code>%1</code>.").arg(defval);
         docs += SA("<br/>");
       }
     }
@@ -597,7 +598,7 @@ static QString getDocsForNode(const QDomElement &child)
     QString dependsOn = child.attribute(SA("depends"));
     if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs += SA("<br/>");
-    docs += SA(" ")+Expert::tr("This tag requires that the tag %1 is set to <code>YES</code>.").arg(SA("\\ref cfg_")+dependsOn.toLower()+SA(" \"")+dependsOn.toUpper()+SA("\""));
+    docs += SA(" ")+tr("This tag requires that the tag %1 is set to <code>YES</code>.").arg(SA("\\ref cfg_")+dependsOn.toLower()+SA(" \"")+dependsOn.toUpper()+SA("\""));
   }
 
   // Convert Doxygen markup to HTML
@@ -802,7 +803,7 @@ QWidget *Expert::createTopicWidget(QDomElement &elem)
   child = elem.firstChildElement();
   while (!child.isNull())
   {
-    QString setting = child.attribute(SA("setting"));
+    QString setting   = child.attribute(SA("setting"));
     QString dependsOn = child.attribute(SA("depends"));
     QString id        = child.attribute(SA("id"));
     if (!dependsOn.isEmpty() &&
@@ -811,7 +812,7 @@ QWidget *Expert::createTopicWidget(QDomElement &elem)
        Input *parentOption = m_options[dependsOn];
        if (parentOption==nullptr)
        {
-         printf("%s has depends=%s that is not valid\n",
+         printf("option '%s' has depends on '%s' that is not valid\n",
              qPrintable(id),qPrintable(dependsOn));
        }
        Input *thisOption   = m_options[id];

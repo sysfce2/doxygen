@@ -1162,9 +1162,23 @@
       <value name="chtml" desc="(MathJax 버전 3의 이름이며, MathJax 버전 2에서는 \c HTML-CSS로 변환됨)"/>
       <value name="SVG"/>
     </option>
-    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
-<![CDATA[MathJax가 활성화된 경우 \c MATHJAX_RELPATH 옵션을 사용하여 HTML 출력 디렉토리에서의 상대적 위치를 지정해야 합니다. Mathjax 버전 2의 경우 대상 디렉토리에는 `MathJax.js` 스크립트가 포함되어야 합니다. 예를 들어, \c mathjax 디렉토리가 HTML 출력 디렉토리와 동일한 레벨에 있는 경우 \c MATHJAX_RELPATH는 <code>../mathjax</code>여야 합니다. Mathjax 버전 3 및 4의 경우 대상 디렉토리에는 `tex-<format>.js` 스크립트(`<format>`은 `chtml` 또는 `svg`)가 포함되어야 합니다. 기본값은 MathJax 콘텐츠 전송 네트워크를 가리키므로 MathJax를 설치하지 않고도 결과를 빠르게 볼 수 있습니다. 그러나 배포 전에 https://www.mathjax.org에서 MathJax의 로컬 복사본을 설치하는 것이 좋습니다. 기본값은: - MathJax 버전 2의 경우: https://cdn.jsdelivr.net/npm/mathjax@2 - MathJax 버전 3의 경우: https://cdn.jsdelivr.net/npm/mathjax@3 - MathJax 버전 4의 경우: https://cdn.jsdelivr.net/npm/mathjax@4]]>
+<![CDATA[
+ MathJax가 활성화되면 \c MATHJAX_RELPATH 옵션을 사용하여 HTML 출력 디렉토리에 대한
+ 상대 위치를 지정해야 합니다. MathJax 버전 2의 경우 대상 디렉토리에 `MathJax.js` 스크립트가
+ 포함되어야 합니다. 예를 들어, \c mathjax 디렉토리가 HTML 출력 디렉토리와 같은 수준에
+ 있는 경우 \c MATHJAX_RELPATH는 <code>../mathjax</code>여야 합니다. MathJax 버전 3 및 4의 경우
+ 대상 디렉토리에 `tex-<format>.js` 스크립트(`<format>`은 `chtml` 또는 `svg`)가 포함되어야 합니다.
+ 기본값은 MathJax 콘텐츠 전송 네트워크를 가리키므로 MathJax를 설치하지 않고도
+ 빠르게 결과를 볼 수 있습니다. 그러나 배포 전에 https://www.mathjax.org에서
+ MathJax의 로컬 복사본을 설치하는 것이 강력히 권장됩니다.
+
+ 기본값은：
+ - MathJax 버전 2의 경우：https://cdn.jsdelivr.net/npm/mathjax@2
+ - MathJax 버전 3의 경우：https://cdn.jsdelivr.net/npm/mathjax@3
+ - MathJax 버전 4의 경우：https://cdn.jsdelivr.net/npm/mathjax@4
+]]>
       </docs>
     </option>
     <option type="list" id="MATHJAX_EXTENSIONS" format="string" depends="USE_MATHJAX">
@@ -1547,6 +1561,18 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[\c DOT_NUM_THREADS는 Doxygen이 병렬로 실행을 허용하는 \c dot 호출 수를 지정합니다. \c 0으로 설정하면 Doxygen은 시스템에서 사용 가능한 프로세서 수에 따라 설정합니다. CPU 부하와 처리 속도의 균형을 더 제어하기 위해 0보다 큰 값으로 명시적으로 설정할 수 있습니다.]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ \c DOT_BATCH_SIZE는 Doxygen이 단일 \c dot 호출에서 컴파일할 수 있는 \c dot 그래프의 수를 지정합니다.
+ \c 1로 설정하면 Doxygen은 각 그래프에 대해 별도로 \c dot을 호출하며, 이는 특히 많은 CPU 코어가
+ 있는 시스템에서 상당한 프로세스 생성 오버헤드를 유발할 수 있습니다.\c DOT_NUM_THREADS와 함께
+ 이 설정을 사용하여 특정 시스템의 dot 처리 속도를 최적화할 수 있습니다. Doxygen은 각 스레드에
+ 균형 잡힌 작업량을 할당하려고 시도합니다. 처리할 그래프의 총 수가 `DOT_NUM_THREADS * DOT_BATCH_SIZE`를
+ 초과하면 \c dot이 처리할 추가 배치가 생성됩니다.
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">

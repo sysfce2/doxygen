@@ -1162,9 +1162,22 @@
       <value name="chtml" desc="（這是MathJax版本3的名稱，對於MathJax版本2將被轉換為\c HTML-CSS）"/>
       <value name="SVG"/>
     </option>
-    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
-<![CDATA[啟用 MathJax 后，您需要使用 \c MATHJAX_RELPATH 選項指定相对于 HTML 輸出目錄的位置。对于 Mathjax 版本 2，目标目錄应包含 `MathJax.js` 脚本。例如，如果 \c mathjax 目錄与 HTML 輸出目錄位于同一级别，则 \c MATHJAX_RELPATH 应为 <code>../mathjax</code>。对于 Mathjax 版本 3 和 4，目标目錄应包含 `tex-<format>.js` 脚本（其中 `<format>` 是 `chtml` 或 `svg`）。預設值指向 MathJax 内容分发網路，因此您可以快速查看结果而无需安裝 MathJax。但是，强烈建议在部署前从 https://www.mathjax.org 安裝 MathJax 的本地副本。預設值为：- MathJax 版本 2：https://cdn.jsdelivr.net/npm/mathjax@2 - MathJax 版本 3：https://cdn.jsdelivr.net/npm/mathjax@3 - MathJax 版本 4：https://cdn.jsdelivr.net/npm/mathjax@4]]>
+<![CDATA[
+ 當啟用 MathJax 時，您需要使用 \c MATHJAX_RELPATH 選項指定相對於 HTML 輸出目錄的位置。
+ 對於 MathJax 版本 2，目標目錄應包含 `MathJax.js` 腳本。例如，如果 \c mathjax 目錄
+ 與 HTML 輸出目錄位於同一層級，則 \c MATHJAX_RELPATH 應為 <code>../mathjax</code>。
+ 對於 MathJax 版本 3 和 4，目標目錄應包含 `tex-<format>.js` 腳本（其中 `<format>`
+ 為 `chtml` 或 `svg`）。預設值指向 MathJax 內容傳遞網路，以便您無需安裝 MathJax
+ 即可快速查看結果。但是，強烈建議在部署前從 https://www.mathjax.org 安裝 MathJax
+ 的本地副本。
+
+ 預設值為：
+ - MathJax 版本 2 的情況：https://cdn.jsdelivr.net/npm/mathjax@2
+ - MathJax 版本 3 的情況：https://cdn.jsdelivr.net/npm/mathjax@3
+ - MathJax 版本 4 的情況：https://cdn.jsdelivr.net/npm/mathjax@4
+]]>
       </docs>
     </option>
     <option type="list" id="MATHJAX_EXTENSIONS" format="string" depends="USE_MATHJAX">
@@ -1547,6 +1560,17 @@
     <option type="int" id="DOT_NUM_THREADS" defval="0" minval="0" maxval="512" depends="HAVE_DOT">
       <docs>
 <![CDATA[\c DOT_NUM_THREADS 指定 Doxygen 允许平行运行的 \c dot 调用次数。設定为 \c 0 时，Doxygen 将根据系統中可用的处理器数量进行設定。您可以将其显式設定为大于 0 的值，以更好地控制 CPU 負載和处理速度之间的平衡。]]>
+      </docs>
+    </option>
+    <option type="int" id="DOT_BATCH_SIZE" defval="50" minval="1" maxval="1000" depends="HAVE_DOT">
+      <docs>
+<![CDATA[
+ \c DOT_BATCH_SIZE 指定 Doxygen 在單次 \c dot 呼叫中允許編譯的 \c dot 圖表數量。
+ 當設定為 \c 1 時，Doxygen 將為每個圖表單獨呼叫 \c dot，這可能會導致顯著的進程建立開銷，
+ 特別是在具有許多 CPU 核心的系統上。與 \c DOT_NUM_THREADS 一起使用此設定可以最佳化特定系統的
+ dot 處理速度。Doxygen 將嘗試為每個執行緒分配均衡的工作量。如果要處理的圖表總數超過
+ `DOT_NUM_THREADS * DOT_BATCH_SIZE`，則會為 \c dot 建立額外的批次進行處理。
+]]>
       </docs>
     </option>
     <option type="string" id="DOT_COMMON_ATTR" format="string" depends="HAVE_DOT" defval="fontname=Helvetica,fontsize=10">
