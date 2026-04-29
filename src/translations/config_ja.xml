@@ -1802,11 +1802,6 @@
 <![CDATA[\c MAX_DOT_GRAPH_DEPTHタグを使用して、\c dotによって生成されるグラフの最大深度を設定できます。深度値3は、最大3エッジを通るパスを介してルートから到達可能なノードのみが表示されることを意味します。ルートノードからより遠いノードは省略されます。このオプションを1または2に設定すると、大規模なコードベースの計算時間が大幅に削減される可能性があることに注意してください。また、グラフのサイズは\ref cfg_dot_graph_max_nodes "DOT_GRAPH_MAX_NODES"によってさらに制限される可能性があることにも注意してください。深度0を使用すると、深度の制限がないことを意味します。]]>        
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[\c DOT_MULTI_TARGETSタグを\c YESに設定すると、dotが1回の実行で複数の出力ファイルを生成できるようになります（つまり、コマンドラインで複数の-oおよび-Tオプション）。これにより\c dotがより速く動作しますが、\c dotの新しいバージョン（>1.8.10）のみがこれをサポートしているため、この機能はデフォルトで無効になっています。]]>        
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[\c GENERATE_LEGENDタグが\c YESに設定されている場合、Doxygenはdotによって生成されたグラフの様々なボックスと矢印の意味を説明する凡例ページを生成します。\note このタグは、\ref cfg_uml_look "UML_LOOK"が設定されていない場合、つまり継承およびコラボレーションダイアグラムにDoxygenの内部グラフィカル表現が使用される場合に必要です。]]>        

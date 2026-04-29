@@ -1028,22 +1028,128 @@ void DocParser::handleAnchor(DocNodeVariant *parent,DocNodeList &children)
         context.token->name);
     return;
   }
-  tokenizer.setStateAnchor();
-  tok=tokenizer.lex();
-  if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
-        "argument of command {}",context.token->name);
-    return;
+
+  { DocTokenizer::AutoSaveState saveState(tokenizer);
+    tokenizer.setStateAnchor();
+    tok=tokenizer.lex();
+    if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
+          "argument of command {}",context.token->name);
+      return;
+    }
+    else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of {}",
+          tok.to_string(),context.token->name);
+      return;
+    }
   }
-  else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of {}",
-        tok.to_string(),context.token->name);
-    return;
-  }
-  tokenizer.setStatePara();
   children.append<DocAnchor>(this,parent,context.token->name,FALSE);
+}
+
+void DocParser::handleCite(DocNodeVariant *parent,DocNodeList &children)
+{
+  AUTO_TRACE();
+  // get the argument of the cite command.
+  Token tok=tokenizer.lex();
+
+  CiteInfoOption option;
+  if (tok.is(TokenRetval::TK_WORD) && context.token->name=="{")
+  {
+    tokenizer.setStateOptions();
+    tokenizer.lex();
+    StringVector optList=split(context.token->name.str(),",");
+    for (auto const &opt : optList)
+    {
+      if (opt == "number")
+      {
+        if (!option.isUnknown())
+        {
+          warn(context.fileName,tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", context.token->name, opt);
+        }
+        else
+        {
+          option = CiteInfoOption::makeNumber();
+        }
+      }
+      else if (opt == "year")
+      {
+        if (!option.isUnknown())
+        {
+          warn(context.fileName,tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", context.token->name, opt);
+        }
+        else
+        {
+          option = CiteInfoOption::makeYear();
+        }
+      }
+      else if (opt == "shortauthor")
+      {
+        if (!option.isUnknown())
+        {
+          warn(context.fileName,tokenizer.getLineNr(),"Multiple options specified with \\{}, discarding '{}'", context.token->name, opt);
+        }
+        else
+        {
+          option = CiteInfoOption::makeShortAuthor();
+        }
+      }
+      else if (opt == "nopar")
+      {
+        option.setNoPar();
+      }
+      else if (opt == "nocite")
+      {
+        option.setNoCite();
+      }
+      else
+      {
+        warn(context.fileName,tokenizer.getLineNr(),"Unknown option specified with \\{}, discarding '{}'", context.token->name, opt);
+      }
+    }
+
+    if (option.isUnknown()) option.changeToNumber();
+
+    tokenizer.setStatePara();
+    tok=tokenizer.lex();
+    if (!tok.is(TokenRetval::TK_WHITESPACE))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after \\{} command",
+          context.token->name);
+      return;
+    }
+  }
+  else if (!tok.is(TokenRetval::TK_WHITESPACE))
+  {
+    warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after '\\{}' command",
+      context.token->name);
+    return;
+  }
+  else
+  {
+    option = CiteInfoOption::makeNumber();
+  }
+
+  { DocTokenizer::AutoSaveState saveState(tokenizer);
+    tokenizer.setStateCite();
+    tok=tokenizer.lex();
+    if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
+          "argument of command '\\{}'",context.token->name);
+      return;
+    }
+    else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of '\\{}'",
+          tok.to_string(),context.token->name);
+      return;
+    }
+    context.token->sectionId = context.token->name;
+    children.append<DocCite>(this,parent,context.token->name,context.context,option);
+  }
+
 }
 
 void DocParser::handlePrefix(DocNodeVariant *parent,DocNodeList &children)
@@ -1276,13 +1382,13 @@ void DocParser::handleRef(DocNodeVariant *parent, DocNodeList &children, char cm
 {
   AUTO_TRACE("cmdName={}",cmdName);
   QCString saveCmdName = cmdName;
-  tokenizer.pushState();
+  DocTokenizer::AutoSaveState saveState(tokenizer);
   Token tok=tokenizer.lex();
   if (!tok.is(TokenRetval::TK_WHITESPACE))
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after '{:c}{}' command",
       cmdChar,qPrint(saveCmdName));
-    goto endref;
+    return;
   }
   tokenizer.setStateRef();
   tok=tokenizer.lex(); // get the reference id
@@ -1290,14 +1396,12 @@ void DocParser::handleRef(DocNodeVariant *parent, DocNodeList &children, char cm
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of '{:c}{}'",
         tok.to_string(),cmdChar,saveCmdName);
-    goto endref;
+    return;
   }
   children.append<DocRef>(this,parent,
                             context.token->name,
                             context.context);
   children.get_last<DocRef>()->parse(cmdChar,saveCmdName);
-endref:
-  tokenizer.popState();
 }
 
 void DocParser::handleIFile(char cmdChar,const QCString &cmdName)
@@ -1546,6 +1650,11 @@ reparsetoken:
         case CommandType::CMD_IANCHOR:
           {
             handleAnchor(parent,children);
+          }
+          break;
+        case CommandType::CMD_CITE:
+          {
+            handleCite(parent,children);
           }
           break;
         case CommandType::CMD_IPREFIX:

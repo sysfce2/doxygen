@@ -1804,11 +1804,6 @@
 <![CDATA[Тег \c MAX_DOT_GRAPH_DEPTH можно использовать для установки максимальной глубины графов, сгенерированных \c dot.]]>        
       </docs>
     </option>
-    <option type="bool" id="DOT_MULTI_TARGETS" defval="0" depends="HAVE_DOT">
-      <docs>
-<![CDATA[Установите тег \c DOT_MULTI_TARGETS в \c YES, чтобы позволить dot генерировать несколько выходных файлов за один запуск.]]>        
-      </docs>
-    </option>
     <option type="bool" id="GENERATE_LEGEND" defval="1" depends="HAVE_DOT">
       <docs>
 <![CDATA[Если тег \c GENERATE_LEGEND установлен в \c YES, Doxygen сгенерирует страницу легенды, объясняющую значение различных блоков и стрелок в диаграммах, сгенерированных dot.]]>        
