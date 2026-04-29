@@ -1175,9 +1175,9 @@
  MathJax의 로컬 복사본을 설치하는 것이 강력히 권장됩니다.
 
  기본값은：
- - MathJax 버전 2의 경우：https://cdn.jsdelivr.net/npm/mathjax@2
- - MathJax 버전 3의 경우：https://cdn.jsdelivr.net/npm/mathjax@3
- - MathJax 버전 4의 경우：https://cdn.jsdelivr.net/npm/mathjax@4
+ - MathJax 버전 2의 경우： https://cdn.jsdelivr.net/npm/mathjax@2
+ - MathJax 버전 3의 경우： https://cdn.jsdelivr.net/npm/mathjax@3
+ - MathJax 버전 4의 경우： https://cdn.jsdelivr.net/npm/mathjax@4
 ]]>
       </docs>
     </option>
