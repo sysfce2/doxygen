@@ -502,9 +502,8 @@ bool DocXRefItem::parse()
 
       if (!item->text().isEmpty())
       {
-        parser()->pushContext();
+        DocParser::AutoSaveContext saveContext(*parser());
         parser()->internalValidatingParseDoc(thisVariant(),children(),item->text());
-        parser()->popContext();
       }
     }
     return TRUE;
@@ -922,9 +921,9 @@ void DocRef::parse(char cmdChar,const QCString &cmdName)
           "Potential recursion while resolving {:c}{} command!",cmdChar,cmdName);
     }
     parser()->context.insideHtmlLink=TRUE;
-    parser()->pushContext();
-    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-    parser()->popContext();
+    { DocParser::AutoSaveContext saveContext(*parser());
+      parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+    }
     parser()->context.insideHtmlLink=FALSE;
     parser()->tokenizer.setStatePara();
     flattenParagraphs(thisVariant(),children());
@@ -2046,15 +2045,15 @@ static Token skipSpacesForTable(DocParser *parser)
       auto cmdType = Mappers::cmdMapper->map(cmdName);
       if (cmdType==CommandType::CMD_ILINE)
       {
-        parser->tokenizer.pushState();
-        parser->tokenizer.setStateILine();
-        tok = parser->tokenizer.lex();
-        if (!tok.is(TokenRetval::TK_WORD))
-        {
-          warn_doc_error(parser->context.fileName,parser->tokenizer.getLineNr(),"invalid argument for command '{:c}{}'",
-              tok.command_to_char(),cmdName);
+        { DocTokenizer::AutoSaveState saveState(parser->tokenizer);
+          parser->tokenizer.setStateILine();
+          tok = parser->tokenizer.lex();
+          if (!tok.is(TokenRetval::TK_WORD))
+          {
+            warn_doc_error(parser->context.fileName,parser->tokenizer.getLineNr(),"invalid argument for command '{:c}{}'",
+                tok.command_to_char(),cmdName);
+          }
         }
-        parser->tokenizer.popState();
         tok = parser->tokenizer.lex();
       }
       else
@@ -3127,9 +3126,9 @@ void DocTitle::parse()
 void DocTitle::parseFromString(DocNodeVariant *parent,const QCString &text)
 {
   parser()->context.insideHtmlLink=TRUE;
-  parser()->pushContext(); // this will create a new parser->context.token
-  parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-  parser()->popContext(); // this will restore the old parser->context.token
+  { DocParser::AutoSaveContext saveContext(*parser());
+    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+  }
   parser()->context.insideHtmlLink=FALSE;
   parser()->tokenizer.setStatePara();
   flattenParagraphs(thisVariant(),children());
@@ -3194,9 +3193,9 @@ Token DocSimpleSect::parseRcs()
   title->parseFromString(thisVariant(),parser()->context.token->name);
 
   QCString text = parser()->context.token->text;
-  parser()->pushContext(); // this will create a new parser->context.token
-  parser()->internalValidatingParseDoc(thisVariant(),children(),text);
-  parser()->popContext(); // this will restore the old parser->context.token
+  { DocParser::AutoSaveContext saveContext(*parser());
+    parser()->internalValidatingParseDoc(thisVariant(),children(),text);
+  }
 
   return Token::make_RetVal_OK();
 }
@@ -4096,25 +4095,29 @@ void DocPara::handleInheritDoc()
     if (reMd) // member from which was inherited.
     {
       const MemberDef *thisMd = parser()->context.memberDef;
-      //printf("{InheritDocs:%s=>%s}\n",qPrint(parser()->context.memberDef->qualifiedName()),qPrint(reMd->qualifiedName()));
-      parser()->pushContext();
-      parser()->context.scope=reMd->getOuterScope();
-      if (parser()->context.scope!=Doxygen::globalScope)
-      {
-        parser()->context.context=parser()->context.scope->name();
+      bool hasParamCommand = false;
+      bool hasReturnCommand = false;
+      StringMultiSet retvalsFound;
+      StringMultiSet paramsFound;
+      { DocParser::AutoSaveContext saveContext(*parser());
+        //printf("{InheritDocs:%s=>%s}\n",qPrint(parser()->context.memberDef->qualifiedName()),qPrint(reMd->qualifiedName()));
+        parser()->context.scope=reMd->getOuterScope();
+        if (parser()->context.scope!=Doxygen::globalScope)
+        {
+          parser()->context.context=parser()->context.scope->name();
+        }
+        parser()->context.memberDef=reMd;
+        while (!parser()->context.styleStack.empty()) parser()->context.styleStack.pop();
+        while (!parser()->context.nodeStack.empty()) parser()->context.nodeStack.pop();
+        parser()->context.copyStack.push_back(reMd);
+        parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->briefDescription());
+        parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->documentation());
+        parser()->context.copyStack.pop_back();
+        hasParamCommand   = parser()->context.hasParamCommand;
+        hasReturnCommand  = parser()->context.hasReturnCommand;
+        retvalsFound      = parser()->context.retvalsFound;
+        paramsFound       = parser()->context.paramsFound;
       }
-      parser()->context.memberDef=reMd;
-      while (!parser()->context.styleStack.empty()) parser()->context.styleStack.pop();
-      while (!parser()->context.nodeStack.empty()) parser()->context.nodeStack.pop();
-      parser()->context.copyStack.push_back(reMd);
-      parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->briefDescription());
-      parser()->internalValidatingParseDoc(thisVariant(),children(),reMd->documentation());
-      parser()->context.copyStack.pop_back();
-      auto hasParamCommand   = parser()->context.hasParamCommand;
-      auto hasReturnCommand  = parser()->context.hasReturnCommand;
-      auto retvalsFound      = parser()->context.retvalsFound;
-      auto paramsFound       = parser()->context.paramsFound;
-      parser()->popContext();
       parser()->context.hasParamCommand      = hasParamCommand;
       parser()->context.hasReturnCommand     = hasReturnCommand;
       parser()->context.retvalsFound         = retvalsFound;

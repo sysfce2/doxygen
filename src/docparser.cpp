@@ -1028,24 +1028,23 @@ void DocParser::handleAnchor(DocNodeVariant *parent,DocNodeList &children)
         context.token->name);
     return;
   }
-  tokenizer.pushState();
-  tokenizer.setStateAnchor();
-  tok=tokenizer.lex();
-  if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
-        "argument of command {}",context.token->name);
-    tokenizer.popState();
-    return;
+
+  { DocTokenizer::AutoSaveState saveState(tokenizer);
+    tokenizer.setStateAnchor();
+    tok=tokenizer.lex();
+    if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
+          "argument of command {}",context.token->name);
+      return;
+    }
+    else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of {}",
+          tok.to_string(),context.token->name);
+      return;
+    }
   }
-  else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of {}",
-        tok.to_string(),context.token->name);
-    tokenizer.popState();
-    return;
-  }
-  tokenizer.popState();
   children.append<DocAnchor>(this,parent,context.token->name,FALSE);
 }
 
@@ -1132,25 +1131,25 @@ void DocParser::handleCite(DocNodeVariant *parent,DocNodeList &children)
     option = CiteInfoOption::makeNumber();
   }
 
-  tokenizer.pushState();
-  tokenizer.setStateCite();
-  tok=tokenizer.lex();
-  if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"THE ONE unexpected end of comment block while parsing the "
-        "argument of command '\\{}'",context.token->name);
-    return;
+  { DocTokenizer::AutoSaveState saveState(tokenizer);
+    tokenizer.setStateCite();
+    tok=tokenizer.lex();
+    if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"THE ONE unexpected end of comment block while parsing the "
+          "argument of command '\\{}'",context.token->name);
+      return;
+    }
+    else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
+    {
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of '\\{}'",
+          tok.to_string(),context.token->name);
+      return;
+    }
+    context.token->sectionId = context.token->name;
+    children.append<DocCite>(this,parent,context.token->name,context.context,option);
   }
-  else if (!tok.is_any_of(TokenRetval::TK_WORD,TokenRetval::TK_LNKWORD))
-  {
-    warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of '\\{}'",
-        tok.to_string(),context.token->name);
-    return;
-  }
-  context.token->sectionId = context.token->name;
-  children.append<DocCite>(this,parent,context.token->name,context.context,option);
 
-  tokenizer.popState();
 }
 
 void DocParser::handlePrefix(DocNodeVariant *parent,DocNodeList &children)
@@ -1383,13 +1382,13 @@ void DocParser::handleRef(DocNodeVariant *parent, DocNodeList &children, char cm
 {
   AUTO_TRACE("cmdName={}",cmdName);
   QCString saveCmdName = cmdName;
-  tokenizer.pushState();
+  DocTokenizer::AutoSaveState saveState(tokenizer);
   Token tok=tokenizer.lex();
   if (!tok.is(TokenRetval::TK_WHITESPACE))
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after '{:c}{}' command",
       cmdChar,qPrint(saveCmdName));
-    goto endref;
+    return;
   }
   tokenizer.setStateRef();
   tok=tokenizer.lex(); // get the reference id
@@ -1397,14 +1396,12 @@ void DocParser::handleRef(DocNodeVariant *parent, DocNodeList &children, char cm
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected token {} as the argument of '{:c}{}'",
         tok.to_string(),cmdChar,saveCmdName);
-    goto endref;
+    return;
   }
   children.append<DocRef>(this,parent,
                             context.token->name,
                             context.context);
   children.get_last<DocRef>()->parse(cmdChar,saveCmdName);
-endref:
-  tokenizer.popState();
 }
 
 void DocParser::handleIFile(char cmdChar,const QCString &cmdName)

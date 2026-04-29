@@ -101,8 +101,14 @@ struct DocParserContext
 class DocParser : public IDocParser
 {
   public:
-    void pushContext();
-    void popContext();
+    class AutoSaveContext
+    {
+      public:
+        AutoSaveContext(DocParser &parser) : m_parser(parser) { m_parser.pushContext(); }
+       ~AutoSaveContext() { m_parser.popContext(); }
+      private:
+        DocParser &m_parser;
+    };
     void handleImg(DocNodeVariant *parent,DocNodeList &children,const HtmlAttribList &tagHtmlAttribs);
     Token internalValidatingParseDoc(DocNodeVariant *parent,DocNodeList &children,
                                       const QCString &doc);
@@ -143,10 +149,13 @@ class DocParser : public IDocParser
     void handleIFile(char cmdChar,const QCString &cmdName);
     void handleILine(char cmdChar,const QCString &cmdName);
     void readTextFileByName(const QCString &file,QCString &text);
-
     std::stack< DocParserContext > contextStack;
     DocParserContext               context;
     DocTokenizer                   tokenizer;
+  private:
+    void pushContext();
+    void popContext();
+
 };
 
 //---------------------------------------------------------------------------

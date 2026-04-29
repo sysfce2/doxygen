@@ -182,6 +182,15 @@ class Definition;
 class DocTokenizer
 {
   public:
+    class AutoSaveState
+    {
+      public:
+        AutoSaveState(DocTokenizer &tok) : m_tok(tok) { m_tok.pushState(); }
+       ~AutoSaveState() { m_tok.popState(); }
+      private:
+        DocTokenizer &m_tok;
+    };
+
     DocTokenizer();
    ~DocTokenizer();
     NON_COPYABLE(DocTokenizer)
@@ -193,8 +202,6 @@ class DocTokenizer
     QCString getFileName() const;
     void setLineNr(int lineno);
     int getLineNr() const;
-    void pushState();
-    void popState();
 
     // operations on the scanner
     void findSections(const QCString &input,const Definition *d,
@@ -202,8 +209,6 @@ class DocTokenizer
     void init(const char *input,const QCString &fileName,
               bool markdownSupport, bool insideHtmlLink);
     void cleanup();
-    void pushContext();
-    bool popContext();
     Token  lex();
     void unputString(const QCString &tag);
     void setStatePara();
@@ -256,6 +261,12 @@ class DocTokenizer
     void setStatePrefix();
 
   private:
+    friend class AutoSaveState;
+    friend class DocParser;
+    void pushState();
+    void popState();
+    void pushContext();
+    bool popContext();
     struct Private;
     std::unique_ptr<Private> p;
 };
