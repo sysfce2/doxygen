@@ -1136,7 +1136,7 @@ void DocParser::handleCite(DocNodeVariant *parent,DocNodeList &children)
     tok=tokenizer.lex();
     if (tok.is_any_of(TokenRetval::TK_NONE,TokenRetval::TK_EOF))
     {
-      warn_doc_error(context.fileName,tokenizer.getLineNr(),"THE ONE unexpected end of comment block while parsing the "
+      warn_doc_error(context.fileName,tokenizer.getLineNr(),"unexpected end of comment block while parsing the "
           "argument of command '\\{}'",context.token->name);
       return;
     }
