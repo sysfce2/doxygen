@@ -461,6 +461,15 @@ void MainWindow::loadConfigFromFile(const QString & fileName)
 void MainWindow::saveConfig(const QString &fileName)
 {
   if (fileName.isEmpty()) return;
+  
+  // Create backup of existing file
+  if (QFile::exists(fileName))
+  {
+    QString backupFileName = fileName + QString::fromLatin1(".bak");
+    QFile::remove(backupFileName);
+    QFile::copy(fileName, backupFileName);
+  }
+  
   QFile f(fileName);
   if (!f.open(QIODevice::WriteOnly | QIODevice::Text ))
   {
