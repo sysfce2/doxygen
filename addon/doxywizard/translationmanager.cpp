@@ -219,13 +219,15 @@ bool TranslationManager::switchLanguage(const QString &langCode)
 #endif
   if (QFileInfo::exists(qtQmPath))
   {
+    printf("Loading %s file\n",qPrintable(qtQmPath));
     m_qtTranslator->load(qtQmPath);
     qApp->installTranslator(m_qtTranslator);
   }
   else
   {
-    delete m_qtTranslator;
-    m_qtTranslator = nullptr;
+    // these aren't available for a static Qt build. To be fixed.
+    printf("Failed to find %s file. Continuing anyway.\n",qPrintable(qtQmPath));
+    qApp->installTranslator(m_qtTranslator);
   }
 
   m_currentLangCode = langCode;
@@ -240,6 +242,7 @@ bool TranslationManager::switchLanguage(const QString &langCode)
 void TranslationManager::switchToSystemLanguage()
 {
   QString sysLang = detectSystemLanguage();
+  printf("switchToSystemLanguage(%s)\n",qPrintable(sysLang));
   switchLanguage(sysLang);
 }
 

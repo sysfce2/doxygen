@@ -461,7 +461,7 @@ void MainWindow::loadConfigFromFile(const QString & fileName)
 void MainWindow::saveConfig(const QString &fileName)
 {
   if (fileName.isEmpty()) return;
-  
+
   // Create backup of existing file
   if (QFile::exists(fileName))
   {
@@ -469,7 +469,7 @@ void MainWindow::saveConfig(const QString &fileName)
     QFile::remove(backupFileName);
     QFile::copy(fileName, backupFileName);
   }
-  
+
   QFile f(fileName);
   if (!f.open(QIODevice::WriteOnly | QIODevice::Text ))
   {
@@ -947,6 +947,7 @@ void MainWindow::outputLogFinish()
 void MainWindow::switchLanguage(QAction *action)
 {
   QString langCode = action->data().toString();
+  printf("switchLanguage(%s)\n",qPrintable(langCode));
   m_translationManager->switchLanguage(langCode);
 }
 
