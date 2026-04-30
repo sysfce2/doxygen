@@ -37,6 +37,7 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QRegularExpression>
+#include <QMap>
 
 #define SA(x) QString::fromLatin1(x)
 
@@ -1138,6 +1139,16 @@ void Expert::refresh()
 
 void Expert::retranslateUi()
 {
+  // Save current values before recreating widgets
+  QMap<QString, QVariant> savedValues;
+  for (auto it = m_options.constBegin(); it != m_options.constEnd(); ++it)
+  {
+    if (it.value())
+    {
+      savedValues.insert(it.key(), it.value()->value());
+    }
+  }
+
   m_treeWidget->setHeaderLabels(QStringList() << DoxygenWizard::msgTopicsHeader());
   m_prev->setText(DoxygenWizard::msgPreviousButton());
   m_next->setText(DoxygenWizard::msgNextButton());
@@ -1156,6 +1167,31 @@ void Expert::retranslateUi()
   m_treeWidget->clear();
 
   createTopics(m_rootElement);
+
+  // Restore saved values to the newly created widgets
+  // Block signals to prevent triggering the changed() signal
+  bool wasBlocked = blockSignals(true);
+  for (auto it = savedValues.constBegin(); it != savedValues.constEnd(); ++it)
+  {
+    if (m_options.contains(it.key()) && m_options[it.key()])
+    {
+      Input *input = m_options[it.key()];
+      QObject *obj = dynamic_cast<QObject*>(input);
+      if (obj)
+      {
+        bool inputWasBlocked = obj->blockSignals(true);
+        input->value() = it.value();
+        input->update();
+        obj->blockSignals(inputWasBlocked);
+      }
+      else
+      {
+        input->value() = it.value();
+        input->update();
+      }
+    }
+  }
+  blockSignals(wasBlocked);
 
   m_treeWidget->setCurrentItem(m_treeWidget->invisibleRootItem()->child(0));
 
