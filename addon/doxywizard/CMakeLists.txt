@@ -158,9 +158,7 @@ foreach(lang_file ${LANG_CONFIG_FILES})
 endforeach()
 string(APPEND CONFIG_QRC_CONTENT "</qresource>\n</RCC>\n")
 
-file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/config.qrc
-  CONTENT ${CONFIG_QRC_CONTENT}
-)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/config.qrc "${CONFIG_QRC_CONTENT}")
 
 qt_add_resources(doxywizard_CONFIG_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/config.qrc)
 
@@ -194,9 +192,7 @@ foreach(qm_file ${doxywizard_QM_FILES})
 endforeach()
 string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
 
-file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc
-  CONTENT ${TRANSLATIONS_QRC_CONTENT}
-)
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc "${TRANSLATIONS_QRC_CONTENT}")
 
 qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
 

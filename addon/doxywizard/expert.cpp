@@ -118,6 +118,7 @@ void Expert::loadConfigXml()
     QFile langFile(configPath);
     if (!langFile.exists())
     {
+      printf("Failed to open '%s', defaulting to English",qPrintable(configPath));
       configPath = SA(":/config/config.xml");
     }
   }
