@@ -185,16 +185,20 @@ else()
   endif()
 endif()
 
-set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/translations\">\n")
-foreach(qm_file ${doxywizard_QM_FILES})
-  get_filename_component(qm_name ${qm_file} NAME)
-  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file>${qm_name}</file>\n")
-endforeach()
-string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
+if(doxywizard_QM_FILES)
+  set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/translations\">\n")
+  foreach(qm_file ${doxywizard_QM_FILES})
+    get_filename_component(qm_name ${qm_file} NAME)
+    string(APPEND TRANSLATIONS_QRC_CONTENT "        <file>${qm_name}</file>\n")
+  endforeach()
+  string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc "${TRANSLATIONS_QRC_CONTENT}")
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc "${TRANSLATIONS_QRC_CONTENT}")
 
-qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
+  qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/translations.qrc)
+else()
+  set(doxywizard_TRANSLATION_RESOURCES)
+endif()
 
 add_executable(doxywizard WIN32
 config_msg.cpp
