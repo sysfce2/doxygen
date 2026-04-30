@@ -147,8 +147,3 @@ bool InputBool::isDefault()
   return m_state == m_default;
 }
 
-void InputBool::retranslate()
-{
-  updateDefault();
-}
-

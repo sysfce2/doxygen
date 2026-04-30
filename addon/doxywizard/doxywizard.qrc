@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/">
+  <file alias="config.xml">../../src/config.xml</file>
   <file>images/add.svg</file>
   <file>images/del.svg</file>
   <file>images/file.svg</file>

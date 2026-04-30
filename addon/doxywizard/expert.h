@@ -27,16 +27,13 @@ class QSettings;
 class QTextBrowser;
 class QPushButton;
 class Input;
-class TranslationManager;
-
-QString convertDoxyCmdToHtml(const QString &s);
 
 class Expert : public QSplitter, public DocIntf
 {
     Q_OBJECT
 
   public:
-    Expert(TranslationManager *translationManager);
+    Expert();
    ~Expert();
     void loadSettings(QSettings *);
     void saveSettings(QSettings *);
@@ -58,7 +55,6 @@ class Expert : public QSplitter, public DocIntf
     void activateTopic(QTreeWidgetItem *,QTreeWidgetItem *);
     QWidget *createTopicWidget(QDomElement &elem);
     void refresh();
-    void retranslateUi();
 
   private slots:
     void showHelp(Input *);
@@ -72,9 +68,6 @@ class Expert : public QSplitter, public DocIntf
   private:
     void createTopics(const QDomElement &);
     void saveTopic(QTextStream &t,QDomElement &elem,TextCodecAdapter *codec,bool brief,bool dondensed,bool convert);
-    void loadConfigXml();
-    QString convertDoxyCmdToHtml(const QString &s) const;
-    QString getDocsForNode(const QDomElement &child) const;
 
     QSplitter               *m_splitter;
     QTextBrowser            *m_helper;
@@ -83,14 +76,11 @@ class Expert : public QSplitter, public DocIntf
     QHash<QString,QWidget *> m_topics;
     QHash<QString,QObject *> m_optionWidgets;
     QHash<QString,Input *>   m_options;
-    QMap<QString, QDomElement> m_optionElements;
     QPushButton             *m_next;
     QPushButton             *m_prev;
     QDomElement              m_rootElement;
     bool                     m_inShowHelp;
     QString                  m_header;
-    TranslationManager      *m_translationManager;
-    QString                  m_configLoaded;
 };
 
 #endif

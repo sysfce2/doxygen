@@ -70,7 +70,7 @@ InputString::InputString( QGridLayout *layout,int &row,
       if (m==StringFile || m==StringImage || m==StringFileDir)
       {
         m_brFile = m_br->addAction(QIcon(QString::fromLatin1(":/images/file.svg")),QString(),this,SLOT(browseFile()));
-        m_brFile->setToolTip(DoxygenWizard::msgBrowseToFile());
+        m_brFile->setToolTip(tr("Browse to a file"));
         if (m==StringImage)
         {
           m_im = new QLabel;
@@ -83,7 +83,7 @@ InputString::InputString( QGridLayout *layout,int &row,
       if (m==StringDir || m==StringFileDir)
       {
         m_brDir = m_br->addAction(QIcon(QString::fromLatin1(":/images/folder.svg")),QString(),this,SLOT(browseDir()));
-        m_brDir->setToolTip(DoxygenWizard::msgBrowseToFolder());
+        m_brDir->setToolTip(tr("Browse to a folder"));
       }
       rowLayout->addWidget( m_br);
       layout->addLayout( rowLayout, m==StringImage?row-1:row, 1, 1, 2 );
@@ -126,7 +126,6 @@ void InputString::setValue(const QString &s)
     m_str = s;
     m_value = m_str;
     updateDefault();
-    emit changed();
   }
 }
 void InputString::updateDefault()
@@ -144,14 +143,14 @@ void InputString::updateDefault()
     {
       if (m_str.isEmpty())
       {
-        m_im->setText(DoxygenWizard::msgNoProjectLogoSelected());
+        m_im->setText(tr("No Project logo selected."));
       }
       else
       {
         QFile Fout(m_str);
         if(!Fout.exists())
         {
-          m_im->setText(DoxygenWizard::msgFileNotFound(m_str));
+          m_im->setText(tr("Sorry, cannot find file(")+m_str+QString::fromLatin1(");"));
         }
         else
         {
@@ -162,12 +161,13 @@ void InputString::updateDefault()
           }
           else
           {
-            m_im->setText(DoxygenWizard::msgNoPreviewAvailable(m_str));
+            m_im->setText(tr("Sorry, no preview available (")+m_str+QString::fromLatin1(");"));
           }
         }
       }
     }
     if (m_le && m_le->text()!=m_str) m_le->setText( m_str );
+    emit changed();
   }
 }
 
@@ -276,9 +276,4 @@ QString InputString::checkEnumVal(const QString &value)
   config_warn("argument '%s' for option %s is not a valid enum value."
               " Using the default: %s!",qPrintable(value),qPrintable(m_id),qPrintable(m_default));
   return m_default;
-}
-
-void InputString::retranslate()
-{
-  updateDefault();
 }
