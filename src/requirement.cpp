@@ -218,7 +218,7 @@ void RequirementManager::generatePage()
     doc += "</span> ";
     doc += "</td><td>";
     doc += "<div class=\"req_title\">"+req->title()+"</div>";
-    doc += "<div class=\"req_docs\">";
+    doc += "<p/><div class=\"req_docs\">";
     doc += req->doc();
     req->sortReferences();
     auto symToString = [](const Definition *sym)
