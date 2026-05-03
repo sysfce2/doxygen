@@ -112,6 +112,28 @@ QString DoxygenWizard::msgPreviousButton()                            { return T
 QString DoxygenWizard::msgNextButton()                                { return TR_MSG("Next");                                           }
 QString DoxygenWizard::msgTopicsHeader()                              { return TR_MSG("Topics");                                         }
 
+#define TR_WIZARD_MESSAGES                             \
+    TR_MSG_ENTRY("Build")          \
+    TR_MSG_ENTRY("Messages")       \
+    TR_MSG_ENTRY("Input")          \
+    TR_MSG_ENTRY("Source Browser") \
+    TR_MSG_ENTRY("Index")          \
+    TR_MSG_ENTRY("Preprocessor")   \
+    TR_MSG_ENTRY("External")
+
+#undef  TR_MSG_ENTRY
+#define TR_MSG_ENTRY(name) { QLatin1String(name), []() { return QCoreApplication::translate("Messages", name); } },
+
+static QMap<QString, std::function<QString()>> g_messageMap = {
+    TR_WIZARD_MESSAGES
+};
+
+QString DoxygenWizard::translateExpertTopic(const QString &name)
+{
+  if (g_messageMap.contains(name)) return g_messageMap[name]();
+  return name;
+}
+
 //----------------------------------------------------------------------------------------------
 
 MainWindow &MainWindow::instance()

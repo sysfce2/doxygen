@@ -278,7 +278,8 @@ void Expert::createTopics(const QDomElement &rootElem)
       QString setting = childElem.attribute(SA("setting"));
       if (setting.isEmpty() || IS_SUPPORTED(setting.toLatin1()))
       {
-        items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList() << name << docs));
+        QString translatedName = DoxygenWizard::translateExpertTopic(name);
+        items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList() << translatedName << docs));
         QWidget *widget = createTopicWidget(childElem);
         m_topics[name] = widget;
         m_topicStack->addWidget(widget);
