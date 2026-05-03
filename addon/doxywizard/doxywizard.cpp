@@ -38,6 +38,8 @@
 #include <QDebug>
 #include <QDate>
 #include <QScrollBar>
+#include <QLocale>
+#include <QTranslator>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -51,6 +53,52 @@ bool DoxygenWizard::debugFlag = false;
 const int messageTimeout = 5000; //!< status bar message timeout in milliseconds.
 
 #define APPQT(x) QString::fromLatin1("<qt><pre>") + x + QString::fromLatin1("</pre></qt>")
+
+//----------------------------------------------------------------------------------------------
+
+// check if a translation for langCode is stored as resource
+static bool isLanguageCodeSupported(const QString &langCode)
+{
+  QDir resourceDir(QString::fromLatin1(":/i18n"));
+  QFileInfoList fileList = resourceDir.entryInfoList();
+  foreach (QFileInfo fileInfo, fileList)
+  {
+    QString filename     = fileInfo.fileName();
+    const int underscore = filename.indexOf(QChar::fromLatin1('_'));
+    const int dot        = filename.lastIndexOf(QChar::fromLatin1('.'));
+    if (filename.startsWith(QString::fromLatin1("doxywizard")) && underscore!=-1 && dot>underscore)
+    {
+      QString supportedLangCode = filename.mid(underscore+1, dot-underscore-1);
+      if (langCode==supportedLangCode) return true;
+    }
+  }
+  return false;
+}
+
+static QString getStartupLanguageCode()
+{
+  QSettings settings(QString::fromLatin1("Doxygen.org"), QString::fromLatin1("Doxywizard"));
+  // fetch stored language code
+  QString langCode = settings.value(QString::fromLatin1("language/code")).toString();
+  if (!langCode.isEmpty() && isLanguageCodeSupported(langCode))
+  {
+    return langCode;
+  }
+  // no translation found yet -> determine system language code from Locale
+  QLocale systemLocale = QLocale::system();
+  if (systemLocale.language()==QLocale::Chinese)
+  {
+    langCode = QLocale::SimplifiedChineseScript ? QString::fromLatin1("zh_CN") : QString::fromLatin1("zh_TW");
+  }
+  else
+  {
+    langCode = systemLocale.name().left(2);
+  }
+  // return code if supported
+  return isLanguageCodeSupported(langCode) ? langCode : QString();
+}
+
+//----------------------------------------------------------------------------------------------
 
 MainWindow &MainWindow::instance()
 {
@@ -803,6 +851,7 @@ void MainWindow::outputLogFinish()
   m_outputLog->ensureCursorVisible();
   m_saveLog->setEnabled(true);
 }
+
 //-----------------------------------------------------------------------
 int main(int argc,char **argv)
 {
@@ -858,6 +907,19 @@ int main(int argc,char **argv)
   }
   else
   {
+    qDebug() << "Starting doxywizard...";
+
+    QString langCode = getStartupLanguageCode();
+    QTranslator translator;
+    if (!langCode.isEmpty() &&
+        translator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(langCode)) &&
+        translator.load(QString::fromLatin1(":/i18n/doxywizard_%1.qm").arg(langCode))
+       )
+    {
+      qDebug() << "Installing translator" << langCode;
+      QCoreApplication::installTranslator(&translator);
+    }
+
     MainWindow &main = MainWindow::instance();
     if (locArgc==2 && argv[argc-1][0]!='-') // name of config file as an argument
     {

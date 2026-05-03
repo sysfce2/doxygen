@@ -4,11 +4,15 @@ if (force_qt STREQUAL "Qt6" OR NOT force_qt)
   if (Qt6Core_FOUND)
     message(STATUS "Using Qt6")
     find_package(Qt6 REQUIRED COMPONENTS Widgets Gui Xml Svg)
+    set(QT_VERSION_MAJOR "6")
     macro(qt_wrap_cpp)
       qt6_wrap_cpp(${ARGN})
     endmacro()
     macro(qt_add_resources)
       qt6_add_resources(${ARGN})
+    endmacro()
+    macro(qt_add_translation)
+      qt6_add_translation(${ARGN})
     endmacro()
   elseif (force_qt STREQUAL "Qt6")
     # no fallback to Qt5
@@ -22,11 +26,15 @@ if (force_qt STREQUAL "Qt5" OR NOT Qt6_FOUND)
   if (Qt5Core_FOUND)
     message(STATUS "Using Qt5")
     find_package(Qt5 REQUIRED COMPONENTS Widgets Gui Xml Svg)
+    set(QT_VERSION_MAJOR "5")
     macro(qt_wrap_cpp)
       qt5_wrap_cpp(${ARGN})
     endmacro()
     macro(qt_add_resources)
       qt5_add_resources(${ARGN})
+    endmacro()
+    macro(qt_add_translation)
+      qt5_add_translation(${ARGN})
     endmacro()
   elseif (force_qt STREQUAL "Qt5")
     message(FATAL_ERROR "Qt5 not found")
@@ -142,6 +150,38 @@ inputstrlist.h
 wizard.h
 )
 
+set(TRANSLATIONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/i18n)
+file(GLOB DOXYWIZARD_TRANSLATION_FILES CONFIGURE_DEPENDS "${TRANSLATIONS_DIR}/doxywizard_*.ts")
+
+find_package(Qt${QT_VERSION_MAJOR}LinguistTools QUIET)
+if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
+  set_source_files_properties(${DOXYWIZARD_TRANSLATION_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR})
+  qt_add_translation(doxywizard_QM_FILES ${DOXYWIZARD_TRANSLATION_FILES})
+  get_target_property(QT_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+  execute_process(
+      COMMAND "${QT_QMAKE_EXECUTABLE}" -query QT_INSTALL_TRANSLATIONS
+      OUTPUT_VARIABLE QT_TRANSLATIONS_DIR
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  message(STATUS "Qt translations dir: ${QT_TRANSLATIONS_DIR}")
+else()
+  message(STATUS "Qt Linguist tools not found, translation files will not be compiled")
+endif()
+
+set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/i18n\">\n")
+foreach(qm_file ${doxywizard_QM_FILES})
+  get_filename_component(qm_name ${qm_file} NAME)
+  string(REGEX REPLACE ".*/doxywizard_(.+)\\.qm$" "\\1" LOCALE "${qm_file}")
+  if (QT_TRANSLATIONS_DIR)
+    string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"qtbase_${LOCALE}.qm\">${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm</file>\n")
+  endif()
+  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file>${qm_name}</file>\n")
+endforeach()
+string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc "${TRANSLATIONS_QRC_CONTENT}")
+
+qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
 
 add_executable(doxywizard WIN32
@@ -158,6 +198,8 @@ ${GENERATED_SRC_WIZARD}/config_doxyw.cpp
 ${GENERATED_SRC_WIZARD}/config_doxyw.l.h
 ${GENERATED_SRC_WIZARD}/configdoc.cpp
 ${doxywizard_MOC}
+${doxywizard_TRANSLATION_RESOURCES}
+${doxywizard_QM_FILES}
 ${doxywizard_RESOURCES_RCC}
 ${PROJECT_SOURCE_DIR}/templates/icon/doxygen.rc
 )
