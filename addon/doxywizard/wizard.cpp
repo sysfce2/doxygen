@@ -620,7 +620,7 @@ void Step1::selectProjectIcon()
     QFile Fout(iconName);
     if(!Fout.exists())
     {
-      m_projIconLab->setText(tr("Sorry, cannot find file(")+iconName+QString::fromLatin1(");"));
+      m_projIconLab->setText(tr("Sorry, cannot find file(%1)").arg(iconName));
     }
     else
     {
@@ -631,7 +631,7 @@ void Step1::selectProjectIcon()
       }
       else
       {
-        m_projIconLab->setText(tr("Sorry, no preview available (")+iconName+QString::fromLatin1(");"));
+        m_projIconLab->setText(tr("Sorry, no preview available (%1)").arg(iconName));
       }
     }
   }
@@ -729,7 +729,7 @@ void Step1::init()
     QFile Fout(iconName);
     if(!Fout.exists())
     {
-      m_projIconLab->setText(tr("Sorry, cannot find file(")+iconName+QString::fromLatin1(");"));
+      m_projIconLab->setText(tr("Sorry, cannot find file(%1)").arg(iconName));
     }
     else
     {
@@ -740,7 +740,7 @@ void Step1::init()
       }
       else
       {
-        m_projIconLab->setText(tr("Sorry, no preview available (")+iconName+QString::fromLatin1(");"));
+        m_projIconLab->setText(tr("Sorry, no preview available (%1)").arg(iconName));
       }
     }
   }
@@ -1333,7 +1333,7 @@ Wizard::Wizard(const QHash<QString,Input*> &modelData, QWidget *parent) :
 {
   m_treeWidget = new QTreeWidget;
   m_treeWidget->setColumnCount(1);
-  m_treeWidget->setHeaderLabels(QStringList() << QString::fromLatin1("Topics"));
+  m_treeWidget->setHeaderLabels(QStringList(tr("Topics")));
   QList<QTreeWidgetItem*> items;
   items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList(tr("Project"))));
   items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList(tr("Mode"))));

@@ -270,19 +270,19 @@ void MainWindow::about()
 {
   QString msg;
   QTextStream t(&msg,QIODevice::WriteOnly);
-  t << QString::fromLatin1("<qt><center>A tool to configure and run doxygen version ")+
-       QString::fromLatin1(getDoxygenVersion().c_str())+
-       QString::fromLatin1(" on your source files.</center>")+
-       QString::fromLatin1("<center>(Created with Qt version  ")+
-       QString::fromLatin1(QT_VERSION_STR);
-       if (qstrcmp(qVersion(),QT_VERSION_STR))
-       {
-         t << QString::fromLatin1(", running with ")+
-              QString::fromLatin1(qVersion());
-       }
-  t << QString::fromLatin1(")</center><p><br>"
-       "<center>Written by<br> Dimitri van Heesch<br>&copy; 2000-");
-  t << QDate::currentDate().year();
+  t << QString::fromLatin1("<qt><center>")+
+       tr("A tool to configure and run doxygen version %1 on your source files.").arg(getDoxygenVersion().c_str())+
+       QString::fromLatin1("</center><center>");
+  if (QString::fromLatin1(qVersion())==QString::fromLatin1(QT_VERSION_STR))
+  {
+    t << tr("Created with Qt version %1)").arg(QT_VERSION_STR);
+  }
+  else
+  {
+    t << tr("Created with Qt version %1, running with version %2)").arg(QT_VERSION_STR).arg(qVersion());
+  }
+  t << QString::fromLatin1("</center><p><br><center>") + tr("Written by");
+  t << QString::fromLatin1("<br> Dimitri van Heesch<br>&copy; 2000-") << QDate::currentDate().year();
   t << QString::fromLatin1("</center><p></qt>");
   QMessageBox::about(this,tr("Doxygen GUI"),msg);
 }
@@ -335,8 +335,7 @@ void MainWindow::saveConfig(const QString &fileName)
   {
     QMessageBox::warning(this,
         tr("Error saving"),
-        QString(tr("Error: cannot open the file "))+fileName+tr(" for writing!\n")+
-        tr("Reason given: ")+QString::number(f.error()));
+        tr("Error: cannot open the file %1 for writing!\nReason given: %2").arg(fileName).arg(f.error()));
     return;
   }
   QTextStream t(&f);
@@ -540,7 +539,7 @@ void MainWindow::runDoxygen()
     QString doxygenPath;
 #if defined(Q_OS_MACX)
     doxygenPath = qApp->applicationDirPath()+QString::fromLatin1("/../Resources/");
-    qDebug() << tr("Doxygen path: ") << doxygenPath;
+    qDebug() << "Doxygen path: " << doxygenPath;
     if ( !QFile(doxygenPath + QString::fromLatin1("doxygen")).exists() )
     {
       // No Doxygen binary in the resources, if there is a system Doxygen binary, use that instead
@@ -550,11 +549,11 @@ void MainWindow::runDoxygen()
       }
       else
       {
-        qDebug() << tr("Can't find the doxygen command, make sure it's in your $$PATH");
+        qDebug() << "Cannot find the doxygen command, make sure it's in your $$PATH";
         doxygenPath = QString::fromLatin1("");
       }
     }
-    qDebug() << tr("Getting doxygen from: ") << doxygenPath;
+    qDebug() << "Getting doxygen from: " << doxygenPath;
 #endif
 
     m_runProcess->setReadChannel(QProcess::StandardOutput);
@@ -707,7 +706,7 @@ void MainWindow::saveLog()
     else
     {
       QMessageBox::warning(nullptr, tr("Warning"),
-                           tr("Cannot open file ") + fn + tr(" for writing. Nothing saved!"), QMessageBox::Ok);
+                           tr("Cannot open file %1 for writing. Nothing saved!").arg(fn), QMessageBox::Ok);
     }
   }
 }
@@ -834,11 +833,11 @@ int main(int argc,char **argv)
       QMessageBox msgBox;
       if (!qstrcmp(qVersion(),QT_VERSION_STR))
       {
-        msgBox.setText(QString::fromLatin1("Doxywizard version: %1, Qt version: %2").arg(QString::fromLatin1(getFullVersion().c_str()),QString::fromLatin1(QT_VERSION_STR)));
+        msgBox.setText(QString::fromLatin1("Doxywizard version: %1, Qt version: %2").arg(QString::fromLatin1(getFullVersion().c_str())).arg(QString::fromLatin1(QT_VERSION_STR)));
       }
       else
       {
-        msgBox.setText(QString::fromLatin1("Doxywizard version: %1, Qt version: created with %2, running with %3").arg(QString::fromLatin1(getFullVersion().c_str()),QString::fromLatin1(QT_VERSION_STR),QString::fromLatin1(qVersion())));
+        msgBox.setText(QString::fromLatin1("Doxywizard version: %1, Qt version: created with %2, running with %3").arg(QString::fromLatin1(getFullVersion().c_str())).arg(QString::fromLatin1(QT_VERSION_STR),QString::fromLatin1(qVersion())));
       }
       msgBox.exec();
       exit(0);

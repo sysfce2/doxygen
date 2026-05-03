@@ -151,7 +151,7 @@ void Expert::createTopics(const QDomElement &rootElem)
     }
     childElem = childElem.nextSiblingElement();
   }
-  m_treeWidget->setHeaderLabels(QStringList() << SA("Topics"));
+  m_treeWidget->setHeaderLabels(QStringList(tr("Topics")));
   m_treeWidget->insertTopLevelItems(0,items);
   connect(m_treeWidget,
           SIGNAL(currentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)),
@@ -159,7 +159,7 @@ void Expert::createTopics(const QDomElement &rootElem)
           SLOT(activateTopic(QTreeWidgetItem *,QTreeWidgetItem *)));
 }
 
-static QString getDocsForNode(const QDomElement &child)
+QString Expert::getDocsForNode(const QDomElement &child) const
 {
   QString type = child.attribute(SA("type"));
   QString docs = SA("");
@@ -183,8 +183,10 @@ static QString getDocsForNode(const QDomElement &child)
   // for an enum we list the values
   if (type==SA("enum"))
   {
+    if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs += SA("<br/>");
-    docs += SA("Possible values are: ");
+    docs += tr("Possible values are:");
+    docs += SA(" ");
     int numValues=0;
     docsVal = child.firstChildElement();
     while (!docsVal.isNull())
@@ -210,7 +212,7 @@ static QString getDocsForNode(const QDomElement &child)
         }
         if (i==numValues-1)
         {
-          docs+=SA(" and ");
+          docs+=SA(" ") + tr("and") + SA(" ");
         }
         else if (i==numValues)
         {
@@ -227,33 +229,34 @@ static QString getDocsForNode(const QDomElement &child)
     {
       docs+=SA("<br/>");
       docs+=SA("<br/>");
-      docs+=SA(" The default value is: <code>")+
-            child.attribute(SA("defval"))+
-            SA("</code>.");
+      QString defval = child.attribute(SA("defval"));
+      docs+=SA(" ")+tr("The default value is: <code>%1</code>.").arg(defval);
     }
     docs+= SA("<br/>");
   }
   else if (type==SA("int"))
   {
+    if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs+=SA("<br/>");
-    docs+=SA("Minimum value: ")+child.attribute(SA("minval"))+SA(", ");
-    docs+=SA("maximum value: ")+child.attribute(SA("maxval"))+SA(", ");
-    docs+=SA("default value: ")+child.attribute(SA("defval"))+SA(".");
+    QString minval = child.attribute(SA("minval"));
+    QString maxval = child.attribute(SA("maxval"));
+    QString defval = child.attribute(SA("defval"));
+    docs+=tr("Minimum value: %1, maximum value: %2, default value: %3.").arg(minval).arg(maxval).arg(defval);
     docs+= SA("<br/>");
   }
   else if (type==SA("bool"))
   {
+    if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs+=SA("<br/>");
     if (child.hasAttribute(SA("altdefval")))
     {
-      docs+=SA(" The default value is: system dependent.");
+      docs+=SA(" ")+tr("The default value is: system dependent.");
     }
     else
     {
       QString defval = child.attribute(SA("defval"));
-      docs+=SA(" The default value is: <code>")+
-            (defval==SA("1")?SA("YES"):SA("NO"))+
-            SA("</code>.");
+      QString valStr = (defval==SA("1")?SA("YES"):SA("NO"));
+      docs+=SA(" ")+tr("The default value is: <code>%1</code>.").arg(valStr);
     }
     docs+= SA("<br/>");
   }
@@ -278,6 +281,10 @@ static QString getDocsForNode(const QDomElement &child)
       }
       if (numValues>0)
       {
+        if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
+        docs += SA("<br/>");
+        docs += tr("Possible values are:");
+        docs += SA(" ");
         int i = 0;
         docsVal = child.firstChildElement();
         while (!docsVal.isNull())
@@ -300,7 +307,7 @@ static QString getDocsForNode(const QDomElement &child)
               }
               if (i==numValues-1)
               {
-                docs += SA(" and ");
+                docs += SA(" ") + tr("and") + SA(" ");
               }
               else if (i==numValues)
               {
@@ -325,8 +332,9 @@ static QString getDocsForNode(const QDomElement &child)
     {
       if (defval != SA(""))
       {
+        if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs+=SA("<br/>");
-        docs += SA(" The default directory is: <code>") + defval + SA("</code>.");
+        docs += SA(" ")+tr("The default directory is: <code>%1</code>.").arg(defval);
         docs += SA("<br/>");
       }
     }
@@ -335,14 +343,15 @@ static QString getDocsForNode(const QDomElement &child)
       QString abspath = child.attribute(SA("abspath"));
       if (defval != SA(""))
       {
+        if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs+=SA("<br/>");
         if (abspath != SA("1"))
         {
-          docs += SA(" The default file is: <code>") + defval + SA("</code>.");
+          docs += SA(" ")+tr("The default file is: <code>%1</code>.").arg(defval);
         }
         else
         {
-          docs += SA(" The default file (with absolute path) is: <code>") + defval + SA("</code>.");
+          docs += SA(" ")+tr("The default file (with absolute path) is: <code>%1</code>.").arg(defval);
         }
         docs += SA("<br/>");
       }
@@ -350,8 +359,9 @@ static QString getDocsForNode(const QDomElement &child)
       {
         if (abspath == SA("1"))
         {
+          if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
           docs+=SA("<br/>");
-          docs += SA(" The file has to be specified with full path.");
+          docs += SA(" ")+tr("The file has to be specified with full path.");
           docs += SA("<br/>");
         }
       }
@@ -361,14 +371,15 @@ static QString getDocsForNode(const QDomElement &child)
       QString abspath = child.attribute(SA("abspath"));
       if (defval != SA(""))
       {
+        if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs+=SA("<br/>");
         if (abspath != SA("1"))
         {
-          docs += SA(" The default image is: <code>") + defval + SA("</code>.");
+          docs += SA(" ")+tr("The default image is: <code>%1</code>.").arg(defval);
         }
         else
         {
-          docs += SA(" The default image (with absolute path) is: <code>") + defval + SA("</code>.");
+          docs += SA(" ")+tr("The default image (with absolute path) is: <code>%1</code>.").arg(defval);
         }
         docs += SA("<br/>");
       }
@@ -376,8 +387,9 @@ static QString getDocsForNode(const QDomElement &child)
       {
         if (abspath == SA("1"))
         {
+          if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
           docs+=SA("<br/>");
-          docs += SA(" The image has to be specified with full path.");
+          docs += SA(" ")+tr("The image has to be specified with full path.");
           docs += SA("<br/>");
         }
       }
@@ -386,8 +398,9 @@ static QString getDocsForNode(const QDomElement &child)
     {
       if (defval != SA(""))
       {
+        if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
         docs+=SA("<br/>");
-        docs += SA(" The default value is: <code>") + defval + SA("</code>.");
+        docs += SA(" ")+tr("The default value is: <code>%1</code>.").arg(defval);
         docs += SA("<br/>");
       }
     }
@@ -396,12 +409,9 @@ static QString getDocsForNode(const QDomElement &child)
   if (child.hasAttribute(SA("depends")))
   {
     QString dependsOn = child.attribute(SA("depends"));
+    if (!docs.endsWith(SA("<br/>"))) docs += SA("<br/>");
     docs+=SA("<br/>");
-    docs+=  SA(" This tag requires that the tag \\ref cfg_");
-    docs+=  dependsOn.toLower();
-    docs+=  SA(" \"");
-    docs+=  dependsOn.toUpper();
-    docs+=  SA("\" is set to <code>YES</code>.");
+    docs += SA(" ")+tr("This tag requires that the tag %1 is set to <code>YES</code>.").arg(SA("\\ref cfg_")+dependsOn.toLower()+SA(" \"")+dependsOn.toUpper()+SA("\""));
   }
 
   // Remove / replace doxygen markup strings
@@ -710,7 +720,7 @@ QWidget *Expert::createTopicWidget(QDomElement &elem)
        Input *parentOption = m_options[dependsOn];
        if (parentOption==nullptr)
        {
-         printf("%s has depends=%s that is not valid\n",
+         printf("option '%s' has depends on '%s' that is not valid\n",
              qPrintable(id),qPrintable(dependsOn));
        }
        Input *thisOption   = m_options[id];
