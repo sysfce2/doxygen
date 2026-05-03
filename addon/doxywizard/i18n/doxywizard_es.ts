@@ -89,10 +89,6 @@
         <source>Including formulas</source>
         <translation>Inclusión de fórmulas</translation>
     </message>
-    <message>
-        <source>Topics</source>
-        <translation>Temas</translation>
-    </message>
 </context>
 <context>
     <name>HelpLabel</name>
@@ -632,10 +628,6 @@ Razón dada: %2</translation>
         <source>Diagrams</source>
         <translation>Diagramas</translation>
     </message>
-    <message>
-        <source>Topics</source>
-        <translation>Temas</translation>
-    </message>
 </context>
 <context>
     <name>Messages</name>
@@ -676,22 +668,6 @@ Razón dada: %2</translation>
         <translation>Proyecto</translation>
     </message>
     <message>
-        <source>HTML</source>
-        <translation>HTML</translation>
-    </message>
-    <message>
-        <source>LaTeX</source>
-        <translation>LaTeX</translation>
-    </message>
-    <message>
-        <source>XML</source>
-        <translation>XML</translation>
-    </message>
-    <message>
-        <source>Docbook</source>
-        <translation>Docbook</translation>
-    </message>
-    <message>
         <source>Build</source>
         <translation>Construcción</translation>
     </message>
@@ -712,26 +688,6 @@ Razón dada: %2</translation>
         <translation>Índice</translation>
     </message>
     <message>
-        <source>RTF</source>
-        <translation>RTF</translation>
-    </message>
-    <message>
-        <source>Man</source>
-        <translation>Man</translation>
-    </message>
-    <message>
-        <source>AutoGen</source>
-        <translation>AutoGen</translation>
-    </message>
-    <message>
-        <source>Sqlite3</source>
-        <translation>Sqlite3</translation>
-    </message>
-    <message>
-        <source>PerlMod</source>
-        <translation>PerlMod</translation>
-    </message>
-    <message>
         <source>Preprocessor</source>
         <translation>Preprocesador</translation>
     </message>
@@ -740,8 +696,8 @@ Razón dada: %2</translation>
         <translation>Referencias externas</translation>
     </message>
     <message>
-        <source>Dot</source>
-        <translation>Dot</translation>
+        <source>Topics</source>
+        <translation>Temas</translation>
     </message>
 </context>
 

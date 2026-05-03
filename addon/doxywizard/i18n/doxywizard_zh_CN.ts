@@ -89,10 +89,6 @@
         <source>Including formulas</source>
         <translation>包含公式</translation>
     </message>
-    <message>
-        <source>Topics</source>
-        <translation>主题</translation>
-    </message>
 </context>
 <context>
     <name>HelpLabel</name>
@@ -632,10 +628,6 @@ Reason given: %2</source>
         <source>Diagrams</source>
         <translation>图表</translation>
     </message>
-    <message>
-        <source>Topics</source>
-        <translation>主题</translation>
-    </message>
 </context>
 <context>
     <name>Messages</name>
@@ -676,22 +668,6 @@ Reason given: %2</source>
         <translation>项目</translation>
     </message>
     <message>
-        <source>HTML</source>
-        <translation>HTML</translation>
-    </message>
-    <message>
-        <source>LaTeX</source>
-        <translation>LaTeX</translation>
-    </message>
-    <message>
-        <source>XML</source>
-        <translation>XML</translation>
-    </message>
-    <message>
-        <source>Docbook</source>
-        <translation>Docbook</translation>
-    </message>
-    <message>
         <source>Build</source>
         <translation>构建</translation>
     </message>
@@ -712,26 +688,6 @@ Reason given: %2</source>
         <translation>索引</translation>
     </message>
     <message>
-        <source>RTF</source>
-        <translation>RTF</translation>
-    </message>
-    <message>
-        <source>Man</source>
-        <translation>Man</translation>
-    </message>
-    <message>
-        <source>AutoGen</source>
-        <translation>AutoGen</translation>
-    </message>
-    <message>
-        <source>Sqlite3</source>
-        <translation>Sqlite3</translation>
-    </message>
-    <message>
-        <source>PerlMod</source>
-        <translation>PerlMod</translation>
-    </message>
-    <message>
         <source>Preprocessor</source>
         <translation>预处理器</translation>
     </message>
@@ -740,8 +696,8 @@ Reason given: %2</source>
         <translation>外部引用</translation>
     </message>
     <message>
-        <source>Dot</source>
-        <translation>Dot</translation>
+        <source>Topics</source>
+        <translation>主题</translation>
     </message>
 </context>
 

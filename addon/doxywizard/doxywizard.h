@@ -111,13 +111,19 @@ class MainWindow : public QMainWindow
     bool m_modified;
 };
 
-/*! \brief This class serves as a namespace for global variables used by the doxygen wizard.
- *
- *  All fields in this class are public and static, so they can be used directly.
- */
-class DoxygenWizard
+namespace DoxygenWizard
 {
-  public:
-    static bool debugFlag;
+  extern bool    debugFlag;
+  extern QString langCode;
+  QString msgFileNotFound(const QString &fileName);
+  QString msgNoPreviewAvailable(const QString &fileName);
+  QString msgNoProjectLogoSelected();
+  QString msgBrowseToFile();
+  QString msgBrowseToFolder();
+  QString msgSelectButton();
+  QString msgPreviousButton();
+  QString msgNextButton();
+  QString msgTopicsHeader();
 };
+
 #endif

@@ -21,6 +21,7 @@
 #include "version.h"
 #include "configdoc.h"
 #include "settings.h"
+#include "doxywizard.h"
 
 #include <QTreeWidget>
 #include <QStackedWidget>
@@ -69,28 +70,160 @@ void Expert::add(const char *name,const char *docs)
 
 //------------------------------------------------------------------------------------
 
+static void translateEnumDescription(QDomElement &valueElem,const QDomElement &translationRoot)
+{
+  QDomElement trDocsVal = translationRoot.firstChildElement();
+  while (!trDocsVal.isNull())
+  {
+    if (trDocsVal.tagName()==SA("value") && trDocsVal.attribute(SA("name"))==valueElem.attribute(SA("name")) && trDocsVal.hasAttribute(SA("desc")))
+    {
+      QString trDesc = trDocsVal.attribute(SA("desc"));
+      valueElem.setAttribute(SA("desc"),trDesc);
+    }
+    trDocsVal = trDocsVal.nextSiblingElement();
+  }
+}
+
+static void translateOption(QDomElement &configRoot,const QDomElement &translationRoot)
+{
+  QDomElement docsVal   = configRoot.firstChildElement();
+  QDomElement trDocsVal = translationRoot.firstChildElement();
+  bool first=true;
+  if (!docsVal.isNull()   && docsVal.tagName()==SA("docs") &&
+      !trDocsVal.isNull() && trDocsVal.tagName()==SA("docs"))
+  {
+    qDebug() << "id=" << configRoot.attribute(SA("id")) << "trId=" << translationRoot.attribute(SA("id"));
+    docsVal.parentNode().replaceChild(trDocsVal,docsVal);
+  }
+  docsVal = configRoot.firstChildElement().nextSiblingElement();
+  // disable options docs (already part of the translation)
+  while (!docsVal.isNull())
+  {
+    qDebug() << "tagName" << docsVal.tagName();
+    if (docsVal.tagName()==SA("docs") && docsVal.attribute(SA("doxywizard"))!=SA("0"))
+    {
+      docsVal.setAttribute(SA("doxywizard"),SA("0"));
+    }
+    else if (docsVal.tagName()==SA("value") && docsVal.hasAttribute(SA("desc")))
+    {
+      qDebug() << "attribute" << docsVal.attribute(SA("desc"));
+      translateEnumDescription(docsVal,translationRoot);
+    }
+    docsVal = docsVal.nextSiblingElement();
+  }
+}
+
+static void translateTopics(QDomElement &configRoot,const QDomElement &translationRoot)
+{
+  struct GroupInfo
+  {
+    QDomElement elem;
+    QMap<QString, QDomElement> options;
+  };
+  QMap<QString,GroupInfo> groupMap;
+
+  // collect the elements in a nested map
+  QDomElement groupElem = configRoot.firstChildElement();
+  while (!groupElem.isNull())
+  {
+    // store group itself
+    if (groupElem.tagName()==SA("group"))
+    {
+      QString name = groupElem.attribute(SA("name"));
+      groupMap[name].elem = groupElem;
+      // store options inside the group
+      QDomElement optionElem = groupElem.firstChildElement();
+      while (!optionElem.isNull())
+      {
+        if (optionElem.tagName()==SA("option"))
+        {
+          QString id = optionElem.attribute(SA("id"));
+          groupMap[name].options[id] = optionElem;
+        }
+        optionElem = optionElem.nextSiblingElement();
+      }
+    }
+    groupElem = groupElem.nextSiblingElement();
+  }
+
+  groupElem = translationRoot.firstChildElement();
+  while (!groupElem.isNull())
+  {
+    if (groupElem.tagName()==SA("group"))
+    {
+      // translate the group docs
+      QString name   = groupElem.attribute(SA("name"));
+      QString trDocs = groupElem.attribute(SA("docs"));
+      if (groupMap.contains(name))
+      {
+        groupMap[name].elem.setAttribute(SA("docs"),trDocs);
+      }
+      else
+      {
+        qDebug() << "group does not have translation" << name;
+      }
+      // translate the option docs
+      QDomElement optionElem = groupElem.firstChildElement();
+      while (!optionElem.isNull())
+      {
+        if (optionElem.tagName()==SA("option"))
+        {
+          QString id = optionElem.attribute(SA("id"));
+          if (groupMap[name].options.contains(id))
+          {
+            translateOption(groupMap[name].options[id],optionElem);
+          }
+          else
+          {
+            qDebug() << "group " << name << "does not have option" << id;
+          }
+        }
+        optionElem = optionElem.nextSiblingElement();
+      }
+    }
+    groupElem = groupElem.nextSiblingElement();
+  }
+}
+
 Expert::Expert()
 {
   m_treeWidget = new QTreeWidget;
-  m_treeWidget->setColumnCount(1);
+  m_treeWidget->setColumnCount(2);
   m_topicStack = new QStackedWidget;
   m_inShowHelp = false;
 
   QFile file(SA(":/config.xml"));
-  QString err;
-  int errLine,errCol;
+  QString err = tr("Error");
+  int errLine=0,errCol=0;
   QDomDocument configXml;
-  if (file.open(QIODevice::ReadOnly))
+  if (!file.open(QIODevice::ReadOnly) || !configXml.setContent(&file,false,&err,&errLine,&errCol))
   {
-    if (!configXml.setContent(&file,false,&err,&errLine,&errCol))
-    {
-      QString msg = tr("Error parsing internal config.xml at line %1 column %2.\n%3").
-                  arg(errLine).arg(errCol).arg(err);
-      QMessageBox::warning(this, tr("Error"), msg);
-      exit(1);
-    }
+    QString msg = tr("Error parsing internal config.xml at line %1 column %2.\n%3").
+                arg(errLine).arg(errCol).arg(err);
+    QMessageBox::warning(this, tr("Error"), msg);
+    exit(1);
   }
   m_rootElement = configXml.documentElement();
+  if (!DoxygenWizard::langCode.isEmpty())
+  {
+    QFile trFile(SA(":/i18n/config_%1.xml").arg(DoxygenWizard::langCode));
+    if (trFile.open(QIODevice::ReadOnly))
+    {
+      QDomDocument trConfigXml;
+      if (!trConfigXml.setContent(&trFile,false,&err,&errLine,&errCol))
+      {
+        QString msg = tr("Error parsing internal config_%1.xml at line %2 column %3.\n%4").
+                    arg(DoxygenWizard::langCode).arg(errLine).arg(errCol).arg(err);
+        QMessageBox::warning(this, tr("Error"), msg);
+      }
+      // overrule english text with translations
+      translateTopics(m_rootElement,trConfigXml.documentElement());
+    }
+    else
+    {
+      qDebug() << QString::fromLatin1("config_%1.xml not found").arg(DoxygenWizard::langCode);
+    }
+  }
 
   createTopics(m_rootElement);
   m_helper = new QTextBrowser;
@@ -102,14 +235,15 @@ Expert::Expert()
 
   QWidget *rightSide = new QWidget;
   QGridLayout *grid = new QGridLayout(rightSide);
-  m_prev = new QPushButton(tr("Previous"));
+  m_prev = new QPushButton(DoxygenWizard::msgPreviousButton());
   m_prev->setEnabled(false);
-  m_next = new QPushButton(tr("Next"));
+  m_next = new QPushButton(DoxygenWizard::msgNextButton());
   grid->addWidget(m_topicStack,0,0,1,2);
   grid->addWidget(m_prev,1,0,Qt::AlignLeft);
   grid->addWidget(m_next,1,1,Qt::AlignRight);
   grid->setColumnStretch(0,1);
   grid->setRowStretch(0,1);
+  m_treeWidget->resizeColumnToContents(0);
 
   addWidget(m_splitter);
   addWidget(rightSide);
@@ -140,10 +274,11 @@ void Expert::createTopics(const QDomElement &rootElem)
     {
       // Remove _ from a group name like: Source_Browser
       QString name = childElem.attribute(SA("name")).replace(SA("_"),SA(" "));
+      QString docs = childElem.attribute(SA("docs")).replace(SA("_"),SA(" "));
       QString setting = childElem.attribute(SA("setting"));
       if (setting.isEmpty() || IS_SUPPORTED(setting.toLatin1()))
       {
-        items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList(name)));
+        items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList() << name << docs));
         QWidget *widget = createTopicWidget(childElem);
         m_topics[name] = widget;
         m_topicStack->addWidget(widget);
@@ -151,7 +286,7 @@ void Expert::createTopics(const QDomElement &rootElem)
     }
     childElem = childElem.nextSiblingElement();
   }
-  m_treeWidget->setHeaderLabels(QStringList(tr("Topics")));
+  m_treeWidget->setHeaderLabels(QStringList() << DoxygenWizard::msgTopicsHeader() << tr("Description"));
   m_treeWidget->insertTopLevelItems(0,items);
   connect(m_treeWidget,
           SIGNAL(currentItemChanged(QTreeWidgetItem *,QTreeWidgetItem *)),

@@ -49,6 +49,7 @@
 
 // globally accessible variables
 bool DoxygenWizard::debugFlag = false;
+QString DoxygenWizard::langCode;
 
 const int messageTimeout = 5000; //!< status bar message timeout in milliseconds.
 
@@ -97,6 +98,19 @@ static QString getStartupLanguageCode()
   // return code if supported
   return isLanguageCodeSupported(langCode) ? langCode : QString();
 }
+
+//----------------------------------------------------------------------------------------------
+
+#define TR_MSG(msg) QCoreApplication::translate("Messages",msg)
+QString DoxygenWizard::msgFileNotFound(const QString &fileName)       { return TR_MSG("Sorry, cannot find file(%1)").arg(fileName);      }
+QString DoxygenWizard::msgNoPreviewAvailable(const QString &fileName) { return TR_MSG("Sorry, no preview available (%1)").arg(fileName); }
+QString DoxygenWizard::msgNoProjectLogoSelected()                     { return TR_MSG("No Project logo selected.");                      }
+QString DoxygenWizard::msgBrowseToFile()                              { return TR_MSG("Browse to a file");                               }
+QString DoxygenWizard::msgBrowseToFolder()                            { return TR_MSG("Browse to a folder");                             }
+QString DoxygenWizard::msgSelectButton()                              { return TR_MSG("Select...");                                      }
+QString DoxygenWizard::msgPreviousButton()                            { return TR_MSG("Previous");                                       }
+QString DoxygenWizard::msgNextButton()                                { return TR_MSG("Next");                                           }
+QString DoxygenWizard::msgTopicsHeader()                              { return TR_MSG("Topics");                                         }
 
 //----------------------------------------------------------------------------------------------
 
@@ -151,7 +165,7 @@ MainWindow::MainWindow()
   // select working directory
   QHBoxLayout *dirLayout = new QHBoxLayout;
   m_workingDir = new QLineEdit;
-  m_selWorkingDir = new QPushButton(tr("Select..."));
+  m_selWorkingDir = new QPushButton(DoxygenWizard::msgSelectButton());
   dirLayout->addWidget(m_workingDir);
   dirLayout->addWidget(m_selWorkingDir);
 
@@ -909,14 +923,14 @@ int main(int argc,char **argv)
   {
     qDebug() << "Starting doxywizard...";
 
-    QString langCode = getStartupLanguageCode();
+    DoxygenWizard::langCode = QString::fromLatin1("de"); //getStartupLanguageCode();
     QTranslator translator;
-    if (!langCode.isEmpty() &&
-        translator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(langCode)) &&
-        translator.load(QString::fromLatin1(":/i18n/doxywizard_%1.qm").arg(langCode))
+    if (!DoxygenWizard::langCode.isEmpty() &&
+        translator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(DoxygenWizard::langCode)) &&
+        translator.load(QString::fromLatin1(":/i18n/doxywizard_%1.qm").arg(DoxygenWizard::langCode))
        )
     {
-      qDebug() << "Installing translator" << langCode;
+      qDebug() << "Installing translator" << DoxygenWizard::langCode;
       QCoreApplication::installTranslator(&translator);
     }
 

@@ -525,7 +525,7 @@ Step1::Step1(Wizard *wizard,const QHash<QString,Input*> &modelData) : m_wizard(w
   m_projBrief  = new QLineEdit;
   m_projNumber = new QLineEdit;
   QPushButton *projIconSel = new QPushButton(this);
-  projIconSel->setText(tr("Select..."));
+  projIconSel->setText(DoxygenWizard::msgSelectButton());
   m_projIconLab = new QLabel;
 
   grid->addWidget(m_projName,0,1,1,2);
@@ -557,7 +557,7 @@ Step1::Step1(Wizard *wizard,const QHash<QString,Input*> &modelData) : m_wizard(w
   rowLayout->addWidget(l);
   m_sourceDir = new QLineEdit;
   m_srcSelectDir = new QPushButton(this);
-  m_srcSelectDir->setText(tr("Select..."));
+  m_srcSelectDir->setText(DoxygenWizard::msgSelectButton());
   rowLayout->addWidget(m_sourceDir);
   rowLayout->addWidget(m_srcSelectDir);
   layout->addWidget(row);
@@ -585,7 +585,7 @@ Step1::Step1(Wizard *wizard,const QHash<QString,Input*> &modelData) : m_wizard(w
   rowLayout->addWidget(l);
   m_destDir = new QLineEdit;
   m_dstSelectDir = new QPushButton(this);
-  m_dstSelectDir->setText(tr("Select..."));
+  m_dstSelectDir->setText(DoxygenWizard::msgSelectButton());
   rowLayout->addWidget(m_destDir);
   rowLayout->addWidget(m_dstSelectDir);
   layout->addWidget(row);
@@ -1333,7 +1333,7 @@ Wizard::Wizard(const QHash<QString,Input*> &modelData, QWidget *parent) :
 {
   m_treeWidget = new QTreeWidget;
   m_treeWidget->setColumnCount(1);
-  m_treeWidget->setHeaderLabels(QStringList(tr("Topics")));
+  m_treeWidget->setHeaderLabels(QStringList(DoxygenWizard::msgTopicsHeader()));
   QList<QTreeWidgetItem*> items;
   items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList(tr("Project"))));
   items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList(tr("Mode"))));
@@ -1353,9 +1353,9 @@ Wizard::Wizard(const QHash<QString,Input*> &modelData, QWidget *parent) :
 
   QWidget *rightSide = new QWidget;
   QGridLayout *grid = new QGridLayout(rightSide);
-  m_prev = new QPushButton(tr("Previous"));
+  m_prev = new QPushButton(DoxygenWizard::msgPreviousButton());
   m_prev->setEnabled(false);
-  m_next = new QPushButton(tr("Next"));
+  m_next = new QPushButton(DoxygenWizard::msgNextButton());
   grid->addWidget(m_topicStack,0,0,1,2);
   grid->addWidget(m_prev,1,0,Qt::AlignLeft);
   grid->addWidget(m_next,1,1,Qt::AlignRight);
