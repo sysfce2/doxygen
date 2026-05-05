@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Français">
-  <group name="Project" docs="Project related configuration options">
+  <group name="Project" docs="Options de configuration relatives au projet">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Cette balise specifie l'encodage utilise pour tous les caracteres du fichier de configuration qui suivent. La valeur par defaut est UTF-8, qui est egalement l'encodage utilise pour tout le texte avant la premiere occurrence de cette balise. Doxygen utilise \c libiconv (ou l'iconv integre dans \c libc) pour le transcodage. Voir https://www.gnu.org/software/libiconv/ pour la liste des encodages possibles.]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Build related configuration options">
+  <group name="Build" docs="Options de configuration relatives à la compilation">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Si la balise \c EXTRACT_ALL est definie a \c YES, Doxygen supposera que toutes les entites dans la documentation sont documentees, meme si aucune documentation n'etait disponible. Les membres prives de classe et les membres statiques de fichier seront caches sauf si les balises \ref cfg_extract_private "EXTRACT_PRIVATE" respectivement \ref cfg_extract_static "EXTRACT_STATIC" sont definies a \c YES. \note Cela desactivera egalement les avertissements sur les membres non documentes qui sont normalement produits lorsque \ref cfg_warnings "WARNINGS" est defini a \c YES.]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Configuration options related to warning and progress messages">
+  <group name="Messages" docs="Options de configuration relatives aux messages d'avertissement et de progression">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[La balise \c QUIET peut etre utilisee pour activer/desactiver les messages qui sont generes vers la sortie standard par Doxygen. Si \c QUIET est defini a \c YES cela implique que les messages sont desactives.]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Configuration options related to the input files">
+  <group name="Input" docs="Options de configuration relatives aux fichiers d'entrée">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[La balise \c INPUT est utilisee pour specifier les fichiers et/ou repertoires qui contiennent les fichiers sources documentes. Vous pouvez entrer des noms de fichiers comme \c myfile.cpp ou des repertoires comme \c /usr/src/myproject. Separez les fichiers ou repertoires par des espaces. Voir aussi \ref cfg_file_patterns "FILE_PATTERNS" et \ref cfg_extension_mapping "EXTENSION_MAPPING" \note Si cette balise est vide, le repertoire courant est recherche.]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Configuration options related to source browsing">
+  <group name="Source_Browser" docs="Options de configuration relatives à la navigation dans le code source">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Si la balise \c SOURCE_BROWSER est definie a \c YES, une liste de fichiers sources sera generee. Les entites documentees seront referencees croisees avec ces sources. <br>Remarque: Pour se debarrasser de tout le code source dans la sortie generee, assurez-vous que egalement \ref cfg_verbatim_headers "VERBATIM_HEADERS" est defini a \c NO.]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Configuration options related to the alphabetical class index">
+  <group name="Index" docs="Options de configuration relatives à l'index alphabétique des classes">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Si la balise \c ALPHABETICAL_INDEX est definie a \c YES, un index alphabetique de tous les composes sera genere. Activez cela si le projet contient beaucoup de classes, structures, unions ou interfaces.]]>
@@ -862,7 +862,7 @@
       </docs>
     </option>
   </group>
-  <group name="HTML" docs="Configuration options related to the HTML output">
+  <group name="HTML" docs="Options de configuration relatives à la sortie HTML">
     <option type="bool" id="GENERATE_HTML" defval="1">
       <docs>
 <![CDATA[Si la balise \c GENERATE_HTML est definie a \c YES, Doxygen generera une sortie HTML]]>
@@ -1228,7 +1228,7 @@
       </docs>
     </option>
   </group>
-  <group name="LaTeX" docs="Configuration options related to the LaTeX output">
+  <group name="LaTeX" docs="Options de configuration relatives à la sortie LaTeX">
     <option type="bool" id="GENERATE_LATEX" defval="1">
       <docs>
 <![CDATA[Si la balise \c GENERATE_LATEX est definie a \c YES, Doxygen generera une sortie \f$\mbox{\LaTeX}\f$.]]>
@@ -1330,7 +1330,7 @@
       </docs>
     </option>
   </group>
-  <group name="RTF" docs="Configuration options related to the RTF output">
+  <group name="RTF" docs="Options de configuration relatives à la sortie RTF">
     <option type="bool" id="GENERATE_RTF" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_RTF est definie a \c YES, Doxygen generera une sortie RTF. La sortie RTF est optimisee pour Word 97 et peut ne pas sembler tres jolie avec d'autres lecteurs/editeurs RTF.]]>
@@ -1367,7 +1367,7 @@
       </docs>
     </option>
   </group>
-  <group name="Man" docs="Configuration options related to the man page output">
+  <group name="Man" docs="Options de configuration relatives à la sortie des pages de manuel">
     <option type="bool" id="GENERATE_MAN" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_MAN est definie a \c YES, Doxygen generera des pages de manuel pour les classes et les fichiers.]]>
@@ -1394,7 +1394,7 @@
       </docs>
     </option>
   </group>
-  <group name="XML" docs="Configuration options related to the XML output">
+  <group name="XML" docs="Options de configuration relatives à la sortie XML">
     <option type="bool" id="GENERATE_XML" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_XML est definie a \c YES, Doxygen generera un fichier XML qui capture la structure du code, y compris toute la documentation.]]>
@@ -1416,7 +1416,7 @@
       </docs>
     </option>
   </group>
-  <group name="Docbook" docs="Configuration options related to the DOCBOOK output">
+  <group name="Docbook" docs="Options de configuration relatives à la sortie DOCBOOK">
     <option type="bool" id="GENERATE_DOCBOOK" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_DOCBOOK est definie a \c YES, Doxygen generera des fichiers Docbook qui peuvent etre utilises pour generer du PDF.]]>
@@ -1428,14 +1428,14 @@
       </docs>
     </option>
   </group>
-  <group name="AutoGen" docs="Configuration options for the AutoGen Definitions output">
+  <group name="AutoGen" docs="Options de configuration pour la sortie AutoGen Definitions">
     <option type="bool" id="GENERATE_AUTOGEN_DEF" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_AUTOGEN_DEF est definie a \c YES, Doxygen generera un fichier de definitions AutoGen (voir https://autogen.sourceforge.net/) qui capture la structure du code, y compris toute la documentation. Notez que cette fonctionnalite est encore experimentale et incomplete pour le moment.]]>
       </docs>
     </option>
   </group>
-  <group name="Sqlite3" docs="Configuration options related to Sqlite3 output">
+  <group name="Sqlite3" docs="Options de configuration relatives à la sortie Sqlite3">
     <option type="bool" id="GENERATE_SQLITE3" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_SQLITE3 est definie a \c YES, Doxygen generera une base de donnees \c Sqlite3 avec les symboles trouves par Doxygen stockes dans des tables.]]>
@@ -1452,7 +1452,7 @@
       </docs>
     </option>
   </group>
-  <group name="PerlMod" docs="Configuration options related to the Perl module output">
+  <group name="PerlMod" docs="Options de configuration relatives à la sortie du module Perl">
     <option type="bool" id="GENERATE_PERLMOD" defval="0">
       <docs>
 <![CDATA[Si la balise \c GENERATE_PERLMOD est definie a \c YES, Doxygen generera un fichier de module Perl qui capture la structure du code, y compris toute la documentation. <br>Notez que cette fonctionnalite est encore experimentale et incomplete pour le moment.]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Configuration options related to the preprocessor">
+  <group name="Preprocessor" docs="Options de configuration relatives au préprocesseur">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Si la balise \c ENABLE_PREPROCESSING est definie a \c YES, Doxygen evaluera toutes les directives de preprocesseur C trouvees dans les sources et les fichiers d'inclusion.]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Configuration options related to external references">
+  <group name="External" docs="Options de configuration relatives aux références externes">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[La balise \c TAGFILES peut etre utilisee pour specifier un ou plusieurs fichiers de balises. Pour chaque fichier de balises, l'emplacement de la documentation externe doit etre ajoute. Le format d'un fichier de balises sans cet emplacement est le suivant: \verbatim TAGFILES = file1 file2 ... \endverbatim L'ajout d'un emplacement pour les fichiers de balises se fait comme suit: \verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim ou `loc1` et `loc2` peuvent etre des chemins relatifs ou absolus ou des URL. Voir la section \ref external pour plus d'informations sur l'utilisation des fichiers de balises. \note Chaque fichier de balises doit avoir un nom unique (ou le nom n'inclut PAS le chemin). Si un fichier de balises n'est pas situe dans le repertoire dans lequel Doxygen est execute, vous devez egalement specifier le chemin d'acces au fichier de balises ici.]]>
@@ -1548,7 +1548,7 @@
       </docs>
     </option>
   </group>
-  <group name="Dot" docs="Configuration options related to diagram generator tools">
+  <group name="Dot" docs="Options de configuration relatives aux outils de génération de diagrammes">
     <option type="bool" id="HIDE_UNDOC_RELATIONS" defval="1">
       <docs>
 <![CDATA[Si defini a \c YES, les graphes d'heritage et de collaboration cacheront les relations d'heritage et d'utilisation si la cible est non documentee ou n'est pas une classe.]]>

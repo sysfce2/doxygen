@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="日本語">
-  <group name="Project" docs="Project related configuration options">
+  <group name="Project" docs="プロジェクト関連の設定オプション">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[このタグは、設定ファイル内のこれ以降のすべての文字に使用されるエンコーディングを指定します。デフォルトはUTF-8で、このタグが最初に現れる前のすべてのテキストにも使用されるエンコーディングです。Doxygenは\c libiconv（または\c libcに組み込まれたiconv）を使用してトランスコーディングを行います。可能なエンコーディングのリストについては、https://www.gnu.org/software/libiconv/ を参照してください。]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Build related configuration options">
+  <group name="Build" docs="ビルド関連の設定オプション">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[\c EXTRACT_ALLタグが\c YESに設定されている場合、Doxygenはドキュメント内のすべてのエンティティが文書化されていると仮定します。ドキュメントが利用可能でなかったとしてもです。プライベートクラスメンバーと静的ファイルメンバーは、\ref cfg_extract_private "EXTRACT_PRIVATE"および\ref cfg_extract_static "EXTRACT_STATIC"タグが\c YESに設定されていない限り非表示になります。\note これにより、\ref cfg_warnings "WARNINGS"が\c YESに設定されている場合に通常生成される文書化されていないメンバーに関する警告も無効になります。]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Configuration options related to warning and progress messages">
+  <group name="Messages" docs="警告および進行メッセージに関連する設定オプション">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[\c QUIETタグを使用して、Doxygenによって標準出力に生成されるメッセージをオン/オフできます。\c QUIETが\c YESに設定されている場合、メッセージがオフであることを意味します。]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Configuration options related to the input files">
+  <group name="Input" docs="入力ファイルに関連する設定オプション">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[\c INPUTタグは、文書化されたソースファイルを含むファイルおよび/またはディレクトリを指定するために使用されます。\c myfile.cppのようなファイル名や\c /usr/src/myprojectのようなディレクトリを入力できます。ファイルまたはディレクトリをスペースで区切ってください。\ref cfg_file_patterns "FILE_PATTERNS"および\ref cfg_extension_mapping "EXTENSION_MAPPING"も参照してください。\note このタグが空の場合、現在のディレクトリが検索されます。]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Configuration options related to source browsing">
+  <group name="Source_Browser" docs="ソースブラウジングに関連する設定オプション">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[\c SOURCE_BROWSERタグが\c YESに設定されている場合、ソースファイルのリストが生成されます。文書化されたエンティティはこれらのソースと相互参照されます。<br>注意：生成された出力からすべてのソースコードを取り除くには、\ref cfg_verbatim_headers "VERBATIM_HEADERS"も\c NOに設定されていることを確認してください。]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Configuration options related to the alphabetical class index">
+  <group name="Index" docs="アルファベット順クラスインデックスに関連する設定オプション">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[\c ALPHABETICAL_INDEXタグが\c YESに設定されている場合、すべてのコンパウンドのアルファベット順インデックスが生成されます。プロジェクトに多数のクラス、構造体、共用体、またはインターフェースが含まれている場合はこれを有効にしてください。]]>
@@ -862,7 +862,7 @@
       </docs>
     </option>
   </group>
-  <group name="HTML" docs="Configuration options related to the HTML output">
+  <group name="HTML" docs="HTML出力に関連する設定オプション">
     <option type="bool" id="GENERATE_HTML" defval="1">
       <docs>
 <![CDATA[\c GENERATE_HTMLタグが\c YESに設定されている場合、DoxygenはHTML出力を生成します。]]>
@@ -1228,7 +1228,7 @@
       </docs>
     </option>
   </group>
-  <group name="LaTeX" docs="Configuration options related to the LaTeX output">
+  <group name="LaTeX" docs="LaTeX出力に関連する設定オプション">
     <option type="bool" id="GENERATE_LATEX" defval="1">
       <docs>
 <![CDATA[\c GENERATE_LATEXタグが\c YESに設定されている場合、Doxygenは\f$\mbox{\LaTeX}\f$出力を生成します。]]>
@@ -1330,7 +1330,7 @@
       </docs>
     </option>
   </group>
-  <group name="RTF" docs="Configuration options related to the RTF output">
+  <group name="RTF" docs="RTF出力に関連する設定オプション">
     <option type="bool" id="GENERATE_RTF" defval="0">
       <docs>
 <![CDATA[\c GENERATE_RTFタグが\c YESに設定されている場合、DoxygenはRTF出力を生成します。RTF出力はWord 97用に最適化されており、他のRTFリーダー/エディタではあまりきれいに見えない場合があります。]]>
@@ -1367,7 +1367,7 @@
       </docs>
     </option>
   </group>
-  <group name="Man" docs="Configuration options related to the man page output">
+  <group name="Man" docs="manページ出力に関連する設定オプション">
     <option type="bool" id="GENERATE_MAN" defval="0">
       <docs>
 <![CDATA[\c GENERATE_MANタグが\c YESに設定されている場合、Doxygenはクラスとファイルのマニュアルページを生成します。]]>
@@ -1394,7 +1394,7 @@
       </docs>
     </option>
   </group>
-  <group name="XML" docs="Configuration options related to the XML output">
+  <group name="XML" docs="XML出力に関連する設定オプション">
     <option type="bool" id="GENERATE_XML" defval="0">
       <docs>
 <![CDATA[\c GENERATE_XMLタグが\c YESに設定されている場合、Doxygenはコード構造をキャプチャするXMLファイルを生成し、すべてのドキュメントを含みます。]]>
@@ -1416,7 +1416,7 @@
       </docs>
     </option>
   </group>
-  <group name="Docbook" docs="Configuration options related to the DOCBOOK output">
+  <group name="Docbook" docs="DOCBOOK出力に関連する設定オプション">
     <option type="bool" id="GENERATE_DOCBOOK" defval="0">
       <docs>
 <![CDATA[\c GENERATE_DOCBOOKタグが\c YESに設定されている場合、DoxygenはPDFの生成に使用できるDocbookファイルを生成します。]]>
@@ -1428,14 +1428,14 @@
       </docs>
     </option>
   </group>
-  <group name="AutoGen" docs="Configuration options for the AutoGen Definitions output">
+  <group name="AutoGen" docs="AutoGen Definitions出力のための設定オプション">
     <option type="bool" id="GENERATE_AUTOGEN_DEF" defval="0">
       <docs>
 <![CDATA[\c GENERATE_AUTOGEN_DEFタグが\c YESに設定されている場合、Doxygenはコード構造をキャプチャするAutoGen定義ファイル（https://autogen.sourceforge.net/を参照）を生成し、すべてのドキュメントを含みます。この機能はまだ実験的であり、現時点では不完全であることに注意してください。]]>
       </docs>
     </option>
   </group>
-  <group name="Sqlite3" docs="Configuration options related to Sqlite3 output">
+  <group name="Sqlite3" docs="Sqlite3出力に関連する設定オプション">
     <option type="bool" id="GENERATE_SQLITE3" defval="0">
       <docs>
 <![CDATA[\c GENERATE_SQLITE3タグが\c YESに設定されている場合、Doxygenは\c Sqlite3データベースを生成し、Doxygenによって見つかったシンボルがテーブルに保存されます。]]>
@@ -1452,7 +1452,7 @@
       </docs>
     </option>
   </group>
-  <group name="PerlMod" docs="Configuration options related to the Perl module output">
+  <group name="PerlMod" docs="Perlモジュール出力に関連する設定オプション">
     <option type="bool" id="GENERATE_PERLMOD" defval="0">
       <docs>
 <![CDATA[\c GENERATE_PERLMODタグが\c YESに設定されている場合、Doxygenはコード構造をキャプチャするPerlモジュールファイルを生成し、すべてのドキュメントを含みます。<br>この機能はまだ実験的であり、現時点では不完全であることに注意してください。]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Configuration options related to the preprocessor">
+  <group name="Preprocessor" docs="プリプロセッサに関連する設定オプション">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[\c ENABLE_PREPROCESSINGタグが\c YESに設定されている場合、Doxygenはソースおよびインクルードファイルで見つかったすべてのCプリプロセッサディレクティブを評価します。]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Configuration options related to external references">
+  <group name="External" docs="外部参照に関連する設定オプション">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[\c TAGFILESタグを使用して、1つ以上のタグファイルを指定できます。各タグファイルについて、外部ドキュメントの場所を追加する必要があります。場所なしのタグファイルの形式は次のとおりです：\verbatim TAGFILES = file1 file2 ... \endverbatim タグファイルの場所の追加は次のように行います：\verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim ここで`loc1`と`loc2`は相対パス、絶対パス、またはURLにすることができます。タグファイルの使用の詳細については、セクション\ref externalを参照してください。\note 各タグファイルは一意の名前を持つ必要があります（または名前はパスを含みません）。タグファイルがDoxygenが実行されるディレクトリにない場合は、ここでタグファイルへのパスも指定する必要があります。]]>
@@ -1548,7 +1548,7 @@
       </docs>
     </option>
   </group>
-  <group name="Dot" docs="Configuration options related to diagram generator tools">
+  <group name="Dot" docs="ダイアグラム生成ツールに関連する設定オプション">
     <option type="bool" id="HIDE_UNDOC_RELATIONS" defval="1">
       <docs>
 <![CDATA[\c YESに設定されている場合、継承およびコラボレーショングラフは、ターゲットが文書化されていないかクラスでない場合、継承および使用関係を非表示にします。]]>
