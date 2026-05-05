@@ -221,7 +221,7 @@ Expert::Expert()
     }
     else
     {
-      qDebug() << QString::fromLatin1("config_%1.xml not found").arg(DoxygenWizard::langCode);
+      qDebug() << SA("config_%1.xml not found").arg(DoxygenWizard::langCode);
     }
   }
 
@@ -1002,7 +1002,7 @@ bool Expert::writeConfig(QTextStream &t,bool brief, bool condensed, bool convert
     t << convertToComment(m_header);
   }
 
-  Input *option = m_options[QString::fromLatin1("DOXYFILE_ENCODING")];
+  Input *option = m_options[SA("DOXYFILE_ENCODING")];
   TextCodecAdapter codec(option->value().toString().toLatin1());
   QDomElement childElem = m_rootElement.firstChildElement();
   while (!childElem.isNull())
@@ -1031,13 +1031,11 @@ void Expert::showHelp(Input *option)
   if (!m_inShowHelp)
   {
     m_inShowHelp = true;
-    m_helper->setText(
-        QString::fromLatin1("<qt><b>")+option->id()+
-        QString::fromLatin1("</b><br>")+
-        QString::fromLatin1("<br/>")+
+    m_helper->setText(SA("<qt><b>")+option->id()+
+        SA("</b><br/><br/>")+
         option->docs().
         replace(QChar::fromLatin1('\n'),QChar::fromLatin1(' '))+
-        QString::fromLatin1("</qt>")
+        SA("</qt>")
         );
     m_inShowHelp = false;
   }
@@ -1083,7 +1081,7 @@ void Expert::resetToDefaults()
 static bool stringVariantToBool(const QVariant &v)
 {
   QString s = v.toString().toLower();
-  return s==QString::fromLatin1("yes") || s==QString::fromLatin1("true") || s==QString::fromLatin1("1");
+  return s==SA("yes") || s==SA("true") || s==SA("1");
 }
 
 static bool getBoolOption(
@@ -1105,7 +1103,7 @@ static QString getStringOption(
 
 bool Expert::htmlOutputPresent(const QString &workingDir) const
 {
-  bool generateHtml = getBoolOption(m_options,QString::fromLatin1("GENERATE_HTML"));
+  bool generateHtml = getBoolOption(m_options,SA("GENERATE_HTML"));
   if (!generateHtml || workingDir.isEmpty()) return false;
   QString indexFile = getHtmlOutputIndex(workingDir);
   QFileInfo fi(indexFile);
@@ -1114,8 +1112,8 @@ bool Expert::htmlOutputPresent(const QString &workingDir) const
 
 QString Expert::getHtmlOutputIndex(const QString &workingDir) const
 {
-  QString outputDir = getStringOption(m_options,QString::fromLatin1("OUTPUT_DIRECTORY"));
-  QString htmlOutputDir = getStringOption(m_options,QString::fromLatin1("HTML_OUTPUT"));
+  QString outputDir = getStringOption(m_options,SA("OUTPUT_DIRECTORY"));
+  QString htmlOutputDir = getStringOption(m_options,SA("HTML_OUTPUT"));
   //printf("outputDir=%s\n",qPrintable(outputDir));
   //printf("htmlOutputDir=%s\n",qPrintable(htmlOutputDir));
   QString indexFile = workingDir;
@@ -1125,7 +1123,7 @@ QString Expert::getHtmlOutputIndex(const QString &workingDir) const
   }
   else // append
   {
-    indexFile += QString::fromLatin1("/")+outputDir;
+    indexFile += SA("/")+outputDir;
   }
   if (QFileInfo(htmlOutputDir).isAbsolute()) // override
   {
@@ -1133,27 +1131,26 @@ QString Expert::getHtmlOutputIndex(const QString &workingDir) const
   }
   else // append
   {
-    indexFile += QString::fromLatin1("/")+htmlOutputDir;
+    indexFile += SA("/")+htmlOutputDir;
   }
-  indexFile+=QString::fromLatin1("/index.html");
+  indexFile+=SA("/index.html");
   return indexFile;
 }
 
 bool Expert::pdfOutputPresent(const QString &workingDir) const
 {
-  bool generateLatex = getBoolOption(m_options,QString::fromLatin1("GENERATE_LATEX"));
-  bool pdfLatex = getBoolOption(m_options,QString::fromLatin1("USE_PDFLATEX"));
+  bool generateLatex = getBoolOption(m_options,SA("GENERATE_LATEX"));
+  bool pdfLatex = getBoolOption(m_options,SA("USE_PDFLATEX"));
   if (!generateLatex || !pdfLatex) return false;
-  QString latexOutput = getStringOption(m_options,QString::fromLatin1("LATEX_OUTPUT"));
+  QString latexOutput = getStringOption(m_options,SA("LATEX_OUTPUT"));
   QString indexFile;
   if (QFileInfo(latexOutput).isAbsolute())
   {
-    indexFile = latexOutput+QString::fromLatin1("/refman.pdf");
+    indexFile = latexOutput+SA("/refman.pdf");
   }
   else
   {
-    indexFile = workingDir+QString::fromLatin1("/")+
-                latexOutput+QString::fromLatin1("/refman.pdf");
+    indexFile = workingDir+SA("/")+latexOutput+SA("/refman.pdf");
   }
   QFileInfo fi(indexFile);
   return fi.exists() && fi.isFile();
