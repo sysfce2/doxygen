@@ -92,21 +92,21 @@ static void translateOption(QDomElement &configRoot,const QDomElement &translati
   if (!docsVal.isNull()   && docsVal.tagName()==SA("docs") &&
       !trDocsVal.isNull() && trDocsVal.tagName()==SA("docs"))
   {
-    qDebug() << "id=" << configRoot.attribute(SA("id")) << "trId=" << translationRoot.attribute(SA("id"));
+    //qDebug() << "id=" << configRoot.attribute(SA("id")) << "trId=" << translationRoot.attribute(SA("id"));
     docsVal.parentNode().replaceChild(trDocsVal,docsVal);
   }
   docsVal = configRoot.firstChildElement().nextSiblingElement();
   // disable options docs (already part of the translation)
   while (!docsVal.isNull())
   {
-    qDebug() << "tagName" << docsVal.tagName();
+    //qDebug() << "tagName" << docsVal.tagName();
     if (docsVal.tagName()==SA("docs") && docsVal.attribute(SA("doxywizard"))!=SA("0"))
     {
       docsVal.setAttribute(SA("doxywizard"),SA("0"));
     }
     else if (docsVal.tagName()==SA("value") && docsVal.hasAttribute(SA("desc")))
     {
-      qDebug() << "attribute" << docsVal.attribute(SA("desc"));
+      //qDebug() << "attribute" << docsVal.attribute(SA("desc"));
       translateEnumDescription(docsVal,translationRoot);
     }
     docsVal = docsVal.nextSiblingElement();

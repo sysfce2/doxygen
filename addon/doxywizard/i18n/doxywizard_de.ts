@@ -371,6 +371,10 @@ Angegebener Grund: %2</translation>
         <source>Language changed to: %1</source>
         <translation>Sprache geändert zu: %1</translation>
     </message>
+    <message>
+        <source>Switch language...</source>
+        <translation>Sprache wechseln...</translation>
+    </message>
 </context>
 <context>
     <name>TranslationManager</name>
@@ -698,6 +702,25 @@ Angegebener Grund: %2</translation>
     <message>
         <source>Topics</source>
         <translation>Themen</translation>
+    </message>
+</context>
+<context>
+    <name>LanguageDialog</name>
+    <message>
+        <source>Select Language</source>
+        <translation>Sprache auswählen</translation>
+    </message>
+    <message>
+        <source>Changing the language requires a restart of the application.</source>
+        <translation>Das Ändern der Sprache erfordert einen Neustart der Anwendung.</translation>
+    </message>
+    <message>
+        <source>Available Languages</source>
+        <translation>Verfügbare Sprachen</translation>
+    </message>
+    <message>
+        <source>Select and Quit</source>
+        <translation>Auswählen und Beenden</translation>
     </message>
 </context>
 

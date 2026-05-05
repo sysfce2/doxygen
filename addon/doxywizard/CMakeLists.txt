@@ -148,6 +148,7 @@ inputbool.h
 inputstring.h
 inputstrlist.h
 wizard.h
+languagedialog.h
 )
 
 set(TRANSLATIONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/i18n)
@@ -194,6 +195,7 @@ inputbool.cpp
 inputstring.cpp
 inputint.cpp
 inputstrlist.cpp
+languagedialog.cpp
 ${GENERATED_SRC_WIZARD}/settings.h
 ${GENERATED_SRC_WIZARD}/config_doxyw.cpp
 ${GENERATED_SRC_WIZARD}/config_doxyw.l.h

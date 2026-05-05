@@ -371,6 +371,10 @@ Reason given: %2</source>
         <source>Doxygen GUI frontend</source>
         <translation>Doxygen 圖形介面前端</translation>
     </message>
+    <message>
+        <source>Switch language...</source>
+        <translation>切換語言...</translation>
+    </message>
 </context>
 <context>
     <name>TranslationManager</name>
@@ -698,6 +702,25 @@ Reason given: %2</source>
     <message>
         <source>Topics</source>
         <translation>主題</translation>
+    </message>
+</context>
+<context>
+    <name>LanguageDialog</name>
+    <message>
+        <source>Select Language</source>
+        <translation>選擇語言</translation>
+    </message>
+    <message>
+        <source>Changing the language requires a restart of the application.</source>
+        <translation>更改語言需要重新啟動應用程式。</translation>
+    </message>
+    <message>
+        <source>Available Languages</source>
+        <translation>可用語言</translation>
+    </message>
+    <message>
+        <source>Select and Quit</source>
+        <translation>選擇並退出</translation>
     </message>
 </context>
 

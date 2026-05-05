@@ -14,6 +14,7 @@
 #include "version.h"
 #include "expert.h"
 #include "wizard.h"
+#include "languagedialog.h"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -161,6 +162,8 @@ MainWindow::MainWindow()
                   this,SLOT(resetToDefaults()));
   settings->addAction(tr("Use current settings at startup"),
                   this,SLOT(makeDefaults()));
+  settings->addAction(tr("Switch language..."),
+                  this,SLOT(switchLanguage()));
   m_clearRecent = settings->addAction(tr("Clear recent list"),
                   this,SLOT(clearRecent()));
   settings->addSeparator();
@@ -464,6 +467,22 @@ void MainWindow::makeDefaults()
     m_expert->saveSettings(&m_settings);
     m_settings.setValue(QString::fromLatin1("wizard/loadsettings"), true);
     m_settings.sync();
+  }
+}
+
+void MainWindow::switchLanguage()
+{
+  LanguageDialog languageDialog(DoxygenWizard::langCode,this);
+  if (languageDialog.exec()==QDialog::Accepted)
+  {
+    QString langCode = languageDialog.selectedLocale();
+    qDebug() << "selected language" << langCode;
+    if (langCode!=DoxygenWizard::langCode)
+    {
+      QSettings settings(QString::fromLatin1("Doxygen.org"), QString::fromLatin1("Doxywizard"));
+      m_settings.setValue(QString::fromLatin1("language/code"), languageDialog.selectedLocale());
+      quit();
+    }
   }
 }
 
@@ -945,15 +964,22 @@ int main(int argc,char **argv)
   {
     qDebug() << "Starting doxywizard...";
 
-    DoxygenWizard::langCode = QString::fromLatin1("de"); //getStartupLanguageCode();
-    QTranslator translator;
+    DoxygenWizard::langCode = getStartupLanguageCode();
+    QTranslator qtTranslator;
     if (!DoxygenWizard::langCode.isEmpty() &&
-        translator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(DoxygenWizard::langCode)) &&
-        translator.load(QString::fromLatin1(":/i18n/doxywizard_%1.qm").arg(DoxygenWizard::langCode))
+        qtTranslator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(DoxygenWizard::langCode))
        )
     {
-      qDebug() << "Installing translator" << DoxygenWizard::langCode;
-      QCoreApplication::installTranslator(&translator);
+      qDebug() << "Installing qt translator" << DoxygenWizard::langCode;
+      a.installTranslator(&qtTranslator);
+    }
+    QTranslator appTranslator;
+    if (!DoxygenWizard::langCode.isEmpty() &&
+        appTranslator.load(QString::fromLatin1(":/i18n/doxywizard_%1.qm").arg(DoxygenWizard::langCode))
+       )
+    {
+      qDebug() << "Installing app translator" << DoxygenWizard::langCode;
+      a.installTranslator(&appTranslator);
     }
 
     MainWindow &main = MainWindow::instance();

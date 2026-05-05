@@ -371,6 +371,10 @@ Reason given: %2</source>
         <source>Doxygen GUI frontend</source>
         <translation>Doxygen GUIフロントエンド</translation>
     </message>
+    <message>
+        <source>Switch language...</source>
+        <translation>言語を切り替える...</translation>
+    </message>
 </context>
 <context>
     <name>TranslationManager</name>
@@ -698,6 +702,25 @@ Reason given: %2</source>
     <message>
         <source>Topics</source>
         <translation>トピック</translation>
+    </message>
+</context>
+<context>
+    <name>LanguageDialog</name>
+    <message>
+        <source>Select Language</source>
+        <translation>言語を選択</translation>
+    </message>
+    <message>
+        <source>Changing the language requires a restart of the application.</source>
+        <translation>言語を変更するにはアプリケーションの再起動が必要です。</translation>
+    </message>
+    <message>
+        <source>Available Languages</source>
+        <translation>利用可能な言語</translation>
+    </message>
+    <message>
+        <source>Select and Quit</source>
+        <translation>選択して終了</translation>
     </message>
 </context>
 

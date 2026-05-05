@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<doxygenconfig>
+<doxygenconfig lang="한국어">
   <group name="Project" docs="Project related configuration options">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>

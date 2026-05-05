@@ -371,6 +371,10 @@ Razón dada: %2</translation>
         <source>Doxygen GUI frontend</source>
         <translation>Interfaz gráfica de Doxygen</translation>
     </message>
+    <message>
+        <source>Switch language...</source>
+        <translation>Cambiar idioma...</translation>
+    </message>
 </context>
 <context>
     <name>TranslationManager</name>
@@ -698,6 +702,25 @@ Razón dada: %2</translation>
     <message>
         <source>Topics</source>
         <translation>Temas</translation>
+    </message>
+</context>
+<context>
+    <name>LanguageDialog</name>
+    <message>
+        <source>Select Language</source>
+        <translation>Seleccionar idioma</translation>
+    </message>
+    <message>
+        <source>Changing the language requires a restart of the application.</source>
+        <translation>Cambiar el idioma requiere reiniciar la aplicación.</translation>
+    </message>
+    <message>
+        <source>Available Languages</source>
+        <translation>Idiomas disponibles</translation>
+    </message>
+    <message>
+        <source>Select and Quit</source>
+        <translation>Seleccionar y salir</translation>
     </message>
 </context>
 

@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
     void resetToDefaults();
     void selectTab(int);
     void quit();
+    void switchLanguage();
 
   private slots:
     void openRecent(QAction *action);
