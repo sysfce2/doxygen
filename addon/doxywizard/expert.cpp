@@ -36,6 +36,7 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QRegularExpression>
+#include <QDebug>
 
 #define SA(x) QString::fromLatin1(x)
 
