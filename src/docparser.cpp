@@ -627,6 +627,7 @@ Token DocParser::handleStyleArgument(DocNodeVariant *parent,DocNodeList &childre
   AUTO_TRACE("cmdName={}",cmdName);
   QCString saveCmdName = cmdName;
   Token tok=tokenizer.lex();
+  auto siz = context.styleStack.size();
   if (!tok.is(TokenRetval::TK_WHITESPACE))
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after \\{} command",
@@ -643,6 +644,7 @@ Token DocParser::handleStyleArgument(DocNodeVariant *parent,DocNodeList &childre
         reg::match(context.token->name.str(),specialChar))
     {
       // special character that ends the markup command
+      if (siz != context.styleStack.size()) handlePendingStyleCommands(parent,children,siz);
       return tok;
     }
     if (!defaultHandleToken(parent,tok,children))
@@ -738,17 +740,25 @@ void DocParser::handleStyleLeave(DocNodeVariant *parent,DocNodeList &children,
  *  (e.g. a <b> without a </b>). The closed styles are pushed onto a stack
  *  and entered again at the start of a new paragraph.
  */
-void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children)
+void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children, int oldStackSize)
 {
   AUTO_TRACE();
   if (!context.styleStack.empty())
   {
+    int locOldStackSize = (oldStackSize==-1?0:context.styleStack.size() - oldStackSize);
     const DocStyleChange *sc = &std::get<DocStyleChange>(*context.styleStack.top());
     while (sc && sc->position()>=context.nodeStack.size())
     { // there are unclosed style modifiers in the paragraph
       children.append<DocStyleChange>(this,parent,context.nodeStack.size(),
                                            sc->style(),sc->tagName(),FALSE);
-      context.initialStyleStack.push(context.styleStack.top());
+      if (locOldStackSize)
+      {
+        locOldStackSize--;
+      }
+      else
+      {
+        context.initialStyleStack.push(context.styleStack.top());
+      }
       context.styleStack.pop();
       sc = !context.styleStack.empty() ? &std::get<DocStyleChange>(*context.styleStack.top()) : nullptr;
     }

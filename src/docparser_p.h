@@ -134,7 +134,7 @@ class DocParser : public IDocParser
                           const QCString &tagName,const HtmlAttribList *attribs);
     void handleStyleLeave(DocNodeVariant *parent,DocNodeList &children, DocStyleChange::Style s,
                           const QCString &tagName);
-    void handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children);
+    void handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children, int oldStackSize = -1);
     void handleInitialStyleCommands(DocNodeVariant *parent,DocNodeList &children);
     Token handleAHref(DocNodeVariant *parent,DocNodeList &children,const HtmlAttribList &tagHtmlAttribs);
     void handleUnclosedStyleCommands();
