@@ -362,11 +362,11 @@ void MainWindow::about()
        QString::fromLatin1("</center><center>");
   if (QString::fromLatin1(qVersion())==QString::fromLatin1(QT_VERSION_STR))
   {
-    t << tr("Created with Qt version %1)").arg(QT_VERSION_STR);
+    t << tr("Created with Qt version %1").arg(QString::fromLatin1(QT_VERSION_STR));
   }
   else
   {
-    t << tr("Created with Qt version %1, running with version %2)").arg(QT_VERSION_STR).arg(qVersion());
+    t << tr("Created with Qt version %1, running with version %2").arg(QString::fromLatin1(QT_VERSION_STR)).arg(QString::fromLatin1(qVersion()));
   }
   t << QString::fromLatin1("</center><p><br><center>") + tr("Written by");
   t << QString::fromLatin1("<br> Dimitri van Heesch<br>&copy; 2000-") << QDate::currentDate().year();
