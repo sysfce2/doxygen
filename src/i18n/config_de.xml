@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Deutsch">
-  <group name="Project" docs="Project related configuration options">
+  <group name="Project" docs="Projektbezogene Konfigurationsoptionen">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Dieses Tag gibt die Codierung fur alle Zeichen in der Konfigurationsdatei an, die folgen. Der Standardwert ist UTF-8, was auch die Codierung fur den gesamten Text vor dem ersten Auftreten dieses Tags ist. Doxygen verwendet \c libiconv (oder das in \c libc eingebaute iconv) fur die Transkodierung. Siehe https://www.gnu.org/software/libiconv/ fur die Liste moglicher Codierungen.]]>
@@ -334,7 +334,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Build related configuration options">
+  <group name="Build" docs="Buildbezogene Konfigurationsoptionen">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Wenn das \c EXTRACT_ALL-Tag auf \c YES gesetzt ist, geht Doxygen davon aus, dass alle Entitaten in der Dokumentation dokumentiert sind, auch wenn keine Dokumentation verfugbar war. Private Klassenmitglieder und statische Dateimitglieder werden ausgeblendet, es sei denn, die Tags \ref cfg_extract_private "EXTRACT_PRIVATE" bzw. \ref cfg_extract_static "EXTRACT_STATIC" sind auf \c YES gesetzt. \note Dies deaktiviert auch die Warnungen uber undokumentierte Mitglieder, die normalerweise erzeugt werden, wenn \ref cfg_warnings "WARNINGS" auf \c YES gesetzt ist.]]>
@@ -563,7 +563,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Configuration options related to warning and progress messages">
+  <group name="Messages" docs="Konfigurationsoptionen für Warn- und Fortschrittsmeldungen">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[Das \c QUIET-Tag kann verwendet werden, um die Nachrichten ein- oder auszuschalten, die von Doxygen auf die Standardausgabe generiert werden. Wenn \c QUIET auf \c YES gesetzt ist, bedeutet dies, dass die Nachrichten ausgeschaltet sind.]]>
@@ -629,7 +629,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Configuration options related to the input files">
+  <group name="Input" docs="Konfigurationsoptionen für die Eingabedateien">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[Das \c INPUT-Tag wird verwendet, um die Dateien und/oder Verzeichnisse anzugeben, die die Quellcode- und anderen Dokumentationsdateien enthalten. Sie konnen Dateinamen wie \c myfile.cpp oder Verzeichnisse wie \c /usr/src/myproject eingeben. Trennen Sie die Dateien oder Verzeichnisse durch Leerzeichen. Siehe auch \ref cfg_file_patterns "FILE_PATTERNS" und \ref cfg_extension_mapping "EXTENSION_MAPPING". \note Wenn dieses Tag leer ist, wird das aktuelle Verzeichnis durchsucht.]]>
@@ -782,7 +782,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Configuration options related to source browsing">
+  <group name="Source_Browser" docs="Konfigurationsoptionen für den Quellcode-Browser">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Wenn das \c SOURCE_BROWSER-Tag auf \c YES gesetzt ist, wird eine Liste der Quelldateien generiert. Dokumentierte Entitaten werden mit diesen Quellen querverwiesen. <br>Hinweis: Um den gesamten Quellcode in der generierten Ausgabe zu entfernen, stellen Sie sicher, dass auch \ref cfg_verbatim_headers "VERBATIM_HEADERS" auf \c NO gesetzt ist.]]>
@@ -849,7 +849,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Configuration options related to the alphabetical class index">
+  <group name="Index" docs="Konfigurationsoptionen für den alphabetischen Klassenindex">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Wenn das \c ALPHABETICAL_INDEX-Tag auf \c YES gesetzt ist, wird ein alphabetischer Index aller Verbindungen generiert. Wenn Sie die \ref cfg_extract_all "EXTRACT_ALL" und \ref cfg_extract_private "EXTRACT_PRIVATE" Tags auf \c YES setzen, wird auch der Index aller internen Elemente generiert. Wenn Sie dies nicht mochten, konnen Sie \ref cfg_ignore_prefix "IGNORE_PREFIX" auf einen nicht-leeren Wert setzen.]]>
@@ -861,7 +861,7 @@
       </docs>
     </option>
   </group>
-  <group name="HTML" docs="Configuration options related to the HTML output">
+  <group name="HTML" docs="Konfigurationsoptionen für die HTML-Ausgabe">
     <option type="bool" id="GENERATE_HTML" defval="1">
       <docs>
 <![CDATA[Wenn das \c GENERATE_HTML-Tag auf \c YES gesetzt ist, generiert Doxygen HTML-Ausgabe.]]>
@@ -1227,7 +1227,7 @@
       </docs>
     </option>
   </group>
-  <group name="LaTeX" docs="Configuration options related to the LaTeX output">
+  <group name="LaTeX" docs="Konfigurationsoptionen für die LaTeX-Ausgabe">
     <option type="bool" id="GENERATE_LATEX" defval="1">
       <docs>
 <![CDATA[Wenn das \c GENERATE_LATEX-Tag auf \c YES gesetzt ist, generiert Doxygen \f$\mbox{\LaTeX}\f$-Ausgabe.]]>
@@ -1329,7 +1329,7 @@
       </docs>
     </option>
   </group>
-  <group name="RTF" docs="Configuration options related to the RTF output">
+  <group name="RTF" docs="Konfigurationsoptionen für die RTF-Ausgabe">
     <option type="bool" id="GENERATE_RTF" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_RTF-Tag auf \c YES gesetzt ist, generiert Doxygen RTF-Ausgabe. Die RTF-Ausgabe ist fur Word 97 optimiert und kann mit anderen RTF-Lesern/Editoren nicht sehr schon aussehen.]]>
@@ -1366,7 +1366,7 @@
       </docs>
     </option>
   </group>
-  <group name="Man" docs="Configuration options related to the man page output">
+  <group name="Man" docs="Konfigurationsoptionen für die Man-Page-Ausgabe">
     <option type="bool" id="GENERATE_MAN" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_MAN-Tag auf \c YES gesetzt ist, generiert Doxygen Man-Pages fur Klassen und Dateien.]]>
@@ -1393,7 +1393,7 @@
       </docs>
     </option>
   </group>
-  <group name="XML" docs="Configuration options related to the XML output">
+  <group name="XML" docs="Konfigurationsoptionen für die XML-Ausgabe">
     <option type="bool" id="GENERATE_XML" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_XML-Tag auf \c YES gesetzt ist, generiert Doxygen eine XML-Datei, die den Code und die Dokumentation erfasst.]]>
@@ -1415,7 +1415,7 @@
       </docs>
     </option>
   </group>
-  <group name="Docbook" docs="Configuration options related to the DOCBOOK output">
+  <group name="Docbook" docs="Konfigurationsoptionen für die DOCBOOK-Ausgabe">
     <option type="bool" id="GENERATE_DOCBOOK" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_DOCBOOK-Tag auf \c YES gesetzt ist, generiert Doxygen Docbook-Dateien, die zur Erstellung von PDF verwendet werden konnen.]]>
@@ -1427,14 +1427,14 @@
       </docs>
     </option>
   </group>
-  <group name="AutoGen" docs="Configuration options for the AutoGen Definitions output">
+  <group name="AutoGen" docs="Konfigurationsoptionen für die AutoGen-Definitions-Ausgabe">
     <option type="bool" id="GENERATE_AUTOGEN_DEF" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_AUTOGEN_DEF-Tag auf \c YES gesetzt ist, generiert Doxygen eine AutoGen Definitions-Datei (siehe https://autogen.sourceforge.net/), die die Struktur des Codes einschließlich aller Dokumentation erfasst. Beachten Sie, dass diese Funktion derzeit noch experimentell und unvollstandig ist.]]>
       </docs>
     </option>
   </group>
-  <group name="Sqlite3" docs="Configuration options related to Sqlite3 output">
+  <group name="Sqlite3" docs="Konfigurationsoptionen für die Sqlite3-Ausgabe">
     <option type="bool" id="GENERATE_SQLITE3" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_SQLITE3-Tag auf \c YES gesetzt ist, generiert Doxygen eine \c Sqlite3-Datenbank mit Symbolen, die von der Suchmaschine verwendet werden kann.]]>
@@ -1451,7 +1451,7 @@
       </docs>
     </option>
   </group>
-  <group name="PerlMod" docs="Configuration options related to the Perl module output">
+  <group name="PerlMod" docs="Konfigurationsoptionen für die Perl-Modul-Ausgabe">
     <option type="bool" id="GENERATE_PERLMOD" defval="0">
       <docs>
 <![CDATA[Wenn das \c GENERATE_PERLMOD-Tag auf \c YES gesetzt ist, generiert Doxygen eine Perl-Modul-Datei, die bestimmte Informationen uber den Code in einer fur Perl-Module geeigneten Form erfasst.]]>
@@ -1473,7 +1473,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Configuration options related to the preprocessor">
+  <group name="Preprocessor" docs="Konfigurationsoptionen für den Präprozessor">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Wenn das \c ENABLE_PREPROCESSING-Tag auf \c YES gesetzt ist, wertet Doxygen alle C-Praprozessor-Direktiven aus.]]>
@@ -1520,7 +1520,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Configuration options related to external references">
+  <group name="External" docs="Konfigurationsoptionen für externe Referenzen">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[Das \c TAGFILES-Tag kann verwendet werden, um eine oder mehrere Tag-Dateien anzugeben. Fur jede Tag-Datei sollte der Speicherort der externen Dokumentation hinzugefugt werden. Das Format einer Tag-Datei ohne diesen Speicherort ist wie folgt: \verbatim TAGFILES = file1 file2 ... \endverbatim Das Hinzufugen des Speicherorts fur die Tag-Dateien erfolgt wie folgt: \verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim wobei `loc1` und `loc2` relative oder absolute Pfade oder URLs sein konnen. Siehe den Abschnitt \ref external fur weitere Informationen zur Verwendung von Tag-Dateien. \note Jede Tag-Datei muss einen eindeutigen Namen haben (wobei der Name den Pfad NICHT enthalt). Wenn eine Tag-Datei nicht in dem Verzeichnis liegt, in dem Doxygen ausgefuhrt wird, mussen Sie auch den Pfad zur Tag-Datei hier angeben.]]>
@@ -1547,7 +1547,7 @@
       </docs>
     </option>
   </group>
-  <group name="Dot" docs="Configuration options related to diagram generator tools">
+  <group name="Dot" docs="Konfigurationsoptionen für Diagrammgenerierungswerkzeuge">
     <option type="bool" id="HIDE_UNDOC_RELATIONS" defval="1">
       <docs>
 <![CDATA[Wenn auf \c YES gesetzt, blenden die Vererbungs- und Kollaborationsgraphen Vererbungs- und Verwendungsbeziehungen aus, wenn das Ziel undokumentiert ist oder keine Klasse ist.]]>

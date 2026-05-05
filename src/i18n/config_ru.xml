@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Русский">
-  <group name="Project" docs="Project related configuration options">
+  <group name="Project" docs="Параметры конфигурации, связанные с проектом">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Этот тег указывает кодировку, используемую для всех символов в файле конфигурации, которые следуют за ним. Значение по умолчанию — UTF-8, которое также является кодировкой, используемой для всего текста перед первым появлением этого тега. Doxygen использует \c libiconv (или встроенный в \c libc iconv) для перекодирования. См. https://www.gnu.org/software/libiconv/ для списка возможных кодировок.]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Build related configuration options">
+  <group name="Build" docs="Параметры конфигурации, связанные со сборкой">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Если тег \c EXTRACT_ALL установлен в \c YES, Doxygen будет предполагать, что все сущности в документации документированы, даже если документация недоступна. Закрытые члены класса и статические члены файла будут скрыты, если только теги \ref cfg_extract_private "EXTRACT_PRIVATE" или \ref cfg_extract_static "EXTRACT_STATIC" не установлены в \c YES соответственно. \note Это также отключит предупреждения о недокументированных членах, которые обычно генерируются, когда \ref cfg_warnings "WARNINGS" установлен в \c YES.]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Configuration options related to warning and progress messages">
+  <group name="Messages" docs="Параметры конфигурации, связанные с предупреждениями и сообщениями о ходе выполнения">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[Тег \c QUIET можно использовать для включения/выключения сообщений, генерируемых Doxygen на стандартный вывод. Если \c QUIET установлен в \c YES, это означает, что сообщения выключены.]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Configuration options related to the input files">
+  <group name="Input" docs="Параметры конфигурации, связанные с входными файлами">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[Тег \c INPUT используется для указания файлов и/или каталогов, содержащих источники документации. Вы можете вводить имена файлов с шаблоном (например, &lt;code&gt;*.cpp&lt;/code&gt;) и каталоги для добавления во входные данные. Вы также можете вводить имена файлов, относительные к каталогу, из которого был запущен Doxygen. Если оставить пустым, будет использоваться текущий каталог.]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Configuration options related to source browsing">
+  <group name="Source_Browser" docs="Параметры конфигурации, связанные с просмотром исходного кода">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Если тег \c SOURCE_BROWSER установлен в \c YES, будет сгенерирован список исходных файлов. Для вывода HTML исходные файлы также будут показаны с подсветкой синтаксиса.]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Configuration options related to the alphabetical class index">
+  <group name="Index" docs="Параметры конфигурации, связанные с алфавитным индексом классов">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Если тег \c ALPHABETICAL_INDEX установлен в \c YES, будет сгенерирован алфавитный указатель всех классов, функций, переменных и т.д.]]>
@@ -862,7 +862,7 @@
       </docs>
     </option>
   </group>
-  <group name="HTML" docs="Configuration options related to the HTML output">
+  <group name="HTML" docs="Параметры конфигурации, связанные с выводом HTML">
     <option type="bool" id="GENERATE_HTML" defval="1">
       <docs>
 <![CDATA[Если тег \c GENERATE_HTML установлен в \c YES, будет сгенерирован вывод HTML.]]>
@@ -1228,7 +1228,7 @@
       </docs>
     </option>
   </group>
-  <group name="LaTeX" docs="Configuration options related to the LaTeX output">
+  <group name="LaTeX" docs="Параметры конфигурации, связанные с выводом LaTeX">
     <option type="bool" id="GENERATE_LATEX" defval="1">
       <docs>
 <![CDATA[Если тег \c GENERATE_LATEX установлен в \c YES, будет сгенерирован вывод LaTeX.]]>
@@ -1330,7 +1330,7 @@
       </docs>
     </option>
   </group>
-  <group name="RTF" docs="Configuration options related to the RTF output">
+  <group name="RTF" docs="Параметры конфигурации, связанные с выводом RTF">
     <option type="bool" id="GENERATE_RTF" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_RTF установлен в \c YES, будет сгенерирован вывод RTF.]]>
@@ -1367,7 +1367,7 @@
       </docs>
     </option>
   </group>
-  <group name="Man" docs="Configuration options related to the man page output">
+  <group name="Man" docs="Параметры конфигурации, связанные с выводом страниц руководства">
     <option type="bool" id="GENERATE_MAN" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_MAN установлен в \c YES, будет сгенерирован вывод страниц Man.]]>
@@ -1394,7 +1394,7 @@
       </docs>
     </option>
   </group>
-  <group name="XML" docs="Configuration options related to the XML output">
+  <group name="XML" docs="Параметры конфигурации, связанные с выводом XML">
     <option type="bool" id="GENERATE_XML" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_XML установлен в \c YES, будет сгенерирован вывод XML.]]>
@@ -1416,7 +1416,7 @@
       </docs>
     </option>
   </group>
-  <group name="Docbook" docs="Configuration options related to the DOCBOOK output">
+  <group name="Docbook" docs="Параметры конфигурации, связанные с выводом DOCBOOK">
     <option type="bool" id="GENERATE_DOCBOOK" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_DOCBOOK установлен в \c YES, будет сгенерирован вывод DocBook.]]>
@@ -1428,14 +1428,14 @@
       </docs>
     </option>
   </group>
-  <group name="AutoGen" docs="Configuration options for the AutoGen Definitions output">
+  <group name="AutoGen" docs="Параметры конфигурации для вывода AutoGen Definitions">
     <option type="bool" id="GENERATE_AUTOGEN_DEF" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_AUTOGEN_DEF установлен в \c YES, будет сгенерирован файл определений AutoGen.]]>
       </docs>
     </option>
   </group>
-  <group name="Sqlite3" docs="Configuration options related to Sqlite3 output">
+  <group name="Sqlite3" docs="Параметры конфигурации, связанные с выводом Sqlite3">
     <option type="bool" id="GENERATE_SQLITE3" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_SQLITE3 установлен в \c YES, Doxygen сгенерирует базу данных \c Sqlite3 с символами, найденными Doxygen, сохраненными в таблицах.]]>
@@ -1452,7 +1452,7 @@
       </docs>
     </option>
   </group>
-  <group name="PerlMod" docs="Configuration options related to the Perl module output">
+  <group name="PerlMod" docs="Параметры конфигурации, связанные с выводом модуля Perl">
     <option type="bool" id="GENERATE_PERLMOD" defval="0">
       <docs>
 <![CDATA[Если тег \c GENERATE_PERLMOD установлен в \c YES, Doxygen сгенерирует файл модуля Perl, который захватывает структуру кода (включая всю документацию).]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Configuration options related to the preprocessor">
+  <group name="Preprocessor" docs="Параметры конфигурации, связанные с препроцессором">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Если тег \c ENABLE_PREPROCESSING установлен в \c YES, препроцессор C будет применен к исходному коду.]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Configuration options related to external references">
+  <group name="External" docs="Параметры конфигурации, связанные с внешними ссылками">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[Тег \c TAGFILES можно использовать для указания внешних файлов тегов.]]>
@@ -1548,7 +1548,7 @@
       </docs>
     </option>
   </group>
-  <group name="Dot" docs="Configuration options related to diagram generator tools">
+  <group name="Dot" docs="Параметры конфигурации, связанные с инструментами генерации диаграмм">
     <option type="bool" id="HIDE_UNDOC_RELATIONS" defval="1">
       <docs>
 <![CDATA[Если тег \c HIDE_UNDOC_RELATIONS установлен в \c YES, недокументированные отношения будут скрыты в диаграммах классов.]]>
