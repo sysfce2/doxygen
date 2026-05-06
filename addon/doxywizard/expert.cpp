@@ -282,7 +282,7 @@ void Expert::createTopics(const QDomElement &rootElem)
         QString translatedName = DoxygenWizard::translateExpertTopic(name);
         items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList() << translatedName << docs));
         QWidget *widget = createTopicWidget(childElem);
-        m_topics[name] = widget;
+        m_topics[translatedName] = widget;
         m_topicStack->addWidget(widget);
       }
     }
