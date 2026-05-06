@@ -621,6 +621,10 @@ Reason given: %2</source>
 <context>
     <name>Wizard</name>
     <message>
+        <source>Project</source>
+        <translation>프로젝트</translation>
+    </message>
+    <message>
         <source>Mode</source>
         <translation>모드</translation>
     </message>

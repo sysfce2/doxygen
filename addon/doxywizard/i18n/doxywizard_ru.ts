@@ -621,6 +621,10 @@ Reason given: %2</source>
 <context>
     <name>Wizard</name>
     <message>
+        <source>Project</source>
+        <translation>Проект</translation>
+    </message>
+    <message>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>

@@ -613,7 +613,7 @@ void Step1::selectProjectIcon()
                                     tr("Select project icon/image"),path);
   if (iconName.isEmpty())
   {
-    m_projIconLab->setText(tr("No Project logo selected."));
+    m_projIconLab->setText(DoxygenWizard::msgNoProjectLogoSelected());
   }
   else
   {
@@ -746,7 +746,7 @@ void Step1::init()
   }
   else
   {
-    m_projIconLab->setText(tr("No Project logo selected."));
+    m_projIconLab->setText(DoxygenWizard::msgNoProjectLogoSelected());
   }
   option = m_modelData[STR_INPUT];
   if (option->value().toStringList().count()>0)
