@@ -672,38 +672,6 @@ Razón dada: %2</translation>
         <translation>Siguiente</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>Proyecto</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>Construcción</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>Mensajes</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>Entrada</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>Navegador de fuentes</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>Índice</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>Preprocesador</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>Referencias externas</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>Temas</translation>
     </message>

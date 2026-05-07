@@ -125,7 +125,6 @@ namespace DoxygenWizard
   QString msgPreviousButton();
   QString msgNextButton();
   QString msgTopicsHeader();
-  QString translateExpertTopic(const QString &name);
 };
 
 #endif

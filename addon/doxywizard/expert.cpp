@@ -154,10 +154,12 @@ static void translateTopics(QDomElement &configRoot,const QDomElement &translati
     {
       // translate the group docs
       QString name   = groupElem.attribute(SA("name"));
-      QString trDocs = groupElem.attribute(SA("docs"));
       if (groupMap.contains(name))
       {
+        QString trDocs = groupElem.attribute(SA("docs"));
+        QString trName = groupElem.attribute(SA("trname"));
         groupMap[name].elem.setAttribute(SA("docs"),trDocs);
+        groupMap[name].elem.setAttribute(SA("trname"),trName);
       }
       else
       {
@@ -279,7 +281,8 @@ void Expert::createTopics(const QDomElement &rootElem)
       QString setting = childElem.attribute(SA("setting"));
       if (setting.isEmpty() || IS_SUPPORTED(setting.toLatin1()))
       {
-        QString translatedName = DoxygenWizard::translateExpertTopic(name);
+        QString translatedName = childElem.attribute(SA("trname")).replace(SA("_"),SA(" "));
+        if (translatedName.isEmpty()) translatedName = name;
         items.append(new QTreeWidgetItem((QTreeWidget*)nullptr,QStringList() << translatedName << docs));
         QWidget *widget = createTopicWidget(childElem);
         m_topics[translatedName] = widget;

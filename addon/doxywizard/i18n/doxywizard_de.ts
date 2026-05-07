@@ -672,38 +672,6 @@ Angegebener Grund: %2</translation>
         <translation>Weiter</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>Projekt</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>Erstellung</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>Nachrichten</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>Eingabe</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>Quellcode-Browser</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>Index</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>Präprozessor</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>Externe Referenzen</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>Themen</translation>
     </message>

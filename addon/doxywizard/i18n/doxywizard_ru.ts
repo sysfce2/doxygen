@@ -672,38 +672,6 @@ Reason given: %2</source>
         <translation>Далее</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>Проект</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>Сборка</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>Сообщения</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>Ввод</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>Браузер исходного кода</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>Препроцессор</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>Внешние ссылки</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>Темы</translation>
     </message>

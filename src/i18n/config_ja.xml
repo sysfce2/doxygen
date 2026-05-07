@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="日本語">
-  <group name="Project" docs="プロジェクト関連の設定オプション">
+  <group name="Project" trname="プロジェクト" docs="プロジェクト関連の設定オプション">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[このタグは、設定ファイル内のこれ以降のすべての文字に使用されるエンコーディングを指定します。デフォルトはUTF-8で、このタグが最初に現れる前のすべてのテキストにも使用されるエンコーディングです。Doxygenは\c libiconv（または\c libcに組み込まれたiconv）を使用してトランスコーディングを行います。可能なエンコーディングのリストについては、https://www.gnu.org/software/libiconv/ を参照してください。]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="ビルド関連の設定オプション">
+  <group name="Build" trname="ビルド" docs="ビルド関連の設定オプション">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[\c EXTRACT_ALLタグが\c YESに設定されている場合、Doxygenはドキュメント内のすべてのエンティティが文書化されていると仮定します。ドキュメントが利用可能でなかったとしてもです。プライベートクラスメンバーと静的ファイルメンバーは、\ref cfg_extract_private "EXTRACT_PRIVATE"および\ref cfg_extract_static "EXTRACT_STATIC"タグが\c YESに設定されていない限り非表示になります。\note これにより、\ref cfg_warnings "WARNINGS"が\c YESに設定されている場合に通常生成される文書化されていないメンバーに関する警告も無効になります。]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="警告および進行メッセージに関連する設定オプション">
+  <group name="Messages" trname="メッセージ" docs="警告および進行メッセージに関連する設定オプション">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[\c QUIETタグを使用して、Doxygenによって標準出力に生成されるメッセージをオン/オフできます。\c QUIETが\c YESに設定されている場合、メッセージがオフであることを意味します。]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="入力ファイルに関連する設定オプション">
+  <group name="Input" trname="入力" docs="入力ファイルに関連する設定オプション">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[\c INPUTタグは、文書化されたソースファイルを含むファイルおよび/またはディレクトリを指定するために使用されます。\c myfile.cppのようなファイル名や\c /usr/src/myprojectのようなディレクトリを入力できます。ファイルまたはディレクトリをスペースで区切ってください。\ref cfg_file_patterns "FILE_PATTERNS"および\ref cfg_extension_mapping "EXTENSION_MAPPING"も参照してください。\note このタグが空の場合、現在のディレクトリが検索されます。]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="ソースブラウジングに関連する設定オプション">
+  <group name="Source_Browser" trname="ソースブラウザ" docs="ソースブラウジングに関連する設定オプション">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[\c SOURCE_BROWSERタグが\c YESに設定されている場合、ソースファイルのリストが生成されます。文書化されたエンティティはこれらのソースと相互参照されます。<br>注意：生成された出力からすべてのソースコードを取り除くには、\ref cfg_verbatim_headers "VERBATIM_HEADERS"も\c NOに設定されていることを確認してください。]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="アルファベット順クラスインデックスに関連する設定オプション">
+  <group name="Index" trname="インデックス" docs="アルファベット順クラスインデックスに関連する設定オプション">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[\c ALPHABETICAL_INDEXタグが\c YESに設定されている場合、すべてのコンパウンドのアルファベット順インデックスが生成されます。プロジェクトに多数のクラス、構造体、共用体、またはインターフェースが含まれている場合はこれを有効にしてください。]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="プリプロセッサに関連する設定オプション">
+  <group name="Preprocessor" trname="プリプロセッサ" docs="プリプロセッサに関連する設定オプション">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[\c ENABLE_PREPROCESSINGタグが\c YESに設定されている場合、Doxygenはソースおよびインクルードファイルで見つかったすべてのCプリプロセッサディレクティブを評価します。]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="外部参照に関連する設定オプション">
+  <group name="External" trname="外部参照" docs="外部参照に関連する設定オプション">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[\c TAGFILESタグを使用して、1つ以上のタグファイルを指定できます。各タグファイルについて、外部ドキュメントの場所を追加する必要があります。場所なしのタグファイルの形式は次のとおりです：\verbatim TAGFILES = file1 file2 ... \endverbatim タグファイルの場所の追加は次のように行います：\verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim ここで`loc1`と`loc2`は相対パス、絶対パス、またはURLにすることができます。タグファイルの使用の詳細については、セクション\ref externalを参照してください。\note 各タグファイルは一意の名前を持つ必要があります（または名前はパスを含みません）。タグファイルがDoxygenが実行されるディレクトリにない場合は、ここでタグファイルへのパスも指定する必要があります。]]>

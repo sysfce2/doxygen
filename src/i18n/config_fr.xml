@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Français">
-  <group name="Project" docs="Options de configuration relatives au projet">
+  <group name="Project" trname="Projet" docs="Options de configuration relatives au projet">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Cette balise specifie l'encodage utilise pour tous les caracteres du fichier de configuration qui suivent. La valeur par defaut est UTF-8, qui est egalement l'encodage utilise pour tout le texte avant la premiere occurrence de cette balise. Doxygen utilise \c libiconv (ou l'iconv integre dans \c libc) pour le transcodage. Voir https://www.gnu.org/software/libiconv/ pour la liste des encodages possibles.]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Options de configuration relatives à la compilation">
+  <group name="Build" trname="Construction" docs="Options de configuration relatives à la compilation">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Si la balise \c EXTRACT_ALL est definie a \c YES, Doxygen supposera que toutes les entites dans la documentation sont documentees, meme si aucune documentation n'etait disponible. Les membres prives de classe et les membres statiques de fichier seront caches sauf si les balises \ref cfg_extract_private "EXTRACT_PRIVATE" respectivement \ref cfg_extract_static "EXTRACT_STATIC" sont definies a \c YES. \note Cela desactivera egalement les avertissements sur les membres non documentes qui sont normalement produits lorsque \ref cfg_warnings "WARNINGS" est defini a \c YES.]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Options de configuration relatives aux messages d'avertissement et de progression">
+  <group name="Messages" trname="Messages" docs="Options de configuration relatives aux messages d'avertissement et de progression">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[La balise \c QUIET peut etre utilisee pour activer/desactiver les messages qui sont generes vers la sortie standard par Doxygen. Si \c QUIET est defini a \c YES cela implique que les messages sont desactives.]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Options de configuration relatives aux fichiers d'entrée">
+  <group name="Input" trname="Entrée" docs="Options de configuration relatives aux fichiers d'entrée">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[La balise \c INPUT est utilisee pour specifier les fichiers et/ou repertoires qui contiennent les fichiers sources documentes. Vous pouvez entrer des noms de fichiers comme \c myfile.cpp ou des repertoires comme \c /usr/src/myproject. Separez les fichiers ou repertoires par des espaces. Voir aussi \ref cfg_file_patterns "FILE_PATTERNS" et \ref cfg_extension_mapping "EXTENSION_MAPPING" \note Si cette balise est vide, le repertoire courant est recherche.]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Options de configuration relatives à la navigation dans le code source">
+  <group name="Source_Browser" trname="Navigateur de sources" docs="Options de configuration relatives à la navigation dans le code source">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Si la balise \c SOURCE_BROWSER est definie a \c YES, une liste de fichiers sources sera generee. Les entites documentees seront referencees croisees avec ces sources. <br>Remarque: Pour se debarrasser de tout le code source dans la sortie generee, assurez-vous que egalement \ref cfg_verbatim_headers "VERBATIM_HEADERS" est defini a \c NO.]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Options de configuration relatives à l'index alphabétique des classes">
+  <group name="Index" trname="Index" docs="Options de configuration relatives à l'index alphabétique des classes">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Si la balise \c ALPHABETICAL_INDEX est definie a \c YES, un index alphabetique de tous les composes sera genere. Activez cela si le projet contient beaucoup de classes, structures, unions ou interfaces.]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Options de configuration relatives au préprocesseur">
+  <group name="Preprocessor" trname="Préprocesseur" docs="Options de configuration relatives au préprocesseur">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Si la balise \c ENABLE_PREPROCESSING est definie a \c YES, Doxygen evaluera toutes les directives de preprocesseur C trouvees dans les sources et les fichiers d'inclusion.]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Options de configuration relatives aux références externes">
+  <group name="External" trname="Références externes" docs="Options de configuration relatives aux références externes">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[La balise \c TAGFILES peut etre utilisee pour specifier un ou plusieurs fichiers de balises. Pour chaque fichier de balises, l'emplacement de la documentation externe doit etre ajoute. Le format d'un fichier de balises sans cet emplacement est le suivant: \verbatim TAGFILES = file1 file2 ... \endverbatim L'ajout d'un emplacement pour les fichiers de balises se fait comme suit: \verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim ou `loc1` et `loc2` peuvent etre des chemins relatifs ou absolus ou des URL. Voir la section \ref external pour plus d'informations sur l'utilisation des fichiers de balises. \note Chaque fichier de balises doit avoir un nom unique (ou le nom n'inclut PAS le chemin). Si un fichier de balises n'est pas situe dans le repertoire dans lequel Doxygen est execute, vous devez egalement specifier le chemin d'acces au fichier de balises ici.]]>

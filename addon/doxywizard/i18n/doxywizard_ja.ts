@@ -672,38 +672,6 @@ Reason given: %2</source>
         <translation>次へ</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>プロジェクト</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>ビルド</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>メッセージ</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>入力</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>ソースブラウザ</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>インデックス</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>プリプロセッサ</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>外部参照</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>トピック</translation>
     </message>

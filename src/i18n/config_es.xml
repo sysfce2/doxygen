@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Español">
-  <group name="Project" docs="Opciones de configuración relacionadas con el proyecto">
+  <group name="Project" trname="Proyecto" docs="Opciones de configuración relacionadas con el proyecto">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Esta etiqueta especifica la codificacion de todos los caracteres en el archivo de configuracion que sigue. El valor predeterminado es UTF-8, que tambien es la codificacion para todo el texto antes de la primera aparicion de esta etiqueta. Doxygen usa \c libiconv (o iconv incorporado en \c libc) para la transcodificacion. Ver https://www.gnu.org/software/libiconv/ para la lista de posibles codificaciones.]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Opciones de configuración relacionadas con la compilación">
+  <group name="Build" trname="Construcción" docs="Opciones de configuración relacionadas con la compilación">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Si la etiqueta \c EXTRACT_ALL esta configurada en \c YES, Doxygen asumira que todas las entidades en la documentacion estan documentadas, incluso si no habia documentacion disponible. Los miembros privados de clase y los miembros estaticos de archivo se ocultaran a menos que las etiquetas \ref cfg_extract_private "EXTRACT_PRIVATE" y \ref cfg_extract_static "EXTRACT_STATIC" esten configuradas en \c YES. \nota Esto tambien deshabilita las advertencias sobre miembros no documentados que normalmente se generan cuando \ref cfg_warnings "WARNINGS" esta configurado en \c YES.]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Opciones de configuración relacionadas con los mensajes de advertencia y progreso">
+  <group name="Messages" trname="Mensajes" docs="Opciones de configuración relacionadas con los mensajes de advertencia y progreso">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[La etiqueta \c QUIET se puede usar para activar/desactivar los mensajes generados a la salida estandar por Doxygen. Si \c QUIET esta configurado en \c YES, esto implica que los mensajes estan desactivados.]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Opciones de configuración relacionadas con los archivos de entrada">
+  <group name="Input" trname="Entrada" docs="Opciones de configuración relacionadas con los archivos de entrada">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[La etiqueta \c INPUT se usa para especificar los archivos y/o directorios que contienen los archivos de codigo fuente y otros archivos de documentacion. Puede ingresar nombres de archivo como \c myfile.cpp o directorios como \c /usr/src/myproject. Separe los archivos o directorios con espacios. Vea tambien \ref cfg_file_patterns "FILE_PATTERNS" y \ref cfg_extension_mapping "EXTENSION_MAPPING". \nota Si esta etiqueta esta vacia, se buscara en el directorio actual.]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Opciones de configuración relacionadas con la exploración del código fuente">
+  <group name="Source_Browser" trname="Navegador de fuentes" docs="Opciones de configuración relacionadas con la exploración del código fuente">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Si la etiqueta \c SOURCE_BROWSER esta configurada en \c YES, se generara una lista de archivos fuente. Las entidades documentadas seran referenciadas cruzadas con estas fuentes. <br>Nota: Para deshacerse de todo el codigo fuente en la salida generada, asegurese de que tambien \ref cfg_verbatim_headers "VERBATIM_HEADERS" este configurado en \c NO.]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Opciones de configuración relacionadas con el índice alfabético de clases">
+  <group name="Index" trname="Índice" docs="Opciones de configuración relacionadas con el índice alfabético de clases">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Si la etiqueta \c ALPHABETICAL_INDEX esta configurada en \c YES, se generara un indice alfabetico de todas las entidades. Si configura las etiquetas \ref cfg_extract_all "EXTRACT_ALL" y \ref cfg_extract_private "EXTRACT_PRIVATE" en \c YES, tambien se generara el indice de todos los elementos internos. Si no desea esto, puede configurar \ref cfg_ignore_prefix "IGNORE_PREFIX" en un valor no vacio.]]>
@@ -1474,7 +1474,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Opciones de configuración relacionadas con el preprocesador">
+  <group name="Preprocessor" trname="Preprocesador" docs="Opciones de configuración relacionadas con el preprocesador">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Si la etiqueta \c ENABLE_PREPROCESSING esta configurada en \c YES, Doxygen evaluara todas las directivas del preprocesador C.]]>
@@ -1521,7 +1521,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Opciones de configuración relacionadas con las referencias externas">
+  <group name="External" trname="Referencias externas" docs="Opciones de configuración relacionadas con las referencias externas">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[La etiqueta \c TAGFILES se puede usar para especificar uno o mas archivos de etiquetas. Para cada archivo de etiquetas se debe agregar la ubicacion de la documentacion externa. El formato de un archivo de etiquetas sin esta ubicacion es el siguiente: \verbatim TAGFILES = file1 file2 ... \endverbatim Agregar ubicacion para los archivos de etiquetas se hace de la siguiente manera: \verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim donde `loc1` y `loc2` pueden ser rutas relativas o absolutas o URLs. Vea la seccion \ref external para mas informacion sobre el uso de archivos de etiquetas. \note Cada archivo de etiquetas debe tener un nombre unico (donde el nombre NO incluye la ruta). Si un archivo de etiquetas no esta ubicado en el directorio en el que se ejecuta Doxygen, tambien debe especificar la ruta al archivo de etiquetas aqui.]]>

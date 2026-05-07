@@ -672,38 +672,6 @@ Reason given: %2</source>
         <translation>下一步</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>项目</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>构建</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>消息</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>输入</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>源码浏览器</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>索引</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>预处理器</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>外部引用</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>主题</translation>
     </message>
