@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>数式の含め方</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>説明</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

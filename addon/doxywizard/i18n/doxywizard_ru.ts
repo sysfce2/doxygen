@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>Включение формул</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Описание</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>
