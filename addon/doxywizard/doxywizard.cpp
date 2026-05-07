@@ -61,6 +61,11 @@ const int messageTimeout = 5000; //!< status bar message timeout in milliseconds
 // check if a translation for langCode is stored as resource
 static bool isLanguageCodeSupported(const QString &langCode)
 {
+  // English is the default language, always supported
+  if (langCode == QString::fromLatin1("en"))
+  {
+    return true;
+  }
   QDir resourceDir(QString::fromLatin1(":/i18n"));
   QFileInfoList fileList = resourceDir.entryInfoList();
   foreach (QFileInfo fileInfo, fileList)
@@ -480,8 +485,8 @@ void MainWindow::switchLanguage()
     qDebug() << "selected language" << langCode;
     if (langCode!=DoxygenWizard::langCode)
     {
-      QSettings settings(QString::fromLatin1("Doxygen.org"), QString::fromLatin1("Doxywizard"));
-      m_settings.setValue(QString::fromLatin1("language/code"), languageDialog.selectedLocale());
+      m_settings.setValue(QString::fromLatin1("language/code"), langCode);
+      m_settings.sync();
       quit();
     }
   }

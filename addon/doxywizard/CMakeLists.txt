@@ -170,9 +170,13 @@ else()
 endif()
 
 set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/i18n\">\n")
-foreach(qm_file ${doxywizard_QM_FILES})
-  get_filename_component(qm_name ${qm_file} NAME)
-  string(REGEX REPLACE ".*/doxywizard_(.+)\\.qm$" "\\1" LOCALE "${qm_file}")
+set(doxywizard_QM_FILES_PATHS)
+foreach(ts_file ${DOXYWIZARD_TRANSLATION_FILES})
+  get_filename_component(ts_name ${ts_file} NAME_WE)
+  string(REGEX REPLACE "doxywizard_(.+)" "\\1" LOCALE "${ts_name}")
+  set(qm_file "${CMAKE_CURRENT_BINARY_DIR}/${ts_name}.qm")
+  list(APPEND doxywizard_QM_FILES_PATHS ${qm_file})
+  
   if (QT_TRANSLATIONS_DIR)
     if (EXISTS "${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm")
       string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"qtbase_${LOCALE}.qm\">${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm</file>\n")
@@ -181,13 +185,17 @@ foreach(qm_file ${doxywizard_QM_FILES})
     endif()
   endif()
   string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"config_${LOCALE}.xml\">${PROJECT_SOURCE_DIR}/src/i18n/config_${LOCALE}.xml</file>\n")
-  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file>${qm_name}</file>\n")
+  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"${ts_name}.qm\">${qm_file}</file>\n")
 endforeach()
 string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc "${TRANSLATIONS_QRC_CONTENT}")
 
 qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
+
+if(doxywizard_QM_FILES_PATHS)
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc PROPERTIES OBJECT_DEPENDS "${doxywizard_QM_FILES_PATHS}")
+endif()
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
 
 add_executable(doxywizard WIN32
