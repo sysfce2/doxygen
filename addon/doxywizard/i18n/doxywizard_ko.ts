@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>수식 포함</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>설명</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

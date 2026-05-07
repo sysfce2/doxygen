@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>Formeln einbinden</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Beschreibung</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

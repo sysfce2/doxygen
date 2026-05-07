@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>包含公式</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>描述</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>

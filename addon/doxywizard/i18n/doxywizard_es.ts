@@ -89,6 +89,10 @@
         <source>Including formulas</source>
         <translation>Inclusión de fórmulas</translation>
     </message>
+    <message>
+        <source>Description</source>
+        <translation>Descripción</translation>
+    </message>
 </context>
 <context>
     <name>HelpLabel</name>
