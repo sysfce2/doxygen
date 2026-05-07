@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="Deutsch">
-  <group name="Project" docs="Projektbezogene Konfigurationsoptionen">
+  <group name="Project" trname="Projekt" docs="Projektbezogene Konfigurationsoptionen">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[Dieses Tag gibt die Codierung fur alle Zeichen in der Konfigurationsdatei an, die folgen. Der Standardwert ist UTF-8, was auch die Codierung fur den gesamten Text vor dem ersten Auftreten dieses Tags ist. Doxygen verwendet \c libiconv (oder das in \c libc eingebaute iconv) fur die Transkodierung. Siehe https://www.gnu.org/software/libiconv/ fur die Liste moglicher Codierungen.]]>
@@ -334,7 +334,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="Buildbezogene Konfigurationsoptionen">
+  <group name="Build" trname="Erstellung" docs="Buildbezogene Konfigurationsoptionen">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[Wenn das \c EXTRACT_ALL-Tag auf \c YES gesetzt ist, geht Doxygen davon aus, dass alle Entitaten in der Dokumentation dokumentiert sind, auch wenn keine Dokumentation verfugbar war. Private Klassenmitglieder und statische Dateimitglieder werden ausgeblendet, es sei denn, die Tags \ref cfg_extract_private "EXTRACT_PRIVATE" bzw. \ref cfg_extract_static "EXTRACT_STATIC" sind auf \c YES gesetzt. \note Dies deaktiviert auch die Warnungen uber undokumentierte Mitglieder, die normalerweise erzeugt werden, wenn \ref cfg_warnings "WARNINGS" auf \c YES gesetzt ist.]]>
@@ -563,7 +563,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="Konfigurationsoptionen für Warn- und Fortschrittsmeldungen">
+  <group name="Messages" trname="Nachrichten" docs="Konfigurationsoptionen für Warn- und Fortschrittsmeldungen">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[Das \c QUIET-Tag kann verwendet werden, um die Nachrichten ein- oder auszuschalten, die von Doxygen auf die Standardausgabe generiert werden. Wenn \c QUIET auf \c YES gesetzt ist, bedeutet dies, dass die Nachrichten ausgeschaltet sind.]]>
@@ -629,7 +629,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="Konfigurationsoptionen für die Eingabedateien">
+  <group name="Input" trname="Eingabe" docs="Konfigurationsoptionen für die Eingabedateien">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[Das \c INPUT-Tag wird verwendet, um die Dateien und/oder Verzeichnisse anzugeben, die die Quellcode- und anderen Dokumentationsdateien enthalten. Sie konnen Dateinamen wie \c myfile.cpp oder Verzeichnisse wie \c /usr/src/myproject eingeben. Trennen Sie die Dateien oder Verzeichnisse durch Leerzeichen. Siehe auch \ref cfg_file_patterns "FILE_PATTERNS" und \ref cfg_extension_mapping "EXTENSION_MAPPING". \note Wenn dieses Tag leer ist, wird das aktuelle Verzeichnis durchsucht.]]>
@@ -782,7 +782,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="Konfigurationsoptionen für den Quellcode-Browser">
+  <group name="Source_Browser" trname="Quellcode-Browser" docs="Konfigurationsoptionen für den Quellcode-Browser">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[Wenn das \c SOURCE_BROWSER-Tag auf \c YES gesetzt ist, wird eine Liste der Quelldateien generiert. Dokumentierte Entitaten werden mit diesen Quellen querverwiesen. <br>Hinweis: Um den gesamten Quellcode in der generierten Ausgabe zu entfernen, stellen Sie sicher, dass auch \ref cfg_verbatim_headers "VERBATIM_HEADERS" auf \c NO gesetzt ist.]]>
@@ -849,7 +849,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="Konfigurationsoptionen für den alphabetischen Klassenindex">
+  <group name="Index" trname="Index" docs="Konfigurationsoptionen für den alphabetischen Klassenindex">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[Wenn das \c ALPHABETICAL_INDEX-Tag auf \c YES gesetzt ist, wird ein alphabetischer Index aller Verbindungen generiert. Wenn Sie die \ref cfg_extract_all "EXTRACT_ALL" und \ref cfg_extract_private "EXTRACT_PRIVATE" Tags auf \c YES setzen, wird auch der Index aller internen Elemente generiert. Wenn Sie dies nicht mochten, konnen Sie \ref cfg_ignore_prefix "IGNORE_PREFIX" auf einen nicht-leeren Wert setzen.]]>
@@ -1473,7 +1473,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="Konfigurationsoptionen für den Präprozessor">
+  <group name="Preprocessor" trname="Präprozessor" docs="Konfigurationsoptionen für den Präprozessor">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[Wenn das \c ENABLE_PREPROCESSING-Tag auf \c YES gesetzt ist, wertet Doxygen alle C-Praprozessor-Direktiven aus.]]>
@@ -1520,7 +1520,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="Konfigurationsoptionen für externe Referenzen">
+  <group name="External" trname="Externe Referenzen" docs="Konfigurationsoptionen für externe Referenzen">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[Das \c TAGFILES-Tag kann verwendet werden, um eine oder mehrere Tag-Dateien anzugeben. Fur jede Tag-Datei sollte der Speicherort der externen Dokumentation hinzugefugt werden. Das Format einer Tag-Datei ohne diesen Speicherort ist wie folgt: \verbatim TAGFILES = file1 file2 ... \endverbatim Das Hinzufugen des Speicherorts fur die Tag-Dateien erfolgt wie folgt: \verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim wobei `loc1` und `loc2` relative oder absolute Pfade oder URLs sein konnen. Siehe den Abschnitt \ref external fur weitere Informationen zur Verwendung von Tag-Dateien. \note Jede Tag-Datei muss einen eindeutigen Namen haben (wobei der Name den Pfad NICHT enthalt). Wenn eine Tag-Datei nicht in dem Verzeichnis liegt, in dem Doxygen ausgefuhrt wird, mussen Sie auch den Pfad zur Tag-Datei hier angeben.]]>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doxygenconfig lang="繁體中文">
-  <group name="Project" docs="與專案相關的配置選項">
+  <group name="Project" trname="專案" docs="與專案相關的配置選項">
     <option type="string" id="DOXYFILE_ENCODING" format="string" defval="UTF-8">
       <docs>
 <![CDATA[此標籤指定設定檔案中所有后续字元使用的編碼。預設值为 UTF-8，这也是此標籤首次出现之前所有文本使用的編碼。Doxygen 使用 \c libiconv（或 \c libc 中内置的 iconv）进行转码。有关可能的編碼列資料表，请参阅 https://www.gnu.org/software/libiconv/。]]>
@@ -335,7 +335,7 @@
       <value name="DATE"/>
     </option>
   </group>
-  <group name="Build" docs="與建置相關的配置選項">
+  <group name="Build" trname="建置" docs="與建置相關的配置選項">
     <option type="bool" id="EXTRACT_ALL" defval="0">
       <docs>
 <![CDATA[如果 \c EXTRACT_ALL 標籤設定为 \c YES，Doxygen 将假设文件中的所有实体都已記錄，即使没有可用的文件。私有類別成员和静态檔案成员将被隐藏，除非分别設定了 \ref cfg_extract_private "EXTRACT_PRIVATE" 或 \ref cfg_extract_static "EXTRACT_STATIC" 標籤为 \c YES。\note 这也将停用通常在 \ref cfg_warnings "WARNINGS" 設定为 \c YES 时产生的有关未記錄成员的警告。]]>
@@ -564,7 +564,7 @@
       </docs>
     </option>
   </group>
-  <group name="Messages" docs="與警告和進度訊息相關的配置選項">
+  <group name="Messages" trname="訊息" docs="與警告和進度訊息相關的配置選項">
     <option type="bool" id="QUIET" defval="0">
       <docs>
 <![CDATA[\c QUIET 標籤可用于開啟/關閉 Doxygen 生成到标准輸出的訊息。如果 \c QUIET 設定为 \c YES，这意味着訊息已關閉。]]>
@@ -630,7 +630,7 @@
       </docs>
     </option>
   </group>
-  <group name="Input" docs="與輸入檔案相關的配置選項">
+  <group name="Input" trname="輸入" docs="與輸入檔案相關的配置選項">
     <option type="list" id="INPUT" format="filedir">
       <docs>
 <![CDATA[\c INPUT 標籤用于指定包含已記錄原始碼檔案的檔案和/或目錄。您可以輸入檔案名如 \c myfile.cpp 或目錄如 \c /usr/src/myproject。用空格分隔檔案或目錄。另请参阅 \ref cfg_file_patterns "FILE_PATTERNS" 和 \ref cfg_extension_mapping "EXTENSION_MAPPING" \note 如果此標籤为空，则搜尋当前目錄。]]>
@@ -783,7 +783,7 @@
       </docs>
     </option>
   </group>
-  <group name="Source_Browser" docs="與原始碼瀏覽相關的配置選項">
+  <group name="Source_Browser" trname="原始碼瀏覽器" docs="與原始碼瀏覽相關的配置選項">
     <option type="bool" id="SOURCE_BROWSER" defval="0">
       <docs>
 <![CDATA[如果 \c SOURCE_BROWSER 標籤設定为 \c YES，则将生成原始碼檔案列資料表。已記錄的实体将与这些原始碼交叉引用。<br>注意：要摆脱生成輸出中的所有原始碼程式碼，请确保也将 \ref cfg_verbatim_headers "VERBATIM_HEADERS" 設定为 \c NO。]]>
@@ -850,7 +850,7 @@
       </docs>
     </option>
   </group>
-  <group name="Index" docs="與字母順序類別索引相關的配置選項">
+  <group name="Index" trname="索引" docs="與字母順序類別索引相關的配置選項">
     <option type="bool" id="ALPHABETICAL_INDEX" defval="1">
       <docs>
 <![CDATA[如果 \c ALPHABETICAL_INDEX 標籤設定为 \c YES，将生成所有复合類別型的字母索引。如果專案包含大量類別、结构体、联合体或接口，请啟用此選項。]]>
@@ -1472,7 +1472,7 @@
       </docs>
     </option>
   </group>
-  <group name="Preprocessor" docs="與前處理器相關的配置選項">
+  <group name="Preprocessor" trname="前置處理器" docs="與前處理器相關的配置選項">
     <option type="bool" id="ENABLE_PREPROCESSING" defval="1">
       <docs>
 <![CDATA[如果 \c ENABLE_PREPROCESSING 標籤設定为 \c YES，Doxygen 将评估原始碼檔案和包含檔案中找到的所有 C 预处理指令。]]>
@@ -1519,7 +1519,7 @@
       </docs>
     </option>
   </group>
-  <group name="External" docs="與外部參考相關的配置選項">
+  <group name="External" trname="外部引用" docs="與外部參考相關的配置選項">
     <option type="list" id="TAGFILES" format="file">
       <docs>
 <![CDATA[\c TAGFILES 標籤可用于指定一个或多个標籤檔案。对于每个標籤檔案，应添加外部文件的位置。没有此位置的標籤檔案的格式如下：\verbatim TAGFILES = file1 file2 ... \endverbatim 为標籤檔案添加位置的方式如下：\verbatim TAGFILES = file1=loc1 "file2 = loc2" ... \endverbatim 其中 `loc1` 和 `loc2` 可以是相对或绝对路徑或 URL。有关使用標籤檔案的更多資訊，请参阅第 \ref external 节。\note 每个標籤檔案必须具有唯一的名稱（其中名稱不包括路徑）。如果標籤檔案不在运行 Doxygen 的目錄中，您还必须在此处指定標籤檔案的路徑。]]>

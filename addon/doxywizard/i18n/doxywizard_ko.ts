@@ -672,38 +672,6 @@ Reason given: %2</source>
         <translation>다음</translation>
     </message>
     <message>
-        <source>Project</source>
-        <translation>프로젝트</translation>
-    </message>
-    <message>
-        <source>Build</source>
-        <translation>빌드</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>메시지</translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation>입력</translation>
-    </message>
-    <message>
-        <source>Source Browser</source>
-        <translation>소스 브라우저</translation>
-    </message>
-    <message>
-        <source>Index</source>
-        <translation>인덱스</translation>
-    </message>
-    <message>
-        <source>Preprocessor</source>
-        <translation>전처리기</translation>
-    </message>
-    <message>
-        <source>External</source>
-        <translation>외부 참조</translation>
-    </message>
-    <message>
         <source>Topics</source>
         <translation>주제</translation>
     </message>
