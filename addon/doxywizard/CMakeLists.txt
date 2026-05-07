@@ -165,37 +165,36 @@ if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
       OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   message(STATUS "Qt translations dir: ${QT_TRANSLATIONS_DIR}")
+
+  set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/i18n\">\n")
+  set(doxywizard_QM_FILES_PATHS)
+  foreach(ts_file ${DOXYWIZARD_TRANSLATION_FILES})
+    get_filename_component(ts_name ${ts_file} NAME_WE)
+    string(REGEX REPLACE "doxywizard_(.+)" "\\1" LOCALE "${ts_name}")
+    set(qm_file "${CMAKE_CURRENT_BINARY_DIR}/${ts_name}.qm")
+    list(APPEND doxywizard_QM_FILES_PATHS ${qm_file})
+
+    if (QT_TRANSLATIONS_DIR)
+      if (EXISTS "${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm")
+        string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"qtbase_${LOCALE}.qm\">${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm</file>\n")
+      else()
+        message(WARNING "Qt translation file ${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm not found")
+      endif()
+    endif()
+    string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"config_${LOCALE}.xml\">${PROJECT_SOURCE_DIR}/src/i18n/config_${LOCALE}.xml</file>\n")
+    string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"${ts_name}.qm\">${qm_file}</file>\n")
+  endforeach()
+  string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
+
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc "${TRANSLATIONS_QRC_CONTENT}")
+  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc PROPERTIES OBJECT_DEPENDS "${doxywizard_QM_FILES_PATHS}")
+  qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
+
 else()
   message(STATUS "Qt Linguist tools not found, translation files will not be compiled")
+  set(doxywizard_TRANSLATION_RESOURCES)
 endif()
 
-set(TRANSLATIONS_QRC_CONTENT "<!DOCTYPE RCC>\n<RCC version=\"1.0\">\n    <qresource prefix=\"/i18n\">\n")
-set(doxywizard_QM_FILES_PATHS)
-foreach(ts_file ${DOXYWIZARD_TRANSLATION_FILES})
-  get_filename_component(ts_name ${ts_file} NAME_WE)
-  string(REGEX REPLACE "doxywizard_(.+)" "\\1" LOCALE "${ts_name}")
-  set(qm_file "${CMAKE_CURRENT_BINARY_DIR}/${ts_name}.qm")
-  list(APPEND doxywizard_QM_FILES_PATHS ${qm_file})
-  
-  if (QT_TRANSLATIONS_DIR)
-    if (EXISTS "${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm")
-      string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"qtbase_${LOCALE}.qm\">${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm</file>\n")
-    else()
-      message(WARNING "Qt translation file ${QT_TRANSLATIONS_DIR}/qtbase_${LOCALE}.qm not found")
-    endif()
-  endif()
-  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"config_${LOCALE}.xml\">${PROJECT_SOURCE_DIR}/src/i18n/config_${LOCALE}.xml</file>\n")
-  string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"${ts_name}.qm\">${qm_file}</file>\n")
-endforeach()
-string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
-
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc "${TRANSLATIONS_QRC_CONTENT}")
-
-qt_add_resources(doxywizard_TRANSLATION_RESOURCES ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
-
-if(doxywizard_QM_FILES_PATHS)
-  set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc PROPERTIES OBJECT_DEPENDS "${doxywizard_QM_FILES_PATHS}")
-endif()
 qt_add_resources(doxywizard_RESOURCES_RCC doxywizard.qrc)
 
 add_executable(doxywizard WIN32
@@ -214,7 +213,6 @@ ${GENERATED_SRC_WIZARD}/config_doxyw.l.h
 ${GENERATED_SRC_WIZARD}/configdoc.cpp
 ${doxywizard_MOC}
 ${doxywizard_TRANSLATION_RESOURCES}
-${doxywizard_QM_FILES}
 ${doxywizard_RESOURCES_RCC}
 ${PROJECT_SOURCE_DIR}/templates/icon/doxygen.rc
 )
