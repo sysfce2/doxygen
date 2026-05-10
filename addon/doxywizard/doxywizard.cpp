@@ -895,6 +895,40 @@ void MainWindow::outputLogFinish()
   m_saveLog->setEnabled(true);
 }
 
+static QString languagesList()
+{
+  QString languages = QString::fromLatin1("en");
+
+  // add additional languages based on embedded info
+  QDir resourceDir(QString::fromLatin1(":/i18n"));
+  QFileInfoList fileList = resourceDir.entryInfoList();
+  QString prevLangCode;
+  foreach (QFileInfo fileInfo, fileList)
+  {
+    QString filename     = fileInfo.fileName();
+    const int underscore = filename.indexOf(QChar::fromLatin1('_'));
+    const int dot        = filename.lastIndexOf(QChar::fromLatin1('.'));
+    if (filename.startsWith(QString::fromLatin1("config")) && underscore!=-1 && dot>underscore)
+    {
+      QString langCode = filename.mid(underscore+1, dot-underscore-1);
+      QFile trFile(QString::fromLatin1(":/i18n/config_%1.xml").arg(langCode));
+      if (trFile.open(QIODevice::ReadOnly))
+      {
+        if (!prevLangCode.isEmpty())
+        {
+          languages +=  QString::fromLatin1(", ") + prevLangCode;
+        }
+        prevLangCode = langCode;
+      }
+    }
+  }
+  if (!prevLangCode.isEmpty())
+  {
+    languages +=  QString::fromLatin1(" and ") + prevLangCode;
+  }
+  return languages;
+}
+
 #define TXT_ARGS  QString::fromLatin1(argc > 2?"Too many arguments specified\n\n":"")
 static void usage(const char *exeName, const QString txt)
 {
@@ -975,7 +1009,8 @@ int main(int argc,char **argv)
       }
       if (!isLanguageCodeSupported(langSel))
       {
-        usage(argv[0],QString::fromLatin1("Unknown language selected\n\n"));
+        usage(argv[0],QString::fromLatin1("Unknown language selected\n  available languages: ") + languagesList() +
+                      QString::fromLatin1("\n\n"));
         exit(1);
       }
     }
