@@ -37,6 +37,9 @@
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QDebug>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QStringConverter>
+#endif
 
 #define SA(x) QString::fromLatin1(x)
 
@@ -1163,5 +1166,48 @@ bool Expert::pdfOutputPresent(const QString &workingDir) const
 void Expert::refresh()
 {
   m_treeWidget->setCurrentItem(m_treeWidget->invisibleRootItem()->child(0));
+}
+
+bool compareFunction (QString a, QString b) {return a<b;}
+
+void Expert::dump()
+{
+  QFile fileOut(SA("dump_%1.txt").arg(DoxygenWizard::langCode));
+  if (fileOut.open(QFile::WriteOnly|QFile::Text))
+  {
+    QTextStream out(&fileOut);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    out.setCodec(QTextCodec::codecForName("UTF-8"));
+#else
+    out.setEncoding(QStringConverter::Utf8);
+#endif
+    QHashIterator<QString, Input*> i(m_options);
+    std::vector<QString> v;
+    while (i.hasNext())
+    {
+      i.next();
+      if (!i.value())
+      {
+        // no value  present, like for not compiled in settings (CLANG_...)
+      }
+      else if (i.value()->docs().isEmpty())
+      {
+        // no documentation present, like for Obsolete items
+      }
+      else
+      {
+        v.push_back(i.key());
+      }
+    }
+    std::sort(v.begin(),v.end(),compareFunction);
+    for (const auto & n : v)
+    {
+      out << n << ": " <<  m_options[n]->docs() << "\n";
+      out << SA("=================================\n");
+    }
+
+    fileOut.flush();
+    fileOut.close();
+  }
 }
 
