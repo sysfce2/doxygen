@@ -1195,8 +1195,8 @@ void Expert::dump()
     std::sort(v.begin(),v.end(),compareFunction);
     for (const auto & n : v)
     {
-      out << n << ": " <<  m_options[n]->docs() << endl;
-      out << SA("=================================") << endl;
+      out << n << ": " <<  m_options[n]->docs() << "\n";
+      out << SA("=================================\n");
     }
 
     fileOut.flush();
