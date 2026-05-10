@@ -643,6 +643,7 @@ Token DocParser::handleStyleArgument(DocNodeVariant *parent,DocNodeList &childre
         reg::match(context.token->name.str(),specialChar))
     {
       // special character that ends the markup command
+      AUTO_TRACE_ADD("special character ending style argument: '{}'",context.token->name);
       return tok;
     }
     if (!defaultHandleToken(parent,tok,children))
@@ -740,12 +741,13 @@ void DocParser::handleStyleLeave(DocNodeVariant *parent,DocNodeList &children,
  */
 void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children)
 {
-  AUTO_TRACE();
+  AUTO_TRACE("context.styleStack.size()={}",context.styleStack.size());
   if (!context.styleStack.empty())
   {
     const DocStyleChange *sc = &std::get<DocStyleChange>(*context.styleStack.top());
     while (sc && sc->position()>=context.nodeStack.size())
     { // there are unclosed style modifiers in the paragraph
+      AUTO_TRACE_ADD("unclosed style at position {}",sc->position());
       children.append<DocStyleChange>(this,parent,context.nodeStack.size(),
                                            sc->style(),sc->tagName(),FALSE);
       context.initialStyleStack.push(context.styleStack.top());
@@ -813,7 +815,7 @@ Token DocParser::handleAHref(DocNodeVariant *parent,DocNodeList &children,
 
 void DocParser::handleUnclosedStyleCommands()
 {
-  AUTO_TRACE();
+  AUTO_TRACE("content.initialStyleStack.size()={}",context.initialStyleStack.size());
   if (!context.initialStyleStack.empty())
   {
     QCString tagName = std::get<DocStyleChange>(*context.initialStyleStack.top()).tagName();
