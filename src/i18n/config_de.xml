@@ -174,7 +174,7 @@
     </option>
     <option type="bool" id="MULTILINE_CPP_IS_BRIEF" defval="0">
       <docs>
-<![CDATA[Das \c MULTILINE_CPP_IS_BRIEF-Tag kann auf \c YES gesetzt werden, damit Doxygen einen mehrzeiligen C++-Spezialkommentarblock (d.h. einen Block aus \c //! oder \c /// Kommentaren) als Kurzbeschreibung behandelt. Dies war frueher das Standardverhälten. Der neue Standard ist, einen mehrzeiligen C++-Kommentarblock als detaillierte Beschreibung zu behandeln. Setzen Sie dieses Tag auf \c YES, wenn Sie das alte Verhalten bevorzugen. <br>Beachten Sie, dass das Setzen dieses Tags auf \c YES auch bedeutet, dass Rational Rose-Kommentare nicht mehr erkannt werden.]]>
+<![CDATA[Das \c MULTILINE_CPP_IS_BRIEF-Tag kann auf \c YES gesetzt werden, damit Doxygen einen mehrzeiligen C++-Spezialkommentarblock (d.h. einen Block aus \c //! oder \c /// Kommentaren) als Kurzbeschreibung behandelt. Dies war frueher das Standardverhalten. Der neue Standard ist, einen mehrzeiligen C++-Kommentarblock als detaillierte Beschreibung zu behandeln. Setzen Sie dieses Tag auf \c YES, wenn Sie das alte Verhalten bevorzugen. <br>Beachten Sie, dass das Setzen dieses Tags auf \c YES auch bedeutet, dass Rational Rose-Kommentare nicht mehr erkannt werden.]]>
       </docs>
     </option>
     <option type="bool" id="PYTHON_DOCSTRING" defval="1">
@@ -412,7 +412,7 @@
     </option>
     <option type="enum" id="CASE_SENSE_NAMES" defval="SYSTEM">
       <docs>
-<![CDATA[Mit der korrekten Einstellung der Option \c CASE_SENSE_NAMES wird Doxygen die Fähigkeiten des zugrunde liegenden Dateisystems besser nutzen können. Im Fall eines Dateisystems, das zwischen Groß- und Kleinschreibung unterscheidet (d.h. es unterstützt Dateien im selben Verzeichnis, deren Namen sich nur in der Groß-/Kleinschreibung unterscheiden), muss die Option auf \c YES gesetzt werden, um solche Dateien ordnungsgemä zu behandeln, falls sie in der Eingabe erscheinen. Fur Dateisysteme, die nicht zwischen Groß- und Kleinschreibung unterscheiden, sollte die Option auf \c NO gesetzt werden, um Ausgabedateien für Symbole zu behandeln, die sich nur in der Groß-/Kleinschreibung unterscheiden. Auf Windows (einschließlich Cygwin) und macOS sollten Benutzer diese Option typischerweise auf \c NO setzen, während auf Linux oder anderen Unix-Varianten sie typischerweise auf \c YES gesetzt werden sollte.]]>
+<![CDATA[Mit der korrekten Einstellung der Option \c CASE_SENSE_NAMES wird Doxygen die Fähigkeiten des zugrunde liegenden Dateisystems besser nutzen können. Im Fall eines Dateisystems, das zwischen Groß- und Kleinschreibung unterscheidet (d.h. es unterstützt Dateien im selben Verzeichnis, deren Namen sich nur in der Groß-/Kleinschreibung unterscheiden), muss die Option auf \c YES gesetzt werden, um solche Dateien ordnungsgemäß zu behandeln, falls sie in der Eingabe erscheinen. Für Dateisysteme, die nicht zwischen Groß- und Kleinschreibung unterscheiden, sollte die Option auf \c NO gesetzt werden, um Ausgabedateien für Symbole zu behandeln, die sich nur in der Groß-/Kleinschreibung unterscheiden. Auf Windows (einschließlich Cygwin) und macOS sollten Benutzer diese Option typischerweise auf \c NO setzen, während auf Linux oder anderen Unix-Varianten sie typischerweise auf \c YES gesetzt werden sollte.]]>
       </docs>
       <value name="SYSTEM"/>
       <value name="NO"/>
@@ -753,7 +753,7 @@
     </option>
     <option type="list" id="FILTER_PATTERNS" format="string">
       <docs>
-<![CDATA[Das \c FILTER_PATTERNS-Tag kann verwendet werden, um Filter auf Dateimusterbasis anzugeben. Doxygen vergleicht den Dateinamen mit jedem Muster und wendet den Filter an, wenn es eine Übereinstimmung gibt. Die Filter sind eine Liste der Form: muster=filter (wie `*.cpp=my_cpp_filter`). Siehe \ref cfg_input_filter "INPUT_FILTER" für weitere Informationen zur Verwendung von Filtern. Wenn das \c FILTER_PATTERNS-Tag leer ist oder keines der Muster mit dem Dateinamen übereinstimmt, wird \ref cfg_input_filter "INPUT_FILTER" angewendet. <br>Beachten Sie, dass Sie für benutzerdefinierte Erweiterungen oder nicht direkt unterstützte Erweiterungen auch \ref cfg_extension_mapping "EXTENSION_MAPPING" für die Erweiterung setzen müssen, sonst werden die Dateien von Doxygen nicht ordnungsgemä verarbeitet.<br>]]>
+<![CDATA[Das \c FILTER_PATTERNS-Tag kann verwendet werden, um Filter auf Dateimusterbasis anzugeben. Doxygen vergleicht den Dateinamen mit jedem Muster und wendet den Filter an, wenn es eine Übereinstimmung gibt. Die Filter sind eine Liste der Form: muster=filter (wie `*.cpp=my_cpp_filter`). Siehe \ref cfg_input_filter "INPUT_FILTER" für weitere Informationen zur Verwendung von Filtern. Wenn das \c FILTER_PATTERNS-Tag leer ist oder keines der Muster mit dem Dateinamen übereinstimmt, wird \ref cfg_input_filter "INPUT_FILTER" angewendet. <br>Beachten Sie, dass Sie für benutzerdefinierte Erweiterungen oder nicht direkt unterstützte Erweiterungen auch \ref cfg_extension_mapping "EXTENSION_MAPPING" für die Erweiterung setzen müssen, sonst werden die Dateien von Doxygen nicht ordnungsgemäß verarbeitet.<br>]]>
       </docs>
     </option>
     <option type="bool" id="FILTER_SOURCE_FILES" defval="0">
