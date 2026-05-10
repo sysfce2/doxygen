@@ -815,6 +815,11 @@ void MainWindow::showSettings()
   m_saveLog->setEnabled(true);
 }
 
+void MainWindow::dump()
+{
+  m_expert->dump();
+}
+
 void MainWindow::configChanged()
 {
   m_modified = true;
@@ -895,7 +900,7 @@ static void usage(const char *exeName, const QString txt)
 {
   QMessageBox msgBox;
   QString fullText = txt;
-  fullText +=  QString::fromLatin1("Usage: %1 [--debug] [--language [lang]] [config file]\n").arg(QString::fromLatin1(exeName));
+  fullText +=  QString::fromLatin1("Usage: %1 [--debug] [--dump] [--language [lang]] [config file]\n").arg(QString::fromLatin1(exeName));
   fullText +=  QString::fromLatin1("Usage: %1 --help\n").arg(QString::fromLatin1(exeName));
   fullText +=  QString::fromLatin1("Usage: %1 --version\n").arg(QString::fromLatin1(exeName));
   msgBox.setText(fullText);
@@ -919,6 +924,7 @@ int main(int argc,char **argv)
 
   int optInd=1;
   bool langSet = false;
+  bool dumpFlag = false;
   QString langSel;
   while (optInd<argc && argv[optInd][0]=='-' && argv[optInd][1]=='-')
   {
@@ -946,6 +952,10 @@ int main(int argc,char **argv)
       }
       msgBox.exec();
       exit(0);
+    }
+    else if (!qstrcmp(argv[optInd],"--dump"))
+    {
+      dumpFlag = true;
     }
     else if (!qstrcmp(argv[optInd],"--debug"))
     {
@@ -1014,6 +1024,10 @@ int main(int argc,char **argv)
     if (optInd+1==argc && argv[argc-1][0]!='-') // name of config file as an argument
     {
       main.loadConfigFromFile(QString::fromLocal8Bit(argv[argc-1]));
+    }
+    if (dumpFlag)
+    {
+      main.dump();
     }
     main.show();
     return a.exec();

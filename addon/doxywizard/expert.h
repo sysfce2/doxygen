@@ -46,6 +46,7 @@ class Expert : public QSplitter, public DocIntf
     bool htmlOutputPresent(const QString &workingDir) const;
     bool pdfOutputPresent(const QString &workingDir) const;
     QString getHtmlOutputIndex(const QString &workingDir) const;
+    void dump();
 
     // DocIntf methods
     void setHeader(const char *name);

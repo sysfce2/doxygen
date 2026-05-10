@@ -1165,3 +1165,42 @@ void Expert::refresh()
   m_treeWidget->setCurrentItem(m_treeWidget->invisibleRootItem()->child(0));
 }
 
+bool compareFunction (QString a, QString b) {return a<b;}
+
+void Expert::dump()
+{
+  QFile fileOut(SA("dump_%1.txt").arg(DoxygenWizard::langCode));
+  if (fileOut.open(QFile::WriteOnly|QFile::Text))
+  {
+    QTextStream out(&fileOut);
+    out.setCodec("UTF-8");
+    QHashIterator<QString, Input*> i(m_options);
+    std::vector<QString> v;
+    while (i.hasNext())
+    {
+      i.next();
+      if (!i.value())
+      {
+        // no value  present, like for not compiled in settings (CLANG_...)
+      }
+      else if (i.value()->docs().isEmpty())
+      {
+        // no documentation present, like for Obsolete items
+      }
+      else
+      {
+        v.push_back(i.key());
+      }
+    }
+    std::sort(v.begin(),v.end(),compareFunction);
+    for (const auto & n : v)
+    {
+      out << n << ": " <<  m_options[n]->docs() << endl;
+      out << SA("=================================") << endl;
+    }
+
+    fileOut.flush();
+    fileOut.close();
+  }
+}
+
