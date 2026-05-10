@@ -463,8 +463,7 @@ void MainWindow::switchLanguage()
     qDebug() << "selected language" << langCode;
     if (langCode!=DoxygenWizard::langCode)
     {
-      m_settings.setValue(QString::fromLatin1("language/code"), langCode);
-      m_settings.sync();
+      setLanguage(langCode);
       quit();
     }
   }
@@ -891,6 +890,18 @@ void MainWindow::outputLogFinish()
   m_saveLog->setEnabled(true);
 }
 
+#define TXT_ARGS  QString::fromLatin1(argc > 2?"Too many arguments specified\n\n":"")
+static void usage(const char *exeName, const QString txt)
+{
+  QMessageBox msgBox;
+  QString fullText = txt;
+  fullText +=  QString::fromLatin1("Usage: %1 [--debug] [--language [lang]] [config file]\n").arg(QString::fromLatin1(exeName));
+  fullText +=  QString::fromLatin1("Usage: %1 --help\n").arg(QString::fromLatin1(exeName));
+  fullText +=  QString::fromLatin1("Usage: %1 --version\n").arg(QString::fromLatin1(exeName));
+  msgBox.setText(fullText);
+  msgBox.exec();
+}
+
 //-----------------------------------------------------------------------
 int main(int argc,char **argv)
 {
@@ -905,21 +916,27 @@ int main(int argc,char **argv)
 #endif
 
   QApplication a(argc,argv);
-  int locArgc = argc;
 
-  if (locArgc == 2)
+  int optInd=1;
+  bool langSet = false;
+  QString langSel;
+  while (optInd<argc && argv[optInd][0]=='-' && argv[optInd][1]=='-')
   {
-    if (!qstrcmp(argv[1],"--help"))
+    if (!qstrcmp(argv[optInd],"--help"))
     {
-      QMessageBox msgBox;
-      msgBox.setText(QString::fromLatin1("Usage: %1 [config file]").arg(QString::fromLatin1(argv[0])));
-      msgBox.exec();
+      usage(argv[0],TXT_ARGS);
+      if (argc > 2) exit(1);
       exit(0);
     }
-    else if (!qstrcmp(argv[1],"--version"))
+    else if (!qstrcmp(argv[optInd],"--version"))
     {
       QMessageBox msgBox;
-      if (!qstrcmp(qVersion(),QT_VERSION_STR))
+      if (argc > 2)
+      {
+        usage(argv[0],TXT_ARGS);
+        exit(1);
+      }
+      else if (!qstrcmp(qVersion(),QT_VERSION_STR))
       {
         msgBox.setText(QString::fromLatin1("Doxywizard version: %1, Qt version: %2").arg(QString::fromLatin1(getFullVersion().c_str())).arg(QString::fromLatin1(QT_VERSION_STR)));
       }
@@ -930,25 +947,48 @@ int main(int argc,char **argv)
       msgBox.exec();
       exit(0);
     }
-  }
-  if (!qstrcmp(argv[1],"--debug") && ((locArgc == 2) || (locArgc == 3)))
-  {
-    DoxygenWizard::debugFlag = true;
-    locArgc--;
+    else if (!qstrcmp(argv[optInd],"--debug"))
+    {
+      DoxygenWizard::debugFlag = true;
+    }
+    else if (!qstrcmp(argv[optInd],"--language"))
+    {
+      langSet = true;
+      if (optInd+1>=argc || (argv[optInd+1][0]=='-' && argv[optInd+1][1]=='-'))
+      {
+        langSel = QString::fromLatin1("en");
+      }
+      else
+      {
+        langSel = QString::fromLatin1(argv[optInd+1]);
+        optInd++;
+      }
+      if (!isLanguageCodeSupported(langSel))
+      {
+        usage(argv[0],QString::fromLatin1("Unknown language selected\n\n"));
+        exit(1);
+      }
+    }
+    optInd++;
   }
 
-  if (locArgc > 2)
+  if (optInd+2<=argc)
   {
-    QMessageBox msgBox;
-    msgBox.setText(QString::fromLatin1("Too many arguments specified\n\nUsage: %1 [config file]").arg(QString::fromLatin1(argv[0])));
-    msgBox.exec();
+    usage(argv[0],TXT_ARGS);
     exit(1);
   }
-  else
+
   {
     qDebug() << "Starting doxywizard...";
 
-    DoxygenWizard::langCode = getStartupLanguageCode();
+    if (langSet)
+    {
+      DoxygenWizard::langCode = langSel;
+    }
+    else
+    {
+      DoxygenWizard::langCode = getStartupLanguageCode();
+    }
     QTranslator qtTranslator;
     if (!DoxygenWizard::langCode.isEmpty() &&
         qtTranslator.load(QString::fromLatin1(":/i18n/qtbase_%1.qm").arg(DoxygenWizard::langCode))
@@ -967,7 +1007,11 @@ int main(int argc,char **argv)
     }
 
     MainWindow &main = MainWindow::instance();
-    if (locArgc==2 && argv[argc-1][0]!='-') // name of config file as an argument
+    if (langSet)
+    {
+      main.setLanguage(langSel);
+    }
+    if (optInd+1==argc && argv[argc-1][0]!='-') // name of config file as an argument
     {
       main.loadConfigFromFile(QString::fromLocal8Bit(argv[argc-1]));
     }

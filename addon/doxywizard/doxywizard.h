@@ -45,6 +45,11 @@ class MainWindow : public QMainWindow
     void outputLogStart();
     void outputLogText(QString text);
     void outputLogFinish();
+    void setLanguage(const QString &langCode)
+    {
+      m_settings.setValue(QString::fromLatin1("language/code"), langCode);
+      m_settings.sync();
+    }
 
   public slots:
     void manual();
