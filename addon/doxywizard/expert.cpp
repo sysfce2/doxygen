@@ -37,6 +37,9 @@
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QDebug>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QStringConverter>
+#endif
 
 #define SA(x) QString::fromLatin1(x)
 
@@ -1173,7 +1176,11 @@ void Expert::dump()
   if (fileOut.open(QFile::WriteOnly|QFile::Text))
   {
     QTextStream out(&fileOut);
-    out.setCodec("UTF-8");
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    out.setCodec(QTextCodec::codecForName("UTF-8"));
+#else
+    out.setEncoding(QStringConverter::Utf8);
+#endif
     QHashIterator<QString, Input*> i(m_options);
     std::vector<QString> v;
     while (i.hasNext())
