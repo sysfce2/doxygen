@@ -281,7 +281,7 @@
     </option>
     <option type="bool" id="IDL_PROPERTY_SUPPORT" defval="1">
       <docs>
-<![CDATA[Fur Microsofts IDL gibt es die Attribute \c propget und \c propput, um Getter- und Setter-Methoden für eine Eigenschaft anzuzeigen. Das Setzen dieser Option auf \c YES führt dazu, dass Doxygen die get- und set-Methoden in der Dokumentation durch die Eigenschaft ersetzt. Dies funktioniert nur, wenn die Methoden tatsächlich einen einfachen Typ abrufen oder setzen. Wenn dies nicht der Fall ist oder Sie die Methoden trotzdem anzeigen möchten, sollten Sie diese Option auf \c NO setzen.]]>
+<![CDATA[Für Microsofts IDL gibt es die Attribute \c propget und \c propput, um Getter- und Setter-Methoden für eine Eigenschaft anzuzeigen. Das Setzen dieser Option auf \c YES führt dazu, dass Doxygen die get- und set-Methoden in der Dokumentation durch die Eigenschaft ersetzt. Dies funktioniert nur, wenn die Methoden tatsächlich einen einfachen Typ abrufen oder setzen. Wenn dies nicht der Fall ist oder Sie die Methoden trotzdem anzeigen möchten, sollten Sie diese Option auf \c NO setzen.]]>
       </docs>
     </option>
     <option type="bool" id="DISTRIBUTE_GROUP_DOC" defval="0">
