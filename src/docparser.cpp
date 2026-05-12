@@ -1416,7 +1416,7 @@ void DocParser::handleIFile(char cmdChar,const QCString &cmdName)
       cmdChar,cmdName);
     return;
   }
-  tokenizer.setStateFile();
+  tokenizer.setStateIFile();
   tok=tokenizer.lex();
   tokenizer.setStatePara();
   if (!tok.is(TokenRetval::TK_WORD))
@@ -1426,7 +1426,6 @@ void DocParser::handleIFile(char cmdChar,const QCString &cmdName)
     return;
   }
   context.fileName = context.token->name;
-  tokenizer.setStatePara();
 }
 
 void DocParser::handleILine(char cmdChar,const QCString &cmdName)
@@ -1434,13 +1433,13 @@ void DocParser::handleILine(char cmdChar,const QCString &cmdName)
   AUTO_TRACE();
   tokenizer.setStateILine();
   Token tok = tokenizer.lex();
+  tokenizer.setStatePara();
   if (!tok.is(TokenRetval::TK_WORD))
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"invalid argument for command '{:c}{}'",
       cmdChar,cmdName);
     return;
   }
-  tokenizer.setStatePara();
 }
 
 /* Helper function that deals with the most common tokens allowed in
