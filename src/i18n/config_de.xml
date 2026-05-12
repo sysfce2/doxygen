@@ -43,7 +43,7 @@
     </option>
     <option type="int" id="CREATE_SUBDIRS_LEVEL" minval="0" maxval="8" defval="8" depends="CREATE_SUBDIRS">
       <docs>
-<![CDATA[Steuert die Anzahl der Unterverzeichnisse, die erstellt werden, wenn das \c CREATE_SUBDIRS-Tag auf \c YES gesetzt ist. Ebene 0 repräsentiert 16 Verzeichnisse, und jede Ebenenerhohung verdoppelt die Anzahl der Verzeichnisse, was zu 4096 Verzeichnissen auf Ebene 8 führt, was der Standardwert und auch der Maximalwert ist. Die Unterverzeichnisse sind in 2 Ebenen organisiert, wobei die erste Ebene immer eine feste Anzahl von 16 Verzeichnissen hat.]]>
+<![CDATA[Steuert die Anzahl der Unterverzeichnisse, die erstellt werden, wenn das \c CREATE_SUBDIRS-Tag auf \c YES gesetzt ist. Ebene 0 repräsentiert 16 Verzeichnisse, und jede Ebenenerhöhung verdoppelt die Anzahl der Verzeichnisse, was zu 4096 Verzeichnissen auf Ebene 8 führt, was der Standardwert und auch der Maximalwert ist. Die Unterverzeichnisse sind in 2 Ebenen organisiert, wobei die erste Ebene immer eine feste Anzahl von 16 Verzeichnissen hat.]]>
       </docs>
     </option>
     <option type="bool" id="ALLOW_UNICODE_NAMES" defval="0">
@@ -179,7 +179,7 @@
     </option>
     <option type="bool" id="PYTHON_DOCSTRING" defval="1">
       <docs>
-<![CDATA[Standardmäßig werden Python-Docstrings als vorformatierter Text angezeigt und können keine Doxygen-Spezialbefehle verwenden. Durch Setzen von \c PYTHON_DOCSTRING auf \c NO können Doxygen-Spezialbefehle verwendet werden, und der Inhalt des Docstring-Dokumentationsblocks wird als Doxygen-Dokumentation angezeigt.]]>
+<![CDATA[Standardmäßig werden Python-Docstrings als vorformatierter Text angezeigt und können keine Doxygen-Spezialbefehle verwenden. Durch Setzen von \c PYTHON_DOCSTRING auf \c NO können Doxygen-Spezialbefehle verwendet werden, und der Inhalt der Docstring-Dokumentationsblöcke wird als Doxygen-Dokumentation angezeigt.]]>
       </docs>
     </option>
     <option type="bool" id="INHERIT_DOCS" defval="1">
@@ -229,7 +229,7 @@
     </option>
     <option type="list" id="EXTENSION_MAPPING" format="string">
       <docs>
-<![CDATA[Doxygen wählt den zu verwendenden Parser basierend auf der Erweiterung der zu parsenden Datei aus. Mit diesem Tag können Sie einen Parser zuweisen, der für eine bestimmte Erweiterung verwendet werden soll. Doxygen hat eine eingebaute Zuordnung, aber Sie können diese mit diesem Tag überschreiben oder erweitern. Das Format ist <code>ext=sprache</code>, wobei \c ext eine Dateierweiterung ist und sprache einer der von Doxygen unterstützten Parser: IDL, Java, JavaScript, Csharp (C#), C, C++, Lex, D, PHP, md (Markdown), Objective-C, Python, Slice, VHDL, Fortran (festes Format Fortran: FortranFixed, freies Format Fortran: FortranFree, unbekanntes Format Fortran: Fortran. Im letzteren Fall versucht der Parser zu erraten, ob der Code festes oder freies Format ist, was die Standardeinstellung für Fortran-Typ-Dateien ist). Um beispielsweise Doxygen dazu zu bringen, <code>.inc</code>-Dateien als Fortran-Dateien zu behandeln (Standard ist PHP) und <code>.f</code>-Dateien als C (Standard ist Fortran), verwenden Sie: `inc=Fortran f=C`. <br>Hinweis: Für Dateien ohne Erweiterung können Sie `no_extension` als Platzhalter verwenden. <br>Hinweis: Für benutzerdefinierte Erweiterungen müssen Sie auch \ref cfg_file_patterns "FILE_PATTERNS" setzen, sonst werden die Dateien von Doxygen nicht gelesen. <br>Hinweis: Siehe auch die Liste der \ref default_file_extension_mapping "Standard-Dateierweiterungszuordnungen".]]>
+<![CDATA[Doxygen wählt den zu verwendenden Parser basierend auf der Erweiterung der zu parsenden Datei aus. Mit diesem Tag können Sie einen Parser zuweisen, der für eine bestimmte Erweiterung verwendet werden soll. Doxygen hat eine eingebaute Zuordnung, aber Sie können diese mit diesem Tag überschreiben oder erweitern. Das Format ist <code>ext=sprache</code>, wobei \c ext eine Dateierweiterung ist und Sprache einer der von Doxygen unterstützten Parser: IDL, Java, JavaScript, Csharp (C#), C, C++, Lex, D, PHP, md (Markdown), Objective-C, Python, Slice, VHDL, Fortran (festes Format Fortran: FortranFixed, freies Format Fortran: FortranFree, unbekanntes Format Fortran: Fortran. Im letzteren Fall versucht der Parser zu erraten, ob der Code festes oder freies Format ist, was die Standardeinstellung für Fortran-Typ-Dateien ist). Um beispielsweise Doxygen dazu zu bringen, <code>.inc</code>-Dateien als Fortran-Dateien zu behandeln (Standard ist PHP) und <code>.f</code>-Dateien als C (Standard ist Fortran), verwenden Sie: `inc=Fortran f=C`. <br>Hinweis: Für Dateien ohne Erweiterung können Sie `no_extension` als Platzhalter verwenden. <br>Hinweis: Für benutzerdefinierte Erweiterungen müssen Sie auch \ref cfg_file_patterns "FILE_PATTERNS" setzen, sonst werden die Dateien von Doxygen nicht gelesen. <br>Hinweis: Siehe auch die Liste der \ref default_file_extension_mapping "Standard-Dateierweiterungszuordnungen".]]>
       </docs>
     </option>
     <option type="bool" id="MARKDOWN_SUPPORT" defval="1">
@@ -1141,7 +1141,7 @@
     </option>
     <option type="bool" id="USE_MATHJAX" defval="0" depends="GENERATE_HTML">
       <docs>
-<![CDATA[Aktivieren Sie die \c USE_MATHJAX-Option, um \f$\mbox{\LaTeX}\f$-Formeln mit MathJax zu rendern (siehe https://www.mathjax.org), das clientseitiges JavaScript für das Rendering verwendet, anstatt vorgerenderte Bitmaps zu verwenden. Verwenden Sie dies, wenn Sie \f$\mbox{\LaTeX}\f$ nicht installiert haben oder wenn Sie möchten, dass die Formeln in der HTML-Ausgabe schoner aussehen. Wenn aktiviert, müssen Sie möglicherweise auch MathJax separat installieren und den Pfad dazu mit der Option \ref cfg_mathjax_relpath "MATHJAX_RELPATH" konfigurieren.]]>
+<![CDATA[Aktivieren Sie die \c USE_MATHJAX-Option, um \f$\mbox{\LaTeX}\f$-Formeln mit MathJax zu rendern (siehe https://www.mathjax.org), das clientseitiges JavaScript für das Rendering verwendet, anstatt vorgerenderte Bitmaps zu verwenden. Verwenden Sie dies, wenn Sie \f$\mbox{\LaTeX}\f$ nicht installiert haben oder wenn Sie möchten, dass die Formeln in der HTML-Ausgabe schöner aussehen. Wenn aktiviert, müssen Sie möglicherweise auch MathJax separat installieren und den Pfad dazu mit der Option \ref cfg_mathjax_relpath "MATHJAX_RELPATH" konfigurieren.]]>
       </docs>
     </option>
     <option type="enum" id="MATHJAX_VERSION" defval="MathJax_2" depends="USE_MATHJAX">
@@ -1550,7 +1550,7 @@
   <group name="Dot" docs="Konfigurationsoptionen für Diagrammgenerierungswerkzeuge">
     <option type="bool" id="HIDE_UNDOC_RELATIONS" defval="1">
       <docs>
-<![CDATA[Wenn auf \c YES gesetzt, blenden die Vererbungs- und Kollaborationsgraphen Vererbungs- und Verwendungsbeziehungen aus, wenn das Ziel undokumentiert ist oder keine Klasse ist.]]>
+<![CDATA[Wenn auf \c YES gesetzt, blenden die Vererbungs- und Kollaborationsdiagramme Vererbungs- und Verwendungsbeziehungen aus, wenn das Ziel undokumentiert ist oder keine Klasse ist.]]>
       </docs>
     </option>
     <option type="bool" id="HAVE_DOT" defval="0">
@@ -1609,7 +1609,7 @@
     </option>
     <option type="bool" id="COLLABORATION_GRAPH" defval="1" depends="HAVE_DOT">
       <docs>
-<![CDATA[Wenn das \c COLLABORATION_GRAPH-Tag auf \c YES gesetzt ist, generiert Doxygen einen Graphen für jede dokumentierte Klasse, der die direkten und indirekten Implementierungsabhängigkeiten (Vererbung, Enthaltensein und Klassenreferenzvariablen) der Klasse mit anderen dokumentierten Klassen zeigt. Das explizite Aktivieren eines Kollaborationsgraphen, wenn \c COLLABORATION_GRAPH auf \c NO gesetzt ist, kann mit dem Befehl \ref cmdcollaborationgraph "\\collaborationgraph" erreicht werden. Das Deaktivieren eines Kollaborationsgraphen kann mit dem Befehl \ref cmdhidecollaborationgraph "\\hidecollaborationgraph" erreicht werden.]]>
+<![CDATA[Wenn das \c COLLABORATION_GRAPH-Tag auf \c YES gesetzt ist, generiert Doxygen einen Graphen für jede dokumentierte Klasse, der die direkten und indirekten Implementierungsabhängigkeiten (Vererbung, Enthaltensein und Klassenreferenzvariablen) der Klasse mit anderen dokumentierten Klassen zeigt. Das explizite Aktivieren eines Kollaborationsdiagramms, wenn \c COLLABORATION_GRAPH auf \c NO gesetzt ist, kann mit dem Befehl \ref cmdcollaborationgraph "\\collaborationgraph" erreicht werden. Das Deaktivieren eines Kollaborationsdiagramms kann mit dem Befehl \ref cmdhidecollaborationgraph "\\hidecollaborationgraph" erreicht werden.]]>
       </docs>
     </option>
     <option type="bool" id="GROUP_GRAPHS" defval="1" depends="HAVE_DOT">
@@ -1624,7 +1624,7 @@
     </option>
     <option type="int" id="UML_LIMIT_NUM_FIELDS" defval="10" minval="0" maxval="100" depends="UML_LOOK">
       <docs>
-<![CDATA[Wenn das \ref cfg_uml_look "UML_LOOK"-Tag aktiviert ist, werden die Felder und Methoden innerhalb des Klassenknotens angezeigt. Wenn es viele Felder oder Methoden und viele Knoten gibt, kann der Graph zu groß werden, um nützlich zu sein. Der \c UML_LIMIT_NUM_FIELDS-Schwellenwert begrenzt die Anzahl der Elemente für jeden Typ, um die Größe handhabbarer zu machen. Setzen Sie dies auf 0 für kein Limit. Beachten Sie, dass der Schwellenwert um 50% uberschritten werden kann, bevor das Limit durchgesetzt wird. Wenn Sie also den Schwellenwert auf 10 setzen, können bis zu 15 Felder erscheinen, aber wenn die Anzahl 15 überschreitet, wird die Gesamtanzahl der angezeigten Felder auf 10 begrenzt.]]>
+<![CDATA[Wenn das \ref cfg_uml_look "UML_LOOK"-Tag aktiviert ist, werden die Felder und Methoden innerhalb des Klassenknotens angezeigt. Wenn es viele Felder oder Methoden und viele Knoten gibt, kann der Graph zu groß werden, um nützlich zu sein. Der \c UML_LIMIT_NUM_FIELDS-Schwellenwert begrenzt die Anzahl der Elemente für jeden Typ, um die Größe handhabbarer zu machen. Setzen Sie dies auf 0 für kein Limit. Beachten Sie, dass der Schwellenwert um 50% überschritten werden kann, bevor das Limit durchgesetzt wird. Wenn Sie also den Schwellenwert auf 10 setzen, können bis zu 15 Felder erscheinen, aber wenn die Anzahl 15 überschreitet, wird die Gesamtanzahl der angezeigten Felder auf 10 begrenzt.]]>
       </docs>
     </option>
     <option type="int" id="UML_MAX_EDGE_LABELS" defval="10" minval="0" maxval="100" depends="UML_LOOK">
@@ -1647,7 +1647,7 @@
     </option>
     <option type="bool" id="TEMPLATE_RELATIONS" defval="0" depends="HAVE_DOT">
       <docs>
-<![CDATA[Wenn das \c TEMPLATE_RELATIONS-Tag auf \c YES gesetzt ist, zeigen die Vererbungs- und Kollaborationsgraphen die Beziehungen zwischen Templates und ihren Instanzen.]]>
+<![CDATA[Wenn das \c TEMPLATE_RELATIONS-Tag auf \c YES gesetzt ist, zeigen die Vererbungs- und Kollaborationsdiagramme die Beziehungen zwischen Templates und ihren Instanzen.]]>
       </docs>
     </option>
     <option type="bool" id="INCLUDE_GRAPH" defval="1" depends="HAVE_DOT">
