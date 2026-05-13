@@ -1162,7 +1162,7 @@
       <value name="chtml" desc="（这是MathJax版本3的名称，对于MathJax版本2将被转换为\c HTML-CSS）"/>
       <value name="SVG"/>
     </option>
-        <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
+    <option type="string" id="MATHJAX_RELPATH" format="string" depends="USE_MATHJAX">
       <docs>
 <![CDATA[
  当启用 MathJax 时，您需要使用 \c MATHJAX_RELPATH 选项指定相对于 HTML 输出目录的位置。
@@ -1610,7 +1610,7 @@
     </option>
     <option type="bool" id="GROUP_GRAPHS" defval="1" depends="HAVE_DOT">
       <docs>
-<![CDATA[如果 \c GROUP_GRAPHS 标签设置为 \c YES，Doxygen 将为组生成图，显示直接的组依赖关系。当 \c GROUP_GRAPHS 设置为 \c NO 时，可以通过命令 \ref cmdgroupgraph "\\groupgraph" 显式启用组依赖图。可以通过命令 \ref cmdhidegroupgraph "\\hidegroupgraph" 禁用目录图。]]>
+<![CDATA[如果 \c GROUP_GRAPHS 标签设置为 \c YES，Doxygen 将为组生成图，显示直接的组依赖关系。当 \c GROUP_GRAPHS 设置为 \c NO 时，可以通过命令 \ref cmdgroupgraph "\\groupgraph" 显式启用组依赖图。可以通过命令 \ref cmdhidegroupgraph "\\hidegroupgraph" 禁用组图。]]>
       </docs>
     </option>
     <option type="bool" id="UML_LOOK" defval="0" depends="HAVE_DOT">
