@@ -62,10 +62,6 @@ void SearchTerm::makeTitle()
 QCString SearchTerm::termEncoded() const
 {
   TextStream t;
-  if (word.length() && (isdigit(word.at(0)) || !isIdJS(word.at(0))))
-  {
-    t << '_'; // ensure result starts with character valid for identifier
-  }
 
   for (size_t i=0;i<word.length();i++)
   {
