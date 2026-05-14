@@ -627,6 +627,7 @@ Token DocParser::handleStyleArgument(DocNodeVariant *parent,DocNodeList &childre
   AUTO_TRACE("cmdName={}",cmdName);
   QCString saveCmdName = cmdName;
   Token tok=tokenizer.lex();
+  size_t styleStackSizeAtStart = context.styleStack.size();
   if (!tok.is(TokenRetval::TK_WHITESPACE))
   {
     warn_doc_error(context.fileName,tokenizer.getLineNr(),"expected whitespace after \\{} command",
@@ -643,7 +644,11 @@ Token DocParser::handleStyleArgument(DocNodeVariant *parent,DocNodeList &childre
         reg::match(context.token->name.str(),specialChar))
     {
       // special character that ends the markup command
-      AUTO_TRACE_ADD("special character ending style argument: '{}'",context.token->name);
+      AUTO_TRACE_ADD("special character ending style argument: '{}' styleStackSize {}->{}",context.token->name,styleStackSizeAtStart,context.styleStack.size());
+      if (context.styleStack.size() > styleStackSizeAtStart) // new styles opened inside command, but not closed
+      {
+        handlePendingStyleCommands(parent,children,context.styleStack.size()-styleStackSizeAtStart);
+      }
       return tok;
     }
     if (!defaultHandleToken(parent,tok,children))
@@ -739,9 +744,9 @@ void DocParser::handleStyleLeave(DocNodeVariant *parent,DocNodeList &children,
  *  (e.g. a <b> without a </b>). The closed styles are pushed onto a stack
  *  and entered again at the start of a new paragraph.
  */
-void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children)
+void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children, size_t numberOfElementsNotToRestore)
 {
-  AUTO_TRACE("context.styleStack.size()={}",context.styleStack.size());
+  AUTO_TRACE("context.styleStack.size()={} numberOfElementsNotToRestore={}",context.styleStack.size(),numberOfElementsNotToRestore);
   if (!context.styleStack.empty())
   {
     const DocStyleChange *sc = &std::get<DocStyleChange>(*context.styleStack.top());
@@ -750,7 +755,14 @@ void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &c
       AUTO_TRACE_ADD("unclosed style at position {}",sc->position());
       children.append<DocStyleChange>(this,parent,context.nodeStack.size(),
                                            sc->style(),sc->tagName(),FALSE);
-      context.initialStyleStack.push(context.styleStack.top());
+      if (numberOfElementsNotToRestore>0)
+      {
+        numberOfElementsNotToRestore--;
+      }
+      else // style needs to be restored
+      {
+        context.initialStyleStack.push(context.styleStack.top());
+      }
       context.styleStack.pop();
       sc = !context.styleStack.empty() ? &std::get<DocStyleChange>(*context.styleStack.top()) : nullptr;
     }
