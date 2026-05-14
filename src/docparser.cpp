@@ -744,27 +744,22 @@ void DocParser::handleStyleLeave(DocNodeVariant *parent,DocNodeList &children,
  *  (e.g. a <b> without a </b>). The closed styles are pushed onto a stack
  *  and entered again at the start of a new paragraph.
  */
-void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children, size_t numberOfElementsNotToRestore)
+void DocParser::handlePendingStyleCommands(DocNodeVariant *parent,DocNodeList &children, size_t numberOfElementsToClose)
 {
-  AUTO_TRACE("context.styleStack.size()={} numberOfElementsNotToRestore={}",context.styleStack.size(),numberOfElementsNotToRestore);
+  AUTO_TRACE("context.styleStack.size()={} numberOfElementsToClose={}",context.styleStack.size(),numberOfElementsToClose);
   if (!context.styleStack.empty())
   {
+    if (numberOfElementsToClose==0) numberOfElementsToClose = context.styleStack.size(); // 0 is special value for "close all"
     const DocStyleChange *sc = &std::get<DocStyleChange>(*context.styleStack.top());
-    while (sc && sc->position()>=context.nodeStack.size())
+    while (sc && sc->position()>=context.nodeStack.size() && numberOfElementsToClose>0)
     { // there are unclosed style modifiers in the paragraph
-      AUTO_TRACE_ADD("unclosed style at position {}",sc->position());
+      AUTO_TRACE_ADD("unclosed style {} at position {}",sc->styleString(),sc->position());
       children.append<DocStyleChange>(this,parent,context.nodeStack.size(),
                                            sc->style(),sc->tagName(),FALSE);
-      if (numberOfElementsNotToRestore>0)
-      {
-        numberOfElementsNotToRestore--;
-      }
-      else // style needs to be restored
-      {
-        context.initialStyleStack.push(context.styleStack.top());
-      }
+      context.initialStyleStack.push(context.styleStack.top());
       context.styleStack.pop();
       sc = !context.styleStack.empty() ? &std::get<DocStyleChange>(*context.styleStack.top()) : nullptr;
+      numberOfElementsToClose--;
     }
   }
 }
