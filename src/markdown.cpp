@@ -1640,6 +1640,7 @@ int Markdown::Private::processLink(const std::string_view data,size_t offset)
     }
     else if ((lp=link.find('#'))!=-1 || link.find('/')!=-1 || link.find('.')!=-1)
     { // file/url link
+      bool isRef = false;
       if (lp==0 || (lp>0 && !isURL(link) && Config_getEnum(MARKDOWN_ID_STYLE)==MARKDOWN_ID_STYLE_t::GITHUB))
       {
         out+="@ref \"";
@@ -1647,6 +1648,7 @@ int Markdown::Private::processLink(const std::string_view data,size_t offset)
         out+="\" \"";
         out+=substitute(content.simplifyWhiteSpace(),"\"","&quot;");
         out+="\"";
+        isRef = true;
       }
       else
       {
@@ -1680,11 +1682,14 @@ int Markdown::Private::processLink(const std::string_view data,size_t offset)
           foundNameRef = true;
         }
       }
-      if (!foundNameRef)
+      if (!isRef)
       {
-        processInline(std::string_view(content.str()));
+        if (!foundNameRef)
+        {
+          processInline(std::string_view(content.str()));
+        }
+        out+="</a>";
       }
-      out+="</a>";
     }
     else // avoid link to e.g. F[x](y)
     {
