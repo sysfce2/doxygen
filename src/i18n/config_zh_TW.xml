@@ -229,7 +229,7 @@
     </option>
     <option type="list" id="EXTENSION_MAPPING" format="string">
       <docs>
-<![CDATA[Doxygen 根據解析檔案的擴充功能名選择要使用的解析器。使用此標籤，您可以為給定擴充功能名設定要使用的解析器。Doxygen 有內建映射，但您可以使用此標籤覆寫或擴充功能它。格式為 <code>ext=language</code>，其中 \c ext 是檔案擴充功能名，language 是 Doxygen 支援的解析器之一：IDL、Java、JavaScript、Csharp (C#)、C、C++、Lex、D、PHP、md (Markdown)、Objective-C、Python、Slice、VHDL、Fortran（固定格式 Fortran：FortranFixed，自由格式 Fortran：FortranFree，未知格式 Fortran：Fortran。在後一种情况下，解析器尝試猜測程式碼是固定格式还是自由格式程式碼，這是 Fortran 類別型檔案的預設設定）。例如，要使 Doxygen 將 <code>.inc</code> 檔案视為 Fortran 檔案（預設為 PHP），將 <code>.f</code> 檔案视為 C 檔案（預設為 Fortran），請使用：`inc=Fortran f=C`。<br>注意：對于沒有擴充功能名的檔案，您可以使用 `no_extension` 作為占位符。<br>請注意，對于自定義擴充功能名，您还需要設定 \ref cfg_file_patterns "FILE_PATTERNS"，否則 Doxygen 不會讀取這些檔案。指定 `no_extension` 時，應將 `*` 添加到 \ref cfg_file_patterns "FILE_PATTERNS"。<br>注意，另請參閱 \ref default_file_extension_mapping "預設檔案擴充功能名映射"列資料表。]]>
+<![CDATA[Doxygen 根據解析檔案的擴充功能名選择要使用的解析器。使用此標籤，您可以為給定擴充功能名設定要使用的解析器。Doxygen 有內建映射，但您可以使用此標籤覆寫或擴充功能它。格式為 `ext=language`，其中 `ext` 是檔案擴充功能名，`language` 是 Doxygen 支援的解析器之一：IDL、Java、JavaScript、Csharp (C#)、C、C++、Lex、D、PHP、md (Markdown)、Objective-C、Python、Slice、VHDL、Fortran（固定格式 Fortran：FortranFixed，自由格式 Fortran：FortranFree，未知格式 Fortran：Fortran。在後一种情况下，解析器尝試猜測程式碼是固定格式还是自由格式程式碼，這是 Fortran 類別型檔案的預設設定）。例如，要使 Doxygen 將 <code>.inc</code> 檔案视為 Fortran 檔案（預設為 PHP），將 <code>.f</code> 檔案视為 C 檔案（預設為 Fortran），請使用：`inc=Fortran f=C`。<br>注意：對于沒有擴充功能名的檔案，您可以使用 `no_extension` 作為占位符。<br>請注意，對于自定義擴充功能名，您还需要設定 \ref cfg_file_patterns "FILE_PATTERNS"，否則 Doxygen 不會讀取這些檔案。指定 `no_extension` 時，應將 `*` 添加到 \ref cfg_file_patterns "FILE_PATTERNS"。<br>注意，另請參閱 \ref default_file_extension_mapping "預設檔案擴充功能名映射"列資料表。]]>
       </docs>
     </option>
     <option type="bool" id="MARKDOWN_SUPPORT" defval="1">
