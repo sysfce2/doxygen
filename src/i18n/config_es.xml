@@ -1251,7 +1251,7 @@
     </option>
     <option type="string" id="LATEX_MAKEINDEX_CMD" defval="makeindex" depends="GENERATE_LATEX">
       <docs>
-<![CDATA[La etiqueta \c LATEX_MAKEINDEX_CMD se puede usar para especificar el nombre del comando para generar el índice para \f$\mbox{\LaTeX}\f$. Si no hay una barra invertida (`\`) como primer carácter, se agregará automáticamente en el código \f$\mbox{\LaTeX}\f$. @note Esta etiqueta se usa en el archivo de salida generado (`.tex`). \sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" para la parte en el `Makefile` / `make.bat`.]]>
+<![CDATA[La etiqueta \c LATEX_MAKEINDEX_CMD se puede usar para especificar el nombre del comando para generar el índice para \f$\mbox{\LaTeX}\f$. Si no hay una barra invertida (\c \\) como primer carácter, se agregará automáticamente en el código \f$\mbox{\LaTeX}\f$. @note Esta etiqueta se usa en el archivo de salida generado (`.tex`). \sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" para la parte en el `Makefile` / `make.bat`.]]>
       </docs>
     </option>
     <option type="bool" id="COMPACT_LATEX" defval="0" depends="GENERATE_LATEX">

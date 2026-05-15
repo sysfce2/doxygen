@@ -1250,7 +1250,7 @@
     </option>
     <option type="string" id="LATEX_MAKEINDEX_CMD" defval="makeindex" depends="GENERATE_LATEX">
       <docs>
-<![CDATA[\c LATEX_MAKEINDEX_CMD 태그를 사용하여 \f$\mbox{\LaTeX}\f$의 인덱스를 생성하는 명령 이름을 지정할 수 있습니다. 첫 번째 문자로 백슬래시(`\`)가 없으면 \f$\mbox{\LaTeX}\f$ 코드에 자동으로 추가됩니다. @note 이 태그는 생성된 출력 파일(`.tex`)에서 사용됩니다. \sa `Makefile` / `make.bat`의 부분에 대해서는 \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME".]]>
+<![CDATA[\c LATEX_MAKEINDEX_CMD 태그를 사용하여 \f$\mbox{\LaTeX}\f$의 인덱스를 생성하는 명령 이름을 지정할 수 있습니다. 첫 번째 문자로 백슬래시(\c \\)가 없으면 \f$\mbox{\LaTeX}\f$ 코드에 자동으로 추가됩니다. @note 이 태그는 생성된 출력 파일(`.tex`)에서 사용됩니다. \sa `Makefile` / `make.bat`의 부분에 대해서는 \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME".]]>
       </docs>
     </option>
     <option type="bool" id="COMPACT_LATEX" defval="0" depends="GENERATE_LATEX">
