@@ -464,7 +464,9 @@ void MainWindow::switchLanguage()
     if (langCode!=DoxygenWizard::langCode)
     {
       setLanguage(langCode);
-      quit();
+      // Restart the application
+      qApp->quit();
+      QProcess::startDetached(qApp->arguments()[0], qApp->arguments().mid(1));
     }
   }
 }

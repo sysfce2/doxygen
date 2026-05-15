@@ -695,8 +695,8 @@ Reason given: %2</source>
         <translation>Доступные языки</translation>
     </message>
     <message>
-        <source>Select and Quit</source>
-        <translation>Выбрать и выйти</translation>
+        <source>Select and Restart</source>
+        <translation>Выбрать и перезапустить</translation>
     </message>
 </context>
 

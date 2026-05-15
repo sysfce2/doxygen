@@ -695,8 +695,8 @@ Reason given: %2</source>
         <translation>사용 가능한 언어</translation>
     </message>
     <message>
-        <source>Select and Quit</source>
-        <translation>선택 후 종료</translation>
+        <source>Select and Restart</source>
+        <translation>선택 후 재시작</translation>
     </message>
 </context>
 

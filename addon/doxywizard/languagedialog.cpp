@@ -93,10 +93,10 @@ LanguageDialog::LanguageDialog(const QString &currentLocale,
 
   mainLayout->addWidget(groupBox);
 
-  // Buttons: Cancel  |  Select & Quit
+  // Buttons: Cancel  |  Select & Restart
   auto *buttonBox = new QDialogButtonBox(this);
   auto *cancelBtn = buttonBox->addButton(QDialogButtonBox::Cancel);
-  auto *selectBtn = buttonBox->addButton(tr("Select and Quit"),
+  auto *selectBtn = buttonBox->addButton(tr("Select and Restart"),
       QDialogButtonBox::AcceptRole);
   selectBtn->setDefault(true);
 
