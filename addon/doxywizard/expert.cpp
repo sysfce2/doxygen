@@ -567,6 +567,7 @@ QString Expert::getDocsForNode(const QDomElement &child) const
   // remove <br> at end
   regexp.setPattern(SA("<br> *$"));
   docs.replace(regexp,SA(" "));
+  docs.replace(SA("(\\c \\\\)"),SA("(\\c JUST_WIZARD_BACKSLASH)"));
   // \c word -> <code>word</code>; word ends with ')', ',', '.' or ' '
   regexp.setPattern(SA("\\\\c[ ]+([^ \\)]+)\\)"));
   docs.replace(regexp,SA("<code>\\1</code>)"));
@@ -652,6 +653,7 @@ QString Expert::getDocsForNode(const QDomElement &child) const
   docs.replace(SA("-#"),SA("<br>-"));
   docs.replace(SA("\\# "),SA("# "));
   docs.replace(SA(" - "),SA("<br>-"));
+  docs.replace(SA("JUST_WIZARD_BACKSLASH"),SA("\\"));
 
   return docs.trimmed();
 }
