@@ -596,7 +596,7 @@ Go to the <a href="commands.html">next</a> section or return to the
       <docs doxyfile='0' documentation='0'>
 <![CDATA[
  When you need a literal `{` or `}` or `,` in the value part of an alias you have to
- escape them by means of a backslash, this can lead to conflicts with the
+ escape them by means of a backslash (\c \\), this can lead to conflicts with the
  commands \c \\{ and \c \\} for these it is advised to use the version \c @{ and \c @} or
  use a double escape (\c \\\\{ and \c \\\\})
 ]]>
@@ -612,7 +612,7 @@ Go to the <a href="commands.html">next</a> section or return to the
       <docs doxyfile='0' doxywizard='0'>
 <![CDATA[
  When you need a literal `{` or `}` or `,` in the value part of an alias you have to
- escape them by means of a backslash (`\`), this can lead to conflicts with the
+ escape them by means of a backslash (\c \\), this can lead to conflicts with the
  commands \c \\{ and \c \\} for these it is advised to use the version \c @@{ and \c @@} or
  use a double escape (\c \\\\{ and \c \\\\})
 ]]>
@@ -3095,7 +3095,7 @@ EXTRA_SEARCH_MAPPINGS = tagname1=loc1 tagname2=loc2 ...
       <docs>
 <![CDATA[
  The \c LATEX_MAKEINDEX_CMD tag can be used to specify the command name to
- generate index for \f$\mbox{\LaTeX}\f$. In case there is no backslash (`\`) as first character it
+ generate index for \f$\mbox{\LaTeX}\f$. In case there is no backslash (\c \\) as first character it
  will be automatically added in the \f$\mbox{\LaTeX}\f$ code.
 
  @note This tag is used in the generated output file (`.tex`).
