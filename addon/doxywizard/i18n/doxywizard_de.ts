@@ -695,8 +695,8 @@ Angegebener Grund: %2</translation>
         <translation>Verfügbare Sprachen</translation>
     </message>
     <message>
-        <source>Select and Quit</source>
-        <translation>Auswählen und Beenden</translation>
+        <source>Select and Restart</source>
+        <translation>Auswählen und Neustart</translation>
     </message>
 </context>
 

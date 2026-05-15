@@ -695,8 +695,8 @@ Reason given: %2</source>
         <translation>利用可能な言語</translation>
     </message>
     <message>
-        <source>Select and Quit</source>
-        <translation>選択して終了</translation>
+        <source>Select and Restart</source>
+        <translation>選択して再起動</translation>
     </message>
 </context>
 

@@ -695,8 +695,8 @@ Razón dada: %2</translation>
         <translation>Idiomas disponibles</translation>
     </message>
     <message>
-        <source>Select and Quit</source>
-        <translation>Seleccionar y salir</translation>
+        <source>Select and Restart</source>
+        <translation>Seleccionar y reiniciar</translation>
     </message>
 </context>
 
