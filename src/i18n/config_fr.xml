@@ -1250,7 +1250,7 @@
     </option>
     <option type="string" id="LATEX_MAKEINDEX_CMD" defval="makeindex" depends="GENERATE_LATEX">
       <docs>
-<![CDATA[La balise \c LATEX_MAKEINDEX_CMD peut être utilisée pour spécifier le nom de la commande pour générer l'index pour \f$\mbox{\LaTeX}\f$. S'il n'y a pas de barre oblique inverse (`\`) comme premier caractère, elle sera automatiquement ajoutée dans le code \f$\mbox{\LaTeX}\f$. @note Cette balise est utilisée dans le fichier de sortie généré (`.tex`). \sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" pour la partie dans le `Makefile` / `make.bat`.]]>
+<![CDATA[La balise \c LATEX_MAKEINDEX_CMD peut être utilisée pour spécifier le nom de la commande pour générer l'index pour \f$\mbox{\LaTeX}\f$. S'il n'y a pas de barre oblique inverse (\c \\) comme premier caractère, elle sera automatiquement ajoutée dans le code \f$\mbox{\LaTeX}\f$. @note Cette balise est utilisée dans le fichier de sortie généré (`.tex`). \sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" pour la partie dans le `Makefile` / `make.bat`.]]>
       </docs>
     </option>
     <option type="bool" id="COMPACT_LATEX" defval="0" depends="GENERATE_LATEX">

@@ -1249,7 +1249,7 @@
     </option>
     <option type="string" id="LATEX_MAKEINDEX_CMD" defval="makeindex" depends="GENERATE_LATEX">
       <docs>
-<![CDATA[\c LATEX_MAKEINDEX_CMD 標籤可用於指定為 \f$\mbox{\LaTeX}\f$ 產生索引的命令名稱。如果第一個字元沒有反斜杠（`\`），則會自動添加到 \f$\mbox{\LaTeX}\f$ 程式碼中。@note 此標籤在產生輸出檔案（`.tex`）中使用。\sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" 用於 `Makefile` / `make.bat` 中的部分。]]>
+<![CDATA[\c LATEX_MAKEINDEX_CMD 標籤可用於指定為 \f$\mbox{\LaTeX}\f$ 產生索引的命令名稱。如果第一個字元沒有反斜杠（\c \\），則會自動添加到 \f$\mbox{\LaTeX}\f$ 程式碼中。@note 此標籤在產生輸出檔案（`.tex`）中使用。\sa \ref cfg_makeindex_cmd_name "MAKEINDEX_CMD_NAME" 用於 `Makefile` / `make.bat` 中的部分。]]>
       </docs>
     </option>
     <option type="bool" id="COMPACT_LATEX" defval="0" depends="GENERATE_LATEX">
