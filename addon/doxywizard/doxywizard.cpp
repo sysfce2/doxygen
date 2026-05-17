@@ -463,10 +463,14 @@ void MainWindow::switchLanguage()
     qDebug() << "selected language" << langCode;
     if (langCode!=DoxygenWizard::langCode)
     {
-      setLanguage(langCode);
       // Restart the application
-      qApp->quit();
-      QProcess::startDetached(qApp->arguments()[0], qApp->arguments().mid(1));
+      if (discardUnsavedChanges())
+      {
+        setLanguage(langCode);
+        saveSettings();
+        qApp->quit();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments().mid(1));
+      }
     }
   }
 }
